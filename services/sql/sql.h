@@ -1,0 +1,28 @@
+//
+// Created by Orill on 3/23/2025.
+//
+
+#ifndef SQL_H
+#define SQL_H
+
+namespace DosboxStagingReplacer {
+
+#include <string>
+#include <optional>
+
+    class SqlService {
+    private:
+        std::string connectionString = "";
+        bool isConnectionOpen = false;
+    public:
+        explicit SqlService(std::optional<std::string> connectionString = std::nullopt);
+        ~SqlService();
+        void openConnection(const std::string &connectionString);
+        void reconnect();
+        void closeConnection();
+        template <typename T> T executeQuery(const std::string &query, const bool withResult = false);
+    };
+
+} // DosboxStagingReplacer
+
+#endif //SQL_H
