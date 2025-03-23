@@ -17,10 +17,10 @@ namespace DosboxStagingReplacer {
         bool isConnectionOpen = false;
     public:
         explicit SqlService(std::optional<std::string> connectionString = std::nullopt);
-        ~SqlService();
-        void openConnection(const std::string &connectionString);
-        void reconnect();
-        void closeConnection();
+        virtual ~SqlService();
+        virtual void openConnection(const std::string &connectionString);
+        virtual void reconnect();
+        virtual void closeConnection();
         template <typename T> std::vector<T> executeQuery(const std::string &query, const bool withResult = false);
     };
 
