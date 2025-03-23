@@ -8,6 +8,7 @@
 namespace DosboxStagingReplacer {
 
 #include <string>
+#include <vector>
 #include <optional>
 
     class SqlService {
@@ -20,7 +21,7 @@ namespace DosboxStagingReplacer {
         void openConnection(const std::string &connectionString);
         void reconnect();
         void closeConnection();
-        template <typename T> T executeQuery(const std::string &query, const bool withResult = false);
+        template <typename T> std::vector<T> executeQuery(const std::string &query, const bool withResult = false);
     };
 
 } // DosboxStagingReplacer

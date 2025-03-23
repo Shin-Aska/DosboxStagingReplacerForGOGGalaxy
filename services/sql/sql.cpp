@@ -2,8 +2,8 @@
 // Created by Orill on 3/23/2025.
 //
 
-#ifndef SQL_H
-#define SQL_H
+#ifndef SQL_CPP
+#define SQL_CPP
 
 #include "sql.h"
 
@@ -41,6 +41,16 @@ namespace DosboxStagingReplacer {
         }
     }
 
+    template <typename T> std::vector<T> SqlService::executeQuery(const std::string &query, const bool withResult) {
+        auto result = std::vector<T>();
+        if (this->isConnectionOpen) {
+            return result;
+        }
+        else {
+            std::cerr << "Connection is not open" << std::endl;
+        }
+    }
+
     SqlService::~SqlService() {
         if (this->isConnectionOpen) {
             this->closeConnection();
@@ -48,4 +58,4 @@ namespace DosboxStagingReplacer {
     }
 } // DosboxStagingReplacer
 
-#endif // SQL_H
+#endif // SQL_CPP

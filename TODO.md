@@ -3,7 +3,7 @@
 - [x] Add a way to find all installed windows programs (preferably using Win32 API)
 - [x] Add a way to verify if a file exists
   - [ ] Can determine if it has UAC permission
-- [ ] Add a way to list files and folders in a directory
+- [x] Add a way to list files and folders in a directory
 - [ ] Add a way to read SQLITE3 files (using external libraries is ok)
 - [ ] Add SQLite procedures for adding custom configurations
   - Currently I found out that PlayTasks is my area of interests
