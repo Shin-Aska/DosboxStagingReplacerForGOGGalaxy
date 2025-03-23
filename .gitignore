@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+# DB file / SQlite
+
+*.db
+*.sqlite
+*.sqlite3
+
+# Cmake build folders
+cmake-build-*/
+.idea/
+.vscode/
