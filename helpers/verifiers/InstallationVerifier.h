@@ -26,7 +26,7 @@ namespace DosboxStagingReplacer {
         explicit InstallationVerifier(std::string installationPath, std::string targetExecutable);
         ~InstallationVerifier();
 
-        bool isInstallationValid();
+        virtual bool isInstallationValid();
         void setInstallationPath(std::string installationPath);
         void setTargetExecutable(std::string targetExecutable);
         std::string getInstallationPath() { return installationPath; }

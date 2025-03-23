@@ -16,7 +16,7 @@ namespace DosboxStagingReplacer {
         using InstallationVerifier::InstallationVerifier;
 
         public:
-            bool isInstallationValid();
+            bool isInstallationValid() override;
     };
 
 } // DosboxStagingReplacer
