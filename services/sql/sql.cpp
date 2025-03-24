@@ -6,20 +6,19 @@
 #define SQL_CPP
 
 #include "sql.h"
+#include <iostream>
 
 namespace DosboxStagingReplacer {
 
-    #include <iostream>
-
-    SqlService::SqlService(std::optional<std::string> connectionString): connectionString(connectionString.value_or("")) {
-        if (!connectionString.has_value())  {
+    SqlService::SqlService(std::string connectionString) {
+        if (!connectionString.empty())  {
             this->openConnection(this->connectionString);
         }
     }
 
     void SqlService::openConnection(const std::string &connectionString) {
         this->connectionString = connectionString;
-        this->isConnectionOpen = true;
+        this->connectedFlag = true;
     }
 
     void SqlService::reconnect() {
@@ -33,26 +32,28 @@ namespace DosboxStagingReplacer {
     }
 
     void SqlService::closeConnection() {
-        if (this->isConnectionOpen) {
-            this->isConnectionOpen = false;
+        if (this->connectedFlag) {
+            this->connectedFlag = false;
         }
         else {
             std::cerr << "Connection is already closed" << std::endl;
         }
     }
 
-    template <typename T> std::vector<T> SqlService::executeQuery(const std::string &query, const bool withResult) {
+    bool SqlService::isConnectionOpen() const {
+        return this->connectedFlag;
+    }
+
+    template <typename T> std::vector<T> SqlService::executeQuery(const std::string &query, std::unordered_map<std::string, std::any> params, const bool withResult) {
         auto result = std::vector<T>();
-        if (this->isConnectionOpen) {
-            return result;
+        if (this->connectedFlag) {
+            throw SqlServiceException("Method not implemented");
         }
-        else {
-            std::cerr << "Connection is not open" << std::endl;
-        }
+        throw SqlServiceException("Connection is not open");
     }
 
     SqlService::~SqlService() {
-        if (this->isConnectionOpen) {
+        if (this->connectedFlag) {
             this->closeConnection();
         }
     }
