@@ -13,6 +13,8 @@ namespace DosboxStagingReplacer {
 
     class GogGalaxyService {
     private:
+        // Currently hardcoded to SqlLiteService instead of it's base class
+        // I don't see the need for hot-swapping of Database engines yet
         SqlLiteService sqlService;
         bool validDatabase = false;
     public:
