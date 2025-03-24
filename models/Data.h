@@ -31,11 +31,13 @@ namespace DosboxStagingReplacer {
     class ProductDetails: public BaseResult {
         using BaseResult::BaseResult;
     public:
-        std::string productId;
+        int productId;
         std::string title;
         std::string slug;
         int gogId;
         std::string releaseKey;
+        std::string installationPath;
+        std::string installationDate;
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
     };
 
