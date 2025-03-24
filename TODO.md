@@ -1,6 +1,6 @@
 # Core Functionality
 
-- [ ] Fix the header and body structure to simplify importing
+- [X] Fix the header and body structure to simplify importing
 - [x] Add a way to find all installed windows programs (preferably using Win32 API)
 - [x] Add a way to verify if a file exists
   - [ ] Can determine if it has UAC permission
