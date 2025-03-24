@@ -36,6 +36,7 @@
 *.db
 *.sqlite
 *.sqlite3
+*.db-*
 
 # Cmake build folders
 cmake-build-*/
