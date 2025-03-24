@@ -33,6 +33,14 @@ namespace DosboxStagingReplacer {
         std::string getTargetExecutable() { return targetExecutable; }
     };
 
+    class DosboxVerifier: public InstallationVerifier {
+
+        using InstallationVerifier::InstallationVerifier;
+
+    public:
+        bool isInstallationValid() override;
+    };
+
 } // DosboxStagingReplacer
 
 #endif //INSTALLATIONVERIFIER_H

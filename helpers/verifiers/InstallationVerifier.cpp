@@ -52,6 +52,10 @@ namespace DosboxStagingReplacer {
     void InstallationVerifier::setTargetExecutable(std::string targetExecutable) {
         this->targetExecutable = targetExecutable;
     }
+
+    bool DosboxVerifier::isInstallationValid() {
+        return InstallationVerifier::isInstallationValid();
+    }
 } // DosboxStagingReplacer
 
 #endif //INSTALLATIONVERIFIER_CPP

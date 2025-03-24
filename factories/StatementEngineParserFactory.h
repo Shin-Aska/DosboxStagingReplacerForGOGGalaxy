@@ -8,8 +8,8 @@
 #include <any>
 #include <memory>
 #include "sqlite3.h"
-#include "../../services/sql/sql.h"
-#include "../interfaces/SqLiteStatementParser.cpp"
+#include "../services/sql/Service.cpp"
+#include "../interfaces/StatementParser.cpp"
 
 namespace DosboxStagingReplacer {
 

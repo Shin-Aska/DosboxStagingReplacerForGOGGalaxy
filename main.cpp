@@ -3,10 +3,9 @@
 
 #include "helpers/finders/InstallationFinder.cpp"
 #include "helpers/scanners/DirectoryScanner.cpp"
-#include "helpers/verifiers/DosboxVerifier.cpp"
-#include "services/sql/sqlite.cpp"
-#include "models/results/SqliteSchema.cpp"
-#include "models/results/ProductDetails.cpp"
+#include "helpers/verifiers/InstallationVerifier.cpp"
+#include "services/sql/Service.cpp"
+#include "models/Data.cpp"
 
 using namespace DosboxStagingReplacer;
 
@@ -45,7 +44,7 @@ int main(int argc, char *argv[]) {
                                                           "SELECT "
                                                           "pdv.productId, pdv.title, pdv.slug, ptr.gogId, ptr.releaseKey "
                                                           "FROM "
-                                                          "[Product Details Vie pdv "
+                                                          "[Product Details View] pdv "
                                                           "INNER JOIN ProductsToReleaseKeys ptr "
                                                           "ON ptr.gogId = pdv.productId",
                                                           {}, true);
