@@ -8,8 +8,8 @@
 #define SQL_H
 
 #include <any>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include "sqlite3.h"
 
@@ -21,18 +21,18 @@ namespace DosboxStagingReplacer {
         bool connectedFlag = false;
 
     public:
-        explicit SqlService(std::string connectionString = "");
+        explicit SqlService(const std::string &connectionString = "");
         virtual ~SqlService();
         virtual void openConnection(const std::string &connectionString);
         virtual void reconnect();
         virtual void closeConnection();
         bool isConnectionOpen() const;
-        template<typename T> std::vector<T> executeQuery(const std::string &query, std::unordered_map<std::string, std::any> params, bool withResult = false);
+        template<typename T>
+        std::vector<T> executeQuery(const std::string &query, std::unordered_map<std::string, std::any> params,
+                                    bool withResult = false);
     };
 
-    enum class SqlEngine {
-        SQLITE
-    };
+    enum class SqlEngine { SQLITE };
 
     class SqlServiceException : public std::exception {
     public:
@@ -41,6 +41,7 @@ namespace DosboxStagingReplacer {
         SqlServiceException &operator=(SqlServiceException const &) noexcept = default;
         ~SqlServiceException() override = default;
         const char *what() const noexcept override { return msg; }
+
     private:
         const char *msg;
     };
@@ -58,6 +59,7 @@ namespace DosboxStagingReplacer {
         template<typename T>
         std::vector<T> executeQuery(const std::string &query, std::unordered_map<std::string, std::any> params,
                                     bool withResult = false);
+        explicit SqlLiteService(const std::string &connectionString = "");
         ~SqlLiteService() override;
     };
 
@@ -68,6 +70,7 @@ namespace DosboxStagingReplacer {
         SqlLiteServiceException &operator=(SqlLiteServiceException const &) noexcept = default;
         ~SqlLiteServiceException() override = default;
         const char *what() const noexcept override { return msg; }
+
     private:
         const char *msg;
     };

@@ -10,9 +10,9 @@
 
 namespace DosboxStagingReplacer {
 
-    SqlService::SqlService(std::string connectionString) {
+    SqlService::SqlService(const std::string &connectionString) {
         if (!connectionString.empty())  {
-            this->openConnection(this->connectionString);
+            this->SqlService::openConnection(this->connectionString);
         }
     }
 
@@ -54,13 +54,19 @@ namespace DosboxStagingReplacer {
 
     SqlService::~SqlService() {
         if (this->connectedFlag) {
-            this->closeConnection();
+            this->SqlService::closeConnection();
+        }
+    }
+
+    SqlLiteService::SqlLiteService(const std::string &connectionString) {
+        if (!connectionString.empty()) {
+            this->SqlLiteService::openConnection(connectionString);
         }
     }
 
     SqlLiteService::~SqlLiteService() {
         if (this->connectedFlag) {
-            this->closeConnection();
+            this->SqlLiteService::closeConnection();
         }
     }
 
