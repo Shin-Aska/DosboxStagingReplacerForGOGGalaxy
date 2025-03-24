@@ -48,6 +48,10 @@ namespace DosboxStagingReplacer {
                 result.gogId = sqlite3_column_int(stmt, i);
             } else if (columnName == "releaseKey") {
                 result.releaseKey = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, i)));
+            } else if (columnName == "installationPath") {
+                result.installationPath = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, i)));
+            } else if (columnName == "installationDate") {
+                result.installationDate = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, i)));
             }
         }
     }
