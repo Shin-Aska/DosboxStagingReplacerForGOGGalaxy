@@ -15,7 +15,9 @@ namespace DosboxStagingReplacer {
 
     // Platform specific code first
 #ifdef __linux__
-
+    // Originally I want to use libraries like libapt, libdpkg, librpm, libflatpak, and libsnapd
+    // But I think it's better to use the command line tools instead as it prevents the need to install additional libraries
+    // Furthermore it will be more portable as it will work on any Linux distribution
     #define DELIMITER '\t'
 
     #define APT "apt"
