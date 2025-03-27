@@ -21,9 +21,6 @@ int main(int argc, char *argv[]) {
         std::cout << product.title << " (" << product.productId << ")" << std::endl;
     }
 
-    std::string output = executeCommand("command -v rpm");
-    std::cout << output.size() << std::endl;
-
     auto installedApplications = getInstalledApplications();
     for (const auto &app : installedApplications) {
         std::cout << app.applicationName << " (" << app.installationPath << ")" << std::endl;
