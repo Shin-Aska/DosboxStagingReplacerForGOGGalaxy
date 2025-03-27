@@ -6,6 +6,7 @@
 #define INSTALLATIONFINDER_CPP
 
 #include "InstallationFinder.h"
+#include <iostream>
 #include <algorithm>
 
 namespace DosboxStagingReplacer {
@@ -52,6 +53,7 @@ namespace DosboxStagingReplacer {
                     DosboxStagingReplacer::InstallationInfo info;
                     info.applicationName = displayName;
                     info.installationPath = installLocation;
+                    info.source = "Registry";
                     result.push_back(info);
                 }
                 RegCloseKey(hSubKey);
@@ -63,28 +65,8 @@ namespace DosboxStagingReplacer {
         }
 
         RegCloseKey(hKey);
-#endif
-        return result;
-    }
+#elif __linux__
 
-    std::vector<std::string> getFilesInDirectory(const std::string &path) {
-        auto result = std::vector<std::string>();
-#ifdef _WIN32
-        WIN32_FIND_DATA findFileData;
-        HANDLE hFind = FindFirstFile((path + "\\*").c_str(), &findFileData);
-
-        if (hFind == INVALID_HANDLE_VALUE) {
-            return result;
-        }
-
-        do {
-            if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-                continue;
-            }
-            result.push_back(findFileData.cFileName);
-        } while (FindNextFile(hFind, &findFileData) != 0);
-
-        FindClose(hFind);
 #endif
         return result;
     }
