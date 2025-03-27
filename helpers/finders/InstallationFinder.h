@@ -19,7 +19,23 @@
 namespace DosboxStagingReplacer {
 
     std::vector<DosboxStagingReplacer::InstallationInfo> getInstalledApplications();
+    std::string executeCommand(const std::string &command);
     bool lazyStringMatching(const std::string &text, const std::vector<std::string> &keywords);
+
+#ifdef __linux__
+    bool isAptAvailable();
+    bool isDpkgAvailable();
+    bool isRpmAvailable();
+    bool isFlatpakAvailable();
+    bool isSnapAvailable();
+
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplications(const std::string &commands, const std::string &source);
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromApt();
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromDpkg();
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromRpm();
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromFlatpak();
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromSnap();
+#endif
 
     class InstallationFinder {
     public:

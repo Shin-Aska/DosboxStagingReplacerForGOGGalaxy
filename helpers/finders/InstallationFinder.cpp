@@ -6,10 +6,95 @@
 #define INSTALLATIONFINDER_CPP
 
 #include "InstallationFinder.h"
+#include <array>
 #include <iostream>
 #include <algorithm>
+#include <sstream>
 
 namespace DosboxStagingReplacer {
+
+    // Platform specific code first
+#ifdef __linux__
+
+    #define DELIMITER '\t'
+
+    #define APT "apt"
+    #define FLATPAK "flatpak"
+    #define SNAP "snap"
+    #define DPKG "dpkg"
+    #define RPM "rpm"
+
+    #define APT_COMMAND "apt list --installed 2>/dev/null | awk -F/ 'NR>1 {print $1}' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{}\t$p\tapt\"'"
+    #define FLATPAK_COMMAND "flatpak list --app --columns=application | tail -n +1 | xargs -I{} sh -c 'p=$(flatpak info --show-location {} 2>/dev/null); echo \"{}\t$p\tflatpak\"'"
+    #define SNAP_COMMAND "snap list | awk 'NR>1 {print $1}' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{},$p,snap\"'"
+    #define DPKG_COMMAND "dpkg -l | awk 'NR>5 {print $2}' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{}\t$p\tdpkg\"'"
+    #define RPM_COMMAND "rpm -qa --qf '%{NAME}\n' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{},$p,rpm\"'"
+
+
+    bool isAptAvailable() {
+        return !executeCommand("command -v apt").empty();
+    }
+
+    bool isFlatpakAvailable() {
+        return !executeCommand("command -v flatpak").empty();
+    }
+
+    bool isSnapAvailable() {
+        return !executeCommand("command -v snap").empty();
+    }
+
+    bool isDpkgAvailable() {
+        return !executeCommand("command -v dpkg").empty();
+    }
+
+    bool isRpmAvailable() {
+        return !executeCommand("command -v rpm").empty();
+    }
+
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplications(const std::string &commands, const std::string &source) {
+        std::vector<DosboxStagingReplacer::InstallationInfo> registeredApplications;
+        std::string output = executeCommand(commands);
+        // Get all lines from the output and process each line
+        std::istringstream stream(output);
+        std::string line;
+        while (std::getline(stream, line)) {
+            // Split the line by the tab character
+            std::istringstream lineStream(line);
+            std::string applicationName;
+            std::string installationPath;
+            std::getline(lineStream, applicationName, DELIMITER);
+            std::getline(lineStream, installationPath, DELIMITER);
+            DosboxStagingReplacer::InstallationInfo info;
+            info.applicationName = applicationName;
+            info.installationPath = installationPath;
+            info.source = source;
+            registeredApplications.push_back(info);
+        }
+        return registeredApplications;
+    }
+
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromApt() {
+        return getRegisteredApplications(APT_COMMAND, APT);
+    }
+
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromFlatpak() {
+        return getRegisteredApplications(FLATPAK_COMMAND, FLATPAK);
+    }
+
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromSnap() {
+        return getRegisteredApplications(SNAP_COMMAND, SNAP);
+    }
+
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromDpkg() {
+        return getRegisteredApplications(DPKG_COMMAND, DPKG);
+    }
+
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromRpm() {
+        return getRegisteredApplications(RPM_COMMAND, RPM);
+    }
+
+#endif
+
     std::vector<DosboxStagingReplacer::InstallationInfo> getInstalledApplications() {
         auto result = std::vector<DosboxStagingReplacer::InstallationInfo>();
 #ifdef _WIN32
@@ -66,8 +151,45 @@ namespace DosboxStagingReplacer {
 
         RegCloseKey(hKey);
 #elif __linux__
+        // Apt logic code, also if dpkg is available as well (because dpkg is a dependency of apt)
+        // Apt will be used to get the list of installed applications
+        if (isAptAvailable() || isDpkgAvailable()) {
+            if (isAptAvailable()) {
+                auto apt_apps = getRegisteredApplicationsFromApt();
+                result.insert(result.end(), apt_apps.begin(), apt_apps.end());
+            }
+            else {
+                auto dpkg_apps = getRegisteredApplicationsFromDpkg();
+                result.insert(result.end(), dpkg_apps.begin(), dpkg_apps.end());
+            }
+        }
+        if (isRpmAvailable()) {
+            auto rpm_apps = getRegisteredApplicationsFromRpm();
+            result.insert(result.end(), rpm_apps.begin(), rpm_apps.end());
+        }
+        if (isFlatpakAvailable()) {
+            auto flatpak_apps = getRegisteredApplicationsFromFlatpak();
+            result.insert(result.end(), flatpak_apps.begin(), flatpak_apps.end());
+        }
+        if (isSnapAvailable()) {
+            auto snap_apps = getRegisteredApplicationsFromSnap();
+            result.insert(result.end(), snap_apps.begin(), snap_apps.end());
+        }
 
 #endif
+        return result;
+    }
+
+    std::string executeCommand(const std::string &command) {
+        std::array<char, 512> buffer {};
+        std::string result;
+
+        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
+        if (!pipe) throw std::runtime_error("popen() failed!");
+
+        while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+            result += buffer.data();
+        }
         return result;
     }
 
