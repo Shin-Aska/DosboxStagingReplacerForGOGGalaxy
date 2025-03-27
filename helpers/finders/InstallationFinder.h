@@ -39,7 +39,7 @@ namespace DosboxStagingReplacer {
 
     class InstallationFinder {
     public:
-        void static isApplicationInstalled(const std::string &applicationName);
+        std::vector<DosboxStagingReplacer::InstallationInfo> static findApplication(const std::string &applicationName);
     };
 } // DosboxStagingReplacer
 

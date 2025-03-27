@@ -208,13 +208,15 @@ namespace DosboxStagingReplacer {
         return keywords.size() == matchCount;
     }
 
-    void InstallationFinder::isApplicationInstalled(const std::string &applicationName) {
+    std::vector<DosboxStagingReplacer::InstallationInfo> InstallationFinder::findApplication(const std::string &applicationName) {
+        std::vector<DosboxStagingReplacer::InstallationInfo> result;
         auto installedApps = getInstalledApplications();
         for (auto &app : installedApps) {
             if (lazyStringMatching(app.applicationName, {"dosbox", "staging"})) {
-                std::cout << app.applicationName << "\t(" << app.installationPath << ")" << std::endl;
+                result.push_back(app);
             }
         }
+        return result;
     }
 } // DosboxStagingReplacer
 
