@@ -10,8 +10,8 @@
 
 namespace DosboxStagingReplacer {
 
-    std::any BaseResult::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
-        throw BaseResultException("Method not implemented");
+    std::any SqlDataResult::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
+        throw SqlDataResultException("Method not implemented");
     }
 
     std::any ProductDetails::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {

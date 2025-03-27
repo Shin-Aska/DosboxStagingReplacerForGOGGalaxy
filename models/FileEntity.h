@@ -9,11 +9,17 @@ namespace DosboxStagingReplacer {
 
 #include <string>
 
+    /**
+     *  FileType enum class. Lists down the supported file types
+     */
     enum class FileType {
         DIRECTORY = 0,
         FILE = 1
     };
 
+    /*
+     * FileEntity struct. Contains the information about a file
+     */
     struct FileEntity {
         std::string name;
         std::string path;

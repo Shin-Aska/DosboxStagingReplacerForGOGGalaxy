@@ -13,8 +13,14 @@
 
 namespace DosboxStagingReplacer {
 
+    /**
+     *  StatementEngineParserFactory class is a factory class that creates a StatementParser object based on the SqlEngine
+     */
     class StatementEngineParserFactory {
     public:
+        // Create a StatementParser object based on the SqlEngine
+        // @param SqlEngine engine: The SqlEngine to create the StatementParser object for
+        // @return std::unique_ptr<StatementParser>
         static std::unique_ptr<StatementParser> createParser(SqlEngine engine);
     };
 

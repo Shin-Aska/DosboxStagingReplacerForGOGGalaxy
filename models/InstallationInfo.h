@@ -9,6 +9,9 @@ namespace DosboxStagingReplacer {
 
 #include <string>
 
+    /*
+     * InstallationInfo struct. Contains the information about an installed application
+     */
     struct InstallationInfo {
         std::string applicationName;
         std::string installationPath;

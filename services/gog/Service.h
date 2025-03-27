@@ -21,8 +21,17 @@ namespace DosboxStagingReplacer {
         GogGalaxyService(std::string connectionString = "");
         ~GogGalaxyService() = default;
 
+        // Verifies if the Sqlite database is a valid GOG Galaxy database
+        // @param void
+        // @return bool
         bool verifyDatabase();
+        // Verifies if the Sqlite database is a valid GOG Galaxy database.
+        // @param void
+        // @return bool
         bool isDatabaseValid() const;
+        // Sets the connection string for the Sqlite database
+        // @param std::string connectionString: The connection string to set
+        // @return void
         void setConnectionString(std::string connectionString);
         std::vector<ProductDetails> getProducts();
     };

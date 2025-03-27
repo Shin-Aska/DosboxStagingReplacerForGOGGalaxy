@@ -9,7 +9,7 @@
 
 namespace DosboxStagingReplacer {
 
-    bool executableExists(const std::string path) {
+    bool fileExists(const std::string path) {
         /*
             * Check if the file at the given path is an executable
         */
@@ -42,7 +42,7 @@ namespace DosboxStagingReplacer {
             path += "/";
         }
         path += targetExecutable;
-        return executableExists(path);
+        return fileExists(path);
     }
 
     void InstallationVerifier::setInstallationPath(std::string installationPath) {

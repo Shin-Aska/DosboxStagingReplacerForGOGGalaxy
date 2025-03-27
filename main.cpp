@@ -13,13 +13,13 @@ using namespace DosboxStagingReplacer;
 
 int main(int argc, char *argv[]) {
 
-    auto service = GogGalaxyService("galaxy-2.0.db");
-    std::cout << "Database is valid: " << service.isDatabaseValid() << std::endl;
-
-    std::cout << "Products:" << std::endl;
-    for (const auto &product : service.getProducts()) {
-        std::cout << product.title << " (" << product.productId << ")" << std::endl;
-    }
+    // auto service = GogGalaxyService("galaxy-2.0.db");
+    // std::cout << "Database is valid: " << service.isDatabaseValid() << std::endl;
+    //
+    // std::cout << "Products:" << std::endl;
+    // for (const auto &product : service.getProducts()) {
+    //     std::cout << product.title << " (" << product.productId << ")" << std::endl;
+    // }
 
     auto installedApplications = getInstalledApplications();
     for (const auto &app : installedApplications) {

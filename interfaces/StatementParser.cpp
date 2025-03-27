@@ -14,7 +14,7 @@ namespace DosboxStagingReplacer {
     SqliteStatementParser::SqliteStatementParser() { }
     SqliteStatementParser::~SqliteStatementParser() { }
 
-    void SqliteStatementParser::parseInto(BaseResult& result, std::vector<std::string> parameters, std::any stmtAny) {
+    void SqliteStatementParser::parseInto(SqlDataResult& result, std::vector<std::string> parameters, std::any stmtAny) {
         auto* stmt = std::any_cast<sqlite3_stmt*>(stmtAny);
     }
 

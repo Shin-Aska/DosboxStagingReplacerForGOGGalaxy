@@ -12,24 +12,36 @@
 
 namespace DosboxStagingReplacer {
 
-    class BaseResult {
+    /**
+     *  SqlDataResult class meant to be used as a base class for other result classes. This class is meant to be
+     *  inherited from and not used directly. This class provides the basic framework for filling an object with data
+     *  from a statement but also represents
+     */
+    class SqlDataResult {
     public:
+        virtual ~SqlDataResult() = default;
+        // Fills the object with the data from the statement, depending on the parameters and the engine provided
+        // With the intention of the object obtaining the data from the statement. This is a pure virtual function
+        // @param std::any stmt: The statement to fill the object with
+        // @param std::vector<std::string> parameters: The parameters to fill the object with
+        // @param SqlEngine engine: The engine to use to fill the object
+        // @return std::any
         virtual std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine);
     };
 
-    class BaseResultException : public std::exception {
+    class SqlDataResultException : public std::exception {
     public:
-        explicit BaseResultException(const char *message) : msg(message) {}
-        BaseResultException(BaseResultException const &) noexcept = default;
-        BaseResultException &operator=(BaseResultException const &) noexcept = default;
-        ~BaseResultException() override = default;
+        explicit SqlDataResultException(const char *message) : msg(message) {}
+        SqlDataResultException(SqlDataResultException const &) noexcept = default;
+        SqlDataResultException &operator=(SqlDataResultException const &) noexcept = default;
+        ~SqlDataResultException() override = default;
         const char *what() const noexcept override { return msg; }
     private:
         const char *msg;
     };
 
-    class ProductDetails: public BaseResult {
-        using BaseResult::BaseResult;
+    class ProductDetails: public SqlDataResult {
+        using SqlDataResult::SqlDataResult;
     public:
         int productId;
         std::string title;
@@ -38,16 +50,28 @@ namespace DosboxStagingReplacer {
         std::string releaseKey;
         std::string installationPath;
         std::string installationDate;
+        // Implementation of filling the ProductDetails object with the data from the statement, depending on the
+        // parameters and the engine provided.
+        // @param std::any stmt: The statement to fill the object with
+        // @param std::vector<std::string> parameters: The parameters to fill the object with
+        // @param SqlEngine engine: The engine to use to fill the object
+        // @return std::any
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
     };
 
-    class SqliteSchema: public BaseResult {
-        using BaseResult::BaseResult;
+    class SqliteSchema: public SqlDataResult {
+        using SqlDataResult::SqlDataResult;
     public:
         std::string type;
         std::string name;
         std::string tbl_name;
         int rootpage;
+        // Implementation of filling the SqliteSchema object with the data from the statement, depending on the
+        // parameters and the engine provided.
+        // @param std::any stmt: The statement to fill the object with
+        // @param std::vector<std::string> parameters: The parameters to fill the object with
+        // @param SqlEngine engine: The engine to use to fill the object
+        // @return std::any
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
     };
 
