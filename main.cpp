@@ -2,6 +2,8 @@
 #include <vector>
 
 #include "services/gog/Service.cpp"
+#include "helpers/finders/InstallationFinder.cpp"
+#include "helpers/scanners/DirectoryScanner.cpp"
 
 using namespace DosboxStagingReplacer;
 
@@ -17,6 +19,20 @@ int main(int argc, char *argv[]) {
     std::cout << "Products:" << std::endl;
     for (const auto &product : service.getProducts()) {
         std::cout << product.title << " (" << product.productId << ")" << std::endl;
+    }
+
+    std::string output = executeCommand("command -v rpm");
+    std::cout << output.size() << std::endl;
+
+    auto installedApplications = getInstalledApplications();
+    for (const auto &app : installedApplications) {
+        std::cout << app.applicationName << " (" << app.installationPath << ")" << std::endl;
+    }
+
+    auto scanner = DirectoryScanner();
+    auto files = scanner.scanDirectory("/home/richard/Videos/");
+    for (const auto &file : files) {
+        std::cout << file.name << " (" << file.path << ")" << std::endl;
     }
 
     return 0;
