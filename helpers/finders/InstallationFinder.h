@@ -5,7 +5,6 @@
 #ifndef INSTALLATIONFINDER_H
 #define INSTALLATIONFINDER_H
 
-namespace DosboxStagingReplacer {
 #include <string>
 #include <vector>
 
@@ -17,8 +16,9 @@ namespace DosboxStagingReplacer {
 
 #include "../../models/InstallationInfo.h"
 
+namespace DosboxStagingReplacer {
+
     std::vector<DosboxStagingReplacer::InstallationInfo> getInstalledApplications();
-    std::vector<std::string> getFilesInDirectory(const std::string &path);
     bool lazyStringMatching(const std::string &text, const std::vector<std::string> &keywords);
 
     class InstallationFinder {
