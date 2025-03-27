@@ -12,6 +12,7 @@ namespace DosboxStagingReplacer {
     struct InstallationInfo {
         std::string applicationName;
         std::string installationPath;
+        std::string source;
     };
 
 } // DosboxStagingReplacer
