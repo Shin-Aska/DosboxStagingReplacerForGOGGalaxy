@@ -51,8 +51,8 @@ namespace DosboxStagingReplacer {
         // @param bool withResult: Whether the query should return a result
         // @return std::vector<T>
         template<typename T>
-        std::vector<T> executeQuery(const std::string &query, std::unordered_map<std::string, std::any> params,
-                                    bool withResult = false);
+        std::vector<T> executeQuery(const std::string &query, std::unordered_map<std::string, std::any> params);
+        virtual void executeQuery(const std::string &query, const std::unordered_map<std::string, std::any> &params);
     };
 
     /*
@@ -97,8 +97,8 @@ namespace DosboxStagingReplacer {
         // @param bool withResult: Whether the query should return a result
         // @return std::vector<T>
         template<typename T>
-        std::vector<T> executeQuery(const std::string &query, std::unordered_map<std::string, std::any> params,
-                                    bool withResult = false);
+        std::vector<T> executeQuery(const std::string &query, std::unordered_map<std::string, std::any> params);
+        void executeQuery(const std::string &query, const std::unordered_map<std::string, std::any> &params) override;
         explicit SqlLiteService(const std::string &connectionString = "");
         ~SqlLiteService() override;
     };
