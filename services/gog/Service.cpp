@@ -6,7 +6,7 @@
 
 namespace DosboxStagingReplacer {
 
-    void GogGalaxyService::setConnectionString(std::string connectionString) {
+    void GogGalaxyService::setConnectionString(const std::string &connectionString) {
         if (this->sqlService.isConnectionOpen()) {
             this->sqlService.closeConnection();
         }
@@ -14,7 +14,7 @@ namespace DosboxStagingReplacer {
         this->verifyDatabase();
     }
 
-    GogGalaxyService::GogGalaxyService(std::string connectionString) {
+    GogGalaxyService::GogGalaxyService(const std::string &connectionString) {
         this->setConnectionString(connectionString);
     }
 
@@ -56,6 +56,43 @@ namespace DosboxStagingReplacer {
                                 ON ptr.gogId = pdv.productId
                      INNER JOIN InstalledBaseProducts ibp
                                 ON ibp.productId = pdv.productId;
+            )SQL", {}, true);
+            return result;
+        }
+        throw GogGalaxyServiceException("Database connection is not open");
+    }
+
+    std::vector<GogUser> GogGalaxyService::getUsers() {
+        if (this->validDatabase) {
+            auto result = this->sqlService.executeQuery<GogUser>(R"SQL(
+                SELECT
+                    id
+                FROM Users;
+            )SQL", {}, true);
+            return result;
+        }
+        throw GogGalaxyServiceException("Database connection is not open");
+    }
+
+    std::vector<PlayTaskInformation> GogGalaxyService::getPlayTasks() {
+        if (this->validDatabase) {
+            auto result = this->sqlService.executeQuery<PlayTaskInformation>(R"SQL(
+                SELECT
+                    pt.id, pt.gameReleaseKey, pt.userId, pt."order", pt.typeId, ptt.type, pt.isPrimary
+                FROM PlayTasks pt
+                INNER JOIN PlayTaskTypes ptt ON pt.typeId = ptt.id;
+            )SQL", {}, true);
+            return result;
+        }
+        throw GogGalaxyServiceException("Database connection is not open");
+    }
+
+    std::vector<PlayTaskLaunchParameters> GogGalaxyService::getPlayTaskLaunchParameters() {
+        if (this->validDatabase) {
+            auto result = this->sqlService.executeQuery<PlayTaskLaunchParameters>(R"SQL(
+                SELECT
+                    ptlp.playTaskId, ptlp.executablePath, ptlp.commandLineArgs, ptlp.label
+                FROM PlayTaskLaunchParameters ptlp
             )SQL", {}, true);
             return result;
         }
