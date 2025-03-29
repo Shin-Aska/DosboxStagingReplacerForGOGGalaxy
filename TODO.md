@@ -6,7 +6,7 @@
   - [ ] Can determine if it has UAC permission
 - [x] Add a way to list files and folders in a directory
 - [x] Add a way to read SQLITE3 files (using external libraries is ok)
-- [ ] Add SQLite procedures for adding custom configurations
+- [x] Add SQLite procedures for adding custom configurations
   - Currently I found out that PlayTasks is my area of interests
     - Other tables include PlayTaskTypes, PlayTaskLaunchParameters
     - PlayTasks uses a many to many approach with Products (Information is at Details and LimitedDetails table and Product Details View)
