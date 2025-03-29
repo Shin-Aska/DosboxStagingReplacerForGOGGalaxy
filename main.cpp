@@ -16,25 +16,25 @@ int main(int argc, char *argv[]) {
     auto service = GogGalaxyService("galaxy-2.0.db");
     std::cout << "Database is valid: " << service.isDatabaseValid() << std::endl;
 
-    std::cout << "Products:" << std::endl;
-    for (const auto &product : service.getProducts()) {
-        std::cout << product.title << " (" << product.productId << ")" << std::endl;
-    }
+    // std::cout << "Products:" << std::endl;
+    // for (const auto &product : service.getProducts()) {
+    //     std::cout << product.title << " (" << product.productId << ")" << std::endl;
+    // }
 
-    std::cout << "Users:" << std::endl;
-    for (const auto &user : service.getUsers()) {
-        std::cout << user.id << std::endl;
-    }
+    // std::cout << "Users:" << std::endl;
+    // for (const auto &user : service.getUsers()) {
+    //     std::cout << user.id << std::endl;
+    // }
 
     std::cout << "Play Tasks:" << std::endl;
-    for (const auto &task : service.getPlayTasks()) {
-        std::cout << task.id << " (" << task.gameReleaseKey << ")" << std::endl;
+    for (const auto &task : service.getPlayTasksFromGameReleaseKey("gog_1207658969")) {
+        std::cout << task.id << " (" << task.gameReleaseKey << ") = " << task.type << std::endl;
     }
-
-    std::cout << "Play Task Launch Parameters:" << std::endl;
-    for (const auto &param : service.getPlayTaskLaunchParameters()) {
-        std::cout << param.playTaskId << " (" << param.executablePath << ")" << std::endl;
-    }
+    //
+    // std::cout << "Play Task Launch Parameters:" << std::endl;
+    // for (const auto &param : service.getPlayTaskLaunchParameters()) {
+    //     std::cout << param.playTaskId << " (" << param.executablePath << ")" << std::endl;
+    // }
 
     // auto installedApplications = getInstalledApplications();
     // for (const auto &app : installedApplications) {
