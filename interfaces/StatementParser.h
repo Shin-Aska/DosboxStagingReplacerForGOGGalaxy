@@ -25,6 +25,12 @@ namespace DosboxStagingReplacer {
         // @params std::any stmt - The statement that will be used to parse the data
         // @return void
         virtual void parseInto(SqlDataResult& result, std::vector<std::string> parameters, std::any stmt) = 0;
+        // Sql Statement Parser with the intention of parsing the result into the SqliteLastRowId object. This is a pure virtual function
+        // @params SqliteLastRowId& result - The result object that will be populated with the parsed data
+        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
+        // @params std::any stmt - The statement that will be used to parse the data
+        // @return void
+        virtual void parseInto(SqliteLastRowId& result, std::vector<std::string> parameters, std::any stmt) = 0;
         // Sql Statement Parser with the intention of parsing the result into the SqliteSchema object. This is a pure virtual function
         // @params SqliteSchema& result - The result object that will be populated with the parsed data
         // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
@@ -71,6 +77,12 @@ namespace DosboxStagingReplacer {
         // @params std::any stmt - The statement that will be used to parse the data
         // @return void
         void parseInto(SqlDataResult& result, std::vector<std::string> parameters, std::any stmtAny) override;
+        // Sqlite Statement Parser with the intention of parsing the result into the SqliteLastRowId object.
+        // @params SqliteLastRowId& result - The result object that will be populated with the parsed data
+        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
+        // @params std::any stmt - The statement that will be used to parse the data
+        // @return void
+        void parseInto(SqliteLastRowId& result, std::vector<std::string> parameters, std::any stmtAny) override;
         // Sqlite Statement Parser with the intention of parsing the result into the SqliteSchema object.
         // @params SqliteSchema& result - The result object that will be populated with the parsed data
         // @params std::vector<std::string> parameters - The parameters that will be used to parse the data

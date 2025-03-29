@@ -14,13 +14,19 @@ namespace DosboxStagingReplacer {
         throw SqlDataResultException("Method not implemented");
     }
 
-    std::any ProductDetails::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
+    std::any SqliteLastRowId::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
         auto parser = StatementEngineParserFactory::createParser(engine);
         parser->parseInto(*this, parameters, stmt);
         return *this;
     }
 
     std::any SqliteSchema::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
+        auto parser = StatementEngineParserFactory::createParser(engine);
+        parser->parseInto(*this, parameters, stmt);
+        return *this;
+    }
+
+    std::any ProductDetails::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
         auto parser = StatementEngineParserFactory::createParser(engine);
         parser->parseInto(*this, parameters, stmt);
         return *this;

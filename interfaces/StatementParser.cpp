@@ -19,6 +19,16 @@ namespace DosboxStagingReplacer {
         auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
     }
 
+    void SqliteStatementParser::parseInto(SqliteLastRowId &result, std::vector<std::string> parameters, std::any stmtAny) {
+        auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
+        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
+            std::string columnName = sqlite3_column_name(stmt, i);
+            if (columnName == "id" || columnName == "last_insert_rowid()" || columnName == "\"last_insert_rowid()\"" ) {
+                result.id = sqlite3_column_int(stmt, i);
+            }
+        }
+    }
+
     void SqliteStatementParser::parseInto(SqliteSchema &result, std::vector<std::string> parameters, std::any stmtAny) {
         auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
         for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
