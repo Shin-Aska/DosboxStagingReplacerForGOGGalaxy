@@ -37,6 +37,24 @@ namespace DosboxStagingReplacer {
         // @params std::any stmt - The statement that will be used to parse the data
         // @return void
         virtual void parseInto(ProductDetails& result, std::vector<std::string> parameters, std::any stmt) = 0;
+        // Sql Statement Parser with the intention of parsing the result into the GogUser object. This is a pure virtual function
+        // @params GogUser& result - The result object that will be populated with the parsed data
+        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
+        // @params std::any stmt - The statement that will be used to parse the data
+        // @return void
+        virtual void parseInto(GogUser& result, std::vector<std::string> parameters, std::any stmt) = 0;
+        // Sql Statement Parser with the intention of parsing the result into the PlayTaskInformation object. This is a pure virtual function
+        // @params PlayTaskInformation& result - The result object that will be populated with the parsed data
+        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
+        // @params std::any stmt - The statement that will be used to parse the data
+        // @return void
+        virtual void parseInto(PlayTaskInformation& result, std::vector<std::string> parameters, std::any stmt) = 0;
+        // Sql Statement Parser with the intention of parsing the result into the PlayTaskLaunchParameters object. This is a pure virtual function
+        // @params PlayTaskLaunchParameters& result - The result object that will be populated with the parsed data
+        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
+        // @params std::any stmt - The statement that will be used to parse the data
+        // @return void
+        virtual void parseInto(PlayTaskLaunchParameters& result, std::vector<std::string> parameters, std::any stmt) = 0;
     };
 
     /**
@@ -65,6 +83,24 @@ namespace DosboxStagingReplacer {
         // @params std::any stmt - The statement that will be used to parse the data
         // @return void
         void parseInto(ProductDetails& result, std::vector<std::string> parameters, std::any stmtAny) override;
+        // Sqlite Statement Parser with the intention of parsing the result into the GogUser object.
+        // @params GogUser& result - The result object that will be populated with the parsed data
+        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
+        // @params std::any stmt - The statement that will be used to parse the data
+        // @return void
+        void parseInto(GogUser& result, std::vector<std::string> parameters, std::any stmtAny) override;
+        // Sqlite Statement Parser with the intention of parsing the result into the PlayTaskInformation object.
+        // @params PlayTaskInformation& result - The result object that will be populated with the parsed data
+        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
+        // @params std::any stmt - The statement that will be used to parse the data
+        // @return void
+        void parseInto(PlayTaskInformation& result, std::vector<std::string> parameters, std::any stmtAny) override;
+        // Sqlite Statement Parser with the intention of parsing the result into the PlayTaskLaunchParameters object.
+        // @params PlayTaskLaunchParameters& result - The result object that will be populated with the parsed data
+        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
+        // @params std::any stmt - The statement that will be used to parse the data
+        // @return void
+        void parseInto(PlayTaskLaunchParameters& result, std::vector<std::string> parameters, std::any stmtAny) override;
     };
 
 } // DosboxStagingReplacer
