@@ -1,5 +1,5 @@
 //
-// Created by Orill on 3/23/2025.
+// Created by Richard Orilla on 3/23/2025.
 //
 
 #ifndef DIRECTORYSCANNER_CPP

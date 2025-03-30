@@ -1,5 +1,5 @@
 //
-// Created by Orill on 3/14/2025.
+// Created by Richard Orilla on 3/14/2025.
 //
 
 #ifndef INSTALLATIONVERIFIER_H
