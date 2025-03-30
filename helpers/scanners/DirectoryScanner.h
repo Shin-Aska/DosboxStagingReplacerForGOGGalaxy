@@ -5,12 +5,29 @@
 #ifndef DIRECTORYSCANNER_H
 #define DIRECTORYSCANNER_H
 
-namespace DosboxStagingReplacer {
-
 #include <string>
 #include <vector>
 #include <filesystem>
-#include "models/FileEntity.h"
+
+namespace DosboxStagingReplacer {
+
+    /**
+     *  FileType enum class. Lists down the supported file types
+     */
+    enum class FileType {
+        DIRECTORY = 0,
+        FILE = 1
+    };
+
+    /*
+     * FileEntity struct. Contains the information about a file
+     */
+    struct FileEntity {
+        std::string name;
+        std::string path;
+        FileType type;
+        unsigned long size;
+    };
 
     /**
      *  DirectoryScanner class meant to be used as a base class for other directory scanners. This class is meant to be
@@ -21,7 +38,7 @@ namespace DosboxStagingReplacer {
         // Scans a directory and returns a list of files
         // @param path The path to the directory
         // @return A list of files in the directory
-        std::vector<DosboxStagingReplacer::FileEntity> scanDirectory(std::string path);
+        std::vector<FileEntity> scanDirectory(std::string path);
     };
 
 } // DosboxStagingReplacer

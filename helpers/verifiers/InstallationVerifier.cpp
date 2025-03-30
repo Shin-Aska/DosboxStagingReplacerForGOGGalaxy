@@ -7,18 +7,7 @@
 namespace DosboxStagingReplacer {
 
     bool fileExists(const std::string path) {
-        /*
-            * Check if the file at the given path is an executable
-        */
-        #ifdef _WIN32
-                DWORD fileAttr = GetFileAttributesA(path.c_str());
-                if (fileAttr == INVALID_FILE_ATTRIBUTES) {
-                    return false;
-                }
-                return (fileAttr & FILE_ATTRIBUTE_DIRECTORY) == 0;
-        #else
-                return access(path.c_str(), X_OK) == 0;
-        #endif
+        return std::filesystem::exists(path);
     }
 
     InstallationVerifier::InstallationVerifier(std::string installationPath, std::string targetExecutable) {

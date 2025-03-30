@@ -3,10 +3,6 @@
 //
 
 #include "InstallationFinder.h"
-#include <array>
-#include <iostream>
-#include <algorithm>
-#include <sstream>
 
 namespace DosboxStagingReplacer {
 

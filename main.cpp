@@ -1,19 +1,37 @@
 #include <iostream>
 #include <string>
-#include "scanners/DirectoryScanner.h"
+#include "helpers/scanners/DirectoryScanner.h"
+#include "helpers/finders/InstallationFinder.h"
+#include "helpers/verifiers/InstallationVerifier.h"
+
 
 int main(int argc, char *argv[]) {
 
     DosboxStagingReplacer::DirectoryScanner scanner;
-    // Print the path to the directory
+    DosboxStagingReplacer::InstallationFinder finder;
+
+    // Environment specific variables
 #ifdef __linux__
     std::string path = "/home/richard/Downloads";
+    std::string existingFile = "/home/richard/Downloads/install-vs-code.bat";
+    std::string nonExistingFile = "/home/richard/Downloads/superwave.wsz2";
 #else
-    std::string path = "C:\\Users\\richa\\Downloads";
+    std::string path = "C:\\Users\\Orill\\Downloads";
+    std::string existingFile = "C:\\Users\\Orill\\Downloads\\superwave.wsz";
+    std::string nonExistingFile = "C:\\Users\\Orill\\Downloads\\superwave.wsz2";
 #endif
+
     auto files = scanner.scanDirectory(path);
     for (const auto &file : files) {
         std::cout << file.name << " (" << file.path << ")" << std::endl;
     }
+
+    auto applications = DosboxStagingReplacer::getInstalledApplications();
+    for (const auto &application : applications) {
+        std::cout << application.applicationName << " (" << application.installationPath << ")" << std::endl;
+    }
+
+    std::cout << existingFile << " Exists? " <<  (DosboxStagingReplacer::fileExists(existingFile) == true ? "Yes" : "No") << std::endl;
+    std::cout << nonExistingFile << " Exists? " <<  (DosboxStagingReplacer::fileExists(nonExistingFile) == true ? "Yes" : "No") << std::endl;
     return 0;
 }
