@@ -2,9 +2,6 @@
 // Created by Richard Orilla on 3/23/2025.
 //
 
-#ifndef STATEMENTENGINEPARSERFACTORY_CPP
-#define STATEMENTENGINEPARSERFACTORY_CPP
-
 #include "StatementEngineParserFactory.h"
 
 namespace DosboxStagingReplacer {
@@ -18,5 +15,3 @@ namespace DosboxStagingReplacer {
         }
     }
 } // DosboxStagingReplacer
-
-#endif // STATEMENTENGINEPARSERFACTORY_CPP

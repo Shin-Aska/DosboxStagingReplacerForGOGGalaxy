@@ -2,9 +2,6 @@
 // Created by Richard Orilla on 3/23/2025.
 //
 
-#ifndef STATEMENTPARSER_CPP
-#define STATEMENTPARSER_CPP
-
 #include "StatementParser.h"
 
 namespace DosboxStagingReplacer {
@@ -119,6 +116,3 @@ namespace DosboxStagingReplacer {
     }
 
 } // namespace DosboxStagingReplacer
-
-
-#endif // STATEMENTPARSER_CPP

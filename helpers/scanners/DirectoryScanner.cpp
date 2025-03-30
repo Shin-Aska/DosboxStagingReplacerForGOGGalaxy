@@ -2,11 +2,7 @@
 // Created by Richard Orilla on 3/23/2025.
 //
 
-#ifndef DIRECTORYSCANNER_CPP
-#define DIRECTORYSCANNER_CPP
-
 #include "DirectoryScanner.h"
-#include <filesystem>
 
 namespace DosboxStagingReplacer {
 
@@ -29,5 +25,3 @@ namespace DosboxStagingReplacer {
     }
 
 } // DosboxStagingReplacer
-
-#endif //DIRECTORYSCANNER_CPP

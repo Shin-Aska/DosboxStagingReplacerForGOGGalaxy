@@ -2,9 +2,6 @@
 // Created by Richard Orilla on 3/23/2025.
 //
 
-#ifndef DATA_CPP
-#define DATA_CPP
-
 #include "Data.h"
 #include "../factories/StatementEngineParserFactory.cpp"
 
@@ -54,5 +51,3 @@ namespace DosboxStagingReplacer {
 
 
 } // DosboxStagingReplacer
-
-#endif // DATA_CPP

@@ -2,9 +2,6 @@
 // Created by Richard Orilla on 3/14/2025.
 //
 
-#ifndef INSTALLATIONVERIFIER_CPP
-#define INSTALLATIONVERIFIER_CPP
-
 #include "InstallationVerifier.h"
 
 namespace DosboxStagingReplacer {
@@ -57,5 +54,3 @@ namespace DosboxStagingReplacer {
         return InstallationVerifier::isInstallationValid();
     }
 } // DosboxStagingReplacer
-
-#endif //INSTALLATIONVERIFIER_CPP

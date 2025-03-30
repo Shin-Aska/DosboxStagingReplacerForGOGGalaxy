@@ -2,9 +2,6 @@
 // Created by Richard Orilla on 3/14/2025.
 //
 
-#ifndef INSTALLATIONFINDER_CPP
-#define INSTALLATIONFINDER_CPP
-
 #include "InstallationFinder.h"
 #include <array>
 #include <iostream>
@@ -221,5 +218,3 @@ namespace DosboxStagingReplacer {
         return result;
     }
 } // DosboxStagingReplacer
-
-#endif //INSTALLATIONFINDER_CPP

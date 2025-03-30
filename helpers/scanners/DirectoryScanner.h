@@ -9,7 +9,8 @@ namespace DosboxStagingReplacer {
 
 #include <string>
 #include <vector>
-#include "../../models/FileEntity.h"
+#include <filesystem>
+#include "models/FileEntity.h"
 
     /**
      *  DirectoryScanner class meant to be used as a base class for other directory scanners. This class is meant to be
