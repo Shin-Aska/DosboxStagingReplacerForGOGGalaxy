@@ -6,7 +6,6 @@
 #define SQL_CPP
 
 #include "Service.h"
-#include <iostream>
 
 namespace DosboxStagingReplacer {
 

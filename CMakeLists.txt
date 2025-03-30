@@ -18,4 +18,12 @@ add_executable(DosboxStagingReplacer
         helpers/finders/InstallationFinder.h
         helpers/verifiers/InstallationVerifier.cpp
         helpers/verifiers/InstallationVerifier.h
+        factories/StatementEngineParserFactory.cpp
+        factories/StatementEngineParserFactory.h
+        interfaces/StatementParser.cpp
+        interfaces/StatementParser.h
+        models/Data.cpp
+        models/Data.h
+        services/sql/Service.cpp
+        services/sql/Service.h
 )
