@@ -5,7 +5,7 @@
 #ifndef SQL_CPP
 #define SQL_CPP
 
-#include "Service.h"
+#include "SQLService.h"
 
 namespace DosboxStagingReplacer {
 
@@ -41,14 +41,6 @@ namespace DosboxStagingReplacer {
 
     bool SqlService::isConnectionOpen() const {
         return this->connectedFlag;
-    }
-
-    template <typename T> std::vector<T> SqlService::executeQuery(const std::string &query, std::unordered_map<std::string, std::any> params) {
-        auto result = std::vector<T>();
-        if (this->connectedFlag) {
-            throw SqlServiceException("Method not implemented");
-        }
-        throw SqlServiceException("Connection is not open");
     }
 
     void SqlService::executeQuery(const std::string &query, const std::unordered_map<std::string, std::any> &params) {
@@ -87,79 +79,6 @@ namespace DosboxStagingReplacer {
             }
             this->connectedFlag = true;
         }
-    }
-
-    template<typename T>
-    std::vector<T> SqlLiteService::executeQuery(const std::string &query,
-                                                std::unordered_map<std::string, std::any> params) {
-        auto result = std::vector<T>();
-
-        if (!this->connectedFlag) {
-            throw SqlLiteServiceException("Connection is not open");
-        }
-
-        sqlite3_stmt *stmt = nullptr;
-        int rc = sqlite3_prepare_v2(this->db, query.c_str(), query.length(), &stmt, nullptr);
-        if (rc != SQLITE_OK) {
-            std::cerr << "Error preparing statement: " << sqlite3_errmsg(this->db) << std::endl;
-            sqlite3_finalize(stmt);
-            throw SqlLiteServiceException(sqlite3_errmsg(this->db));
-        }
-
-        // Bind parameters
-        for (int i = 1; i <= sqlite3_bind_parameter_count(stmt); ++i) {
-            const char *paramName = sqlite3_bind_parameter_name(stmt, i);
-            if (!paramName)
-                continue;
-
-            std::string key = paramName;
-            if (key[0] == ':')
-                key = key.substr(1); // remove colon
-
-            auto it = params.find(key);
-            if (it == params.end()) {
-                std::cerr << "Missing value for SQL parameter: " << key << std::endl;
-                continue;
-            }
-
-            const std::any &value = it->second;
-
-            if (value.type() == typeid(int)) {
-                sqlite3_bind_int(stmt, i, std::any_cast<int>(value));
-            } else if (value.type() == typeid(double)) {
-                sqlite3_bind_double(stmt, i, std::any_cast<double>(value));
-            } else if (value.type() == typeid(std::string)) {
-                sqlite3_bind_text(stmt, i, std::any_cast<std::string>(value).c_str(), -1, SQLITE_TRANSIENT);
-            } else if (value.type() == typeid(const char *)) {
-                sqlite3_bind_text(stmt, i, std::any_cast<const char *>(value), -1, SQLITE_TRANSIENT);
-            } else if (value.type() == typeid(nullptr)) {
-                sqlite3_bind_null(stmt, i);
-            } else {
-                std::cerr << "Unsupported type for key: " << key << std::endl;
-                sqlite3_finalize(stmt);
-                throw SqlLiteServiceException("Unsupported parameter type");
-            }
-        }
-
-        std::vector<std::string> columns;
-        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
-            columns.push_back(sqlite3_column_name(stmt, i));
-        }
-
-        while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
-            auto datapoint_reference = T().fillFromStatement(stmt, columns, SqlEngine::SQLITE);
-            auto datapoint = std::any_cast<T&>(datapoint_reference);
-            result.push_back(datapoint);
-        }
-
-        if (rc != SQLITE_DONE) {
-            std::cerr << "Error executing query: " << sqlite3_errmsg(this->db) << std::endl;
-            sqlite3_finalize(stmt);
-            throw SqlLiteServiceException(sqlite3_errmsg(this->db));
-        }
-
-        sqlite3_finalize(stmt);
-        return result;
     }
 
     void SqlLiteService::executeQuery(const std::string &query,
