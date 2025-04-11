@@ -11,6 +11,7 @@ include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/scanners
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/finders
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/verifiers
+        ${CMAKE_CURRENT_SOURCE_DIR}/helpers/exporters
         ${CMAKE_CURRENT_SOURCE_DIR}/interfaces
         ${CMAKE_CURRENT_SOURCE_DIR}/services/system
         ${CMAKE_CURRENT_SOURCE_DIR}/services/sql
@@ -31,6 +32,8 @@ add_executable(DosboxStagingReplacer
         services/sql/SQLService.h
         interfaces/StatementParser.cpp
         interfaces/StatementParser.h
+        helpers/exporters/DataExporter.cpp
+        helpers/exporters/DataExporter.h
         services/gog/GoGService.cpp
         services/gog/GoGService.h
         services/system/FileBackupService.cpp
