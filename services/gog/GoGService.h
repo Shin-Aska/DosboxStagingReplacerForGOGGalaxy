@@ -17,12 +17,16 @@ namespace DosboxStagingReplacer {
         // I don't see the need for hot-swapping of Database engines yet
         SqlLiteService sqlService;
         bool validDatabase = false;
+
         void disableAllPlayTaskFor(const std::string& gameReleaseKey);
         PlayTaskInformation insertPlayTask(int userId, int new_order, const PlayTaskInformation &playTask);
         void insertPlayTaskLaunchParameters(const PlayTaskInformation &playTask, const PlayTaskLaunchParameters &launchParameters);
     public:
         explicit GogGalaxyService(const std::string &connectionString = "");
         ~GogGalaxyService() = default;
+
+        void openConnection(const std::string &connectionString);
+        void closeConnection();
 
         // Verifies if the Sqlite database is a valid GOG Galaxy database
         // @param void

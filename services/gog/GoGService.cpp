@@ -7,16 +7,34 @@
 namespace DosboxStagingReplacer {
 
     void GogGalaxyService::setConnectionString(const std::string &connectionString) {
+        this->openConnection(connectionString);
+    }
+
+    GogGalaxyService::GogGalaxyService(const std::string &connectionString) {
+        if (!connectionString.empty()) {
+            this->openConnection(connectionString);
+        }
+    }
+
+    void GogGalaxyService::openConnection(const std::string &connectionString) {
         if (this->sqlService.isConnectionOpen()) {
             this->sqlService.closeConnection();
         }
         this->sqlService.openConnection(connectionString);
-        this->verifyDatabase();
+        if (!this->verifyDatabase()) {
+            std::cerr << "Database verification failed. The database is not a valid GOG Galaxy database." << std::endl;
+        }
     }
 
-    GogGalaxyService::GogGalaxyService(const std::string &connectionString) {
-        this->setConnectionString(connectionString);
+    void GogGalaxyService::closeConnection() {
+        if (this->sqlService.isConnectionOpen()) {
+            this->sqlService.closeConnection();
+        }
+        else {
+            std::cerr << "Attempted to close a connection that is not open" << std::endl;
+        }
     }
+
 
     void GogGalaxyService::disableAllPlayTaskFor(const std::string& gameReleaseKey) {
         if (this->validDatabase) {
