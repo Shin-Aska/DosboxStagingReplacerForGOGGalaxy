@@ -2,7 +2,7 @@
 // Created by Richard Orilla on 3/24/2025.
 //
 
-#include "Service.h"
+#include "GoGService.h"
 
 namespace DosboxStagingReplacer {
 

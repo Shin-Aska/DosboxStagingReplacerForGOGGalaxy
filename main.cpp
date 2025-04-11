@@ -1,51 +1,47 @@
 #include <iostream>
-#include <vector>
+#include <string>
 
-#include "services/gog/Service.cpp"
-#include "helpers/finders/InstallationFinder.cpp"
-#include "helpers/scanners/DirectoryScanner.cpp"
+#include "GoGService.h"
+#include "helpers/finders/InstallationFinder.h"
+#include "helpers/scanners/DirectoryScanner.h"
+#include "helpers/verifiers/InstallationVerifier.h"
 
-using namespace DosboxStagingReplacer;
-
-// TIP: The executable follows the launching format
-// The following parameters are
-// -t <targetExecutable> -p <installationPath>
 
 int main(int argc, char *argv[]) {
 
-    auto service = GogGalaxyService("galaxy-2.0.db");
-    std::cout << "Database is valid: " << service.isDatabaseValid() << std::endl;
+    DosboxStagingReplacer::DirectoryScanner scanner;
+    DosboxStagingReplacer::GogGalaxyService service("galaxy-2.0.db");
 
-    // std::cout << "Products:" << std::endl;
-    // for (const auto &product : service.getProducts()) {
-    //     std::cout << product.title << " (" << product.productId << ")" << std::endl;
-    // }
+    // Environment specific variables
+#ifdef __linux__
+    std::string path = "/home/richard/Downloads";
+    std::string existingFile = "/home/richard/Downloads/install-vs-code.bat";
+    std::string nonExistingFile = "/home/richard/Downloads/superwave.wsz2";
+#else
+    std::string path = "C:\\Users\\Orill\\Downloads";
+    std::string existingFile = "C:\\Users\\Orill\\Downloads\\instspeedfan452.exe";
+    std::string nonExistingFile = "C:\\Users\\Orill\\Downloads\\superwave.wsz2";
+#endif
 
-    // std::cout << "Users:" << std::endl;
-    // for (const auto &user : service.getUsers()) {
-    //     std::cout << user.id << std::endl;
-    // }
-
-    std::cout << "Play Tasks:" << std::endl;
-    for (const auto &task : service.getPlayTasksFromGameReleaseKey("gog_1207658969")) {
-        std::cout << task.id << " (" << task.gameReleaseKey << ") = " << task.type << std::endl;
+    auto files = scanner.scanDirectory(path);
+    for (const auto &file : files) {
+        std::cout << file.name << " (" << file.path << ")" << std::endl;
     }
-    //
-    // std::cout << "Play Task Launch Parameters:" << std::endl;
-    // for (const auto &param : service.getPlayTaskLaunchParameters()) {
-    //     std::cout << param.playTaskId << " (" << param.executablePath << ")" << std::endl;
-    // }
 
-    // auto installedApplications = getInstalledApplications();
-    // for (const auto &app : installedApplications) {
-    //     std::cout << app.applicationName << " (" << app.installationPath << ")" << std::endl;
-    // }
-    //
-    // auto scanner = DirectoryScanner();
-    // auto files = scanner.scanDirectory("C:\\Development\\personal-website-repository\\articles");
-    // for (const auto &file : files) {
-    //     std::cout << file.name << " (" << file.path << ")" << std::endl;
-    // }
+    auto applications = DosboxStagingReplacer::getInstalledApplications();
+    for (const auto &application : applications) {
+        std::cout << application.applicationName << " (" << application.installationPath << ")" << std::endl;
+    }
 
+    std::cout << existingFile << " Exists? " <<  (DosboxStagingReplacer::fileExists(existingFile) == true ? "Yes" : "No") << std::endl;
+    std::cout << nonExistingFile << " Exists? " <<  (DosboxStagingReplacer::fileExists(nonExistingFile) == true ? "Yes" : "No") << std::endl;
+
+    std::cout << "Is Database Valid? " << (service.isDatabaseValid() == true ? "Yes" : "No") << std::endl;
+
+    // Get all products
+    auto products = service.getProducts();
+    for (const auto &product : products) {
+        std::cout << product.gogId << " (" << product.releaseKey << ")" << std::endl;
+    }
     return 0;
 }

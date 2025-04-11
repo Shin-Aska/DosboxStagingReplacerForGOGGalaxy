@@ -6,7 +6,12 @@
 #define INSTALLATIONFINDER_H
 
 #include <string>
+#include <memory>
 #include <vector>
+#include <array>
+#include <iostream>
+#include <algorithm>
+#include <sstream>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -14,9 +19,16 @@
 #include <unistd.h>
 #endif
 
-#include "../../models/InstallationInfo.h"
-
 namespace DosboxStagingReplacer {
+
+    /*
+    * InstallationInfo struct. Contains the information about an installed application
+    */
+    struct InstallationInfo {
+        std::string applicationName;
+        std::string installationPath;
+        std::string source;
+    };
 
     // Gets all installed applications
     // @param void

@@ -2,12 +2,61 @@
 // Created by Richard Orilla on 3/23/2025.
 //
 
-#ifndef STATEMENTPARSER_CPP
-#define STATEMENTPARSER_CPP
-
 #include "StatementParser.h"
 
 namespace DosboxStagingReplacer {
+
+    std::unique_ptr<StatementParser> StatementParserFactory::createParser(SqlEngine engine) {
+        switch (engine) {
+            case SqlEngine::SQLITE:
+                return std::make_unique<SqliteStatementParser>();
+            default:
+                throw StatementEngineParserFactoryException("Unsupported engine");
+        }
+    }
+
+    std::any SqlDataResult::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
+        throw SqlDataResultException("Method not implemented");
+    }
+
+    std::any SqliteLastRowId::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
+        auto parser = StatementParserFactory::createParser(engine);
+        parser->parseInto(*this, parameters, stmt);
+        return *this;
+    }
+
+    std::any SqliteSchema::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
+        auto parser = StatementParserFactory::createParser(engine);
+        parser->parseInto(*this, parameters, stmt);
+        return *this;
+    }
+
+    std::any ProductDetails::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
+        auto parser = StatementParserFactory::createParser(engine);
+        parser->parseInto(*this, parameters, stmt);
+        return *this;
+    }
+
+    std::any GogUser::fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) {
+        auto parser = StatementParserFactory::createParser(engine);
+        parser->parseInto(*this, parameters, stmt);
+        return *this;
+    }
+
+    std::any PlayTaskInformation::fillFromStatement(std::any stmt, std::vector<std::string> parameters,
+                                                    SqlEngine engine) {
+        auto parser = StatementParserFactory::createParser(engine);
+        parser->parseInto(*this, parameters, stmt);
+        return *this;
+    }
+
+    std::any PlayTaskLaunchParameters::fillFromStatement(std::any stmt, std::vector<std::string> parameters,
+                                                    SqlEngine engine) {
+        auto parser = StatementParserFactory::createParser(engine);
+        parser->parseInto(*this, parameters, stmt);
+        return *this;
+    }
+
     StatementParser::StatementParser() {}
     StatementParser::~StatementParser() {}
 
@@ -119,6 +168,3 @@ namespace DosboxStagingReplacer {
     }
 
 } // namespace DosboxStagingReplacer
-
-
-#endif // STATEMENTPARSER_CPP
