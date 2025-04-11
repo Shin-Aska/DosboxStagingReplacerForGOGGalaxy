@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <utility>
 #include "SQLService.h"
 
 namespace DosboxStagingReplacer {
@@ -28,6 +29,13 @@ namespace DosboxStagingReplacer {
         // @param SqlEngine engine: The engine to use to fill the object
         // @return std::any
         virtual std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine);
+        // Manual implementation of reflection, where the class will return all the attributes of the class and their
+        // values. This is a virtual function meant to be overridden by the derived classes
+        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
+        // First element is the name of the attribute, second is the value and the third is the type of the attribute
+        virtual std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const {
+            return {};
+        }
     };
 
     class SqlDataResultException : public std::exception {
@@ -52,6 +60,13 @@ namespace DosboxStagingReplacer {
         // @param SqlEngine engine: The engine to use to fill the object
         // @return std::any
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
+        // Manual implementation of reflection, where the class will return all the attributes of the class and their
+        // values.
+        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
+        // First element is the name of the attribute, second is the value and the third is the type of the attribute
+        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+            return {{"id", std::to_string(id), "Number"}};
+        }
     };
 
     /**
@@ -71,6 +86,18 @@ namespace DosboxStagingReplacer {
         // @param SqlEngine engine: The engine to use to fill the object
         // @return std::any
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
+        // Manual implementation of reflection, where the class will return all the attributes of the class and their
+        // values.
+        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
+        // First element is the name of the attribute, second is the value and the third is the type of the attribute
+        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+            return {
+                {"type", type, "String"},
+                {"name", name, "String"},
+                {"tbl_name", tbl_name, "String"},
+                {"rootpage", std::to_string(rootpage), "Number"}
+            };
+        }
     };
 
     /**
@@ -93,6 +120,21 @@ namespace DosboxStagingReplacer {
         // @param SqlEngine engine: The engine to use to fill the object
         // @return std::any
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
+        // Manual implementation of reflection, where the class will return all the attributes of the class and their
+        // values.
+        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
+        // First element is the name of the attribute, second is the value and the third is the type of the attribute
+        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+            return {
+                {"productId", std::to_string(productId), "Number"},
+                {"title", title, "String"},
+                {"slug", slug, "String"},
+                {"gogId", std::to_string(gogId), "Number"},
+                {"releaseKey", releaseKey, "String"},
+                {"installationPath", installationPath, "String"},
+                {"installationDate", installationDate, "String"}
+            };
+        }
     };
 
     /**
@@ -110,6 +152,15 @@ namespace DosboxStagingReplacer {
         // @param SqlEngine engine: The engine to use to fill the object
         // @return std::any
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
+        // Manual implementation of reflection, where the class will return all the attributes of the class and their
+        // values.
+        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
+        // First element is the name of the attribute, second is the value and the third is the type of the attribute
+        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+            return {
+                {"id", std::to_string(id), "Number"}
+            };
+        }
     };
 
     /**
@@ -134,6 +185,21 @@ namespace DosboxStagingReplacer {
         // @param SqlEngine engine: The engine to use to fill the object
         // @return std::any
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
+        // Manual implementation of reflection, where the class will return all the attributes of the class and their
+        // values.
+        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
+        // First element is the name of the attribute, second is the value and the third is the type of the attribute
+        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+            return {
+                {"id", std::to_string(id), "Number"},
+                {"gameReleaseKey", gameReleaseKey, "String"},
+                {"userId", std::to_string(userId), "Number"},
+                {"order", std::to_string(order), "Number"},
+                {"typeId", std::to_string(typeId), "Number"},
+                {"type", type, "String"},
+                {"isPrimary", isPrimary ? "true" : "false", "Boolean"}
+            };
+        }
     };
 
     /**
@@ -154,6 +220,18 @@ namespace DosboxStagingReplacer {
         // @param SqlEngine engine: The engine to use to fill the object
         // @return std::any
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
+        // Manual implementation of reflection, where the class will return all the attributes of the class and their
+        // values.
+        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
+        // First element is the name of the attribute, second is the value and the third is the type of the attribute
+        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+            return {
+                {"playTaskId", std::to_string(playTaskId), "Number"},
+                {"executablePath", executablePath, "String"},
+                {"commandLineArgs", commandLineArgs, "String"},
+                {"label", label, "String"}
+            };
+        }
     };
 
     /**
@@ -164,7 +242,7 @@ namespace DosboxStagingReplacer {
     class StatementParser {
     public:
         StatementParser();
-        ~StatementParser();
+        virtual ~StatementParser();
         // Sql Statement Parser with the intention of parsing the result into the SqlDataResult object. This is a pure virtual function
         // @params SqlDataResult& result - The result object that will be populated with the parsed data
         // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
@@ -216,7 +294,7 @@ namespace DosboxStagingReplacer {
         using StatementParser::StatementParser;
     public:
         SqliteStatementParser();
-        ~SqliteStatementParser();
+        ~SqliteStatementParser() override;
         // Sqlite Statement Parser with the intention of parsing the result into the SqlDataResult object.
         // @params SqlDataResult& result - The result object that will be populated with the parsed data
         // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
