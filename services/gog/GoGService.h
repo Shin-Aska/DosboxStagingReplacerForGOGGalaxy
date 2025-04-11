@@ -6,8 +6,8 @@
 #define SERVICE_H
 
 #include <string>
-#include "../sql/Service.cpp"
-#include "../../models/Data.cpp"
+#include "SQLService.h"
+#include "StatementParser.h"
 
 namespace DosboxStagingReplacer {
 
