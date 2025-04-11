@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
     program.add_argument("-fmt", "--format")
         .help("The format used when doing any print operation")
         .default_value(std::string(".json"))
+        .choices(".json", ".csv", ".txt")
         .nargs(1);
     program.add_argument("-o", "--output")
         .help("The name of the output file. If \"\", the output will be printed to the console.")
@@ -63,6 +64,9 @@ int main(int argc, char *argv[]) {
         std::cerr << program;
         return 1;
     }
+
+    // TODO: Add flag checking for what flags can be used together or each other
+    // TODO: The checking must start below
 
     const auto chosenFile = program.get<std::string>("--file");
     const auto chosenPath = program.get<std::string>("--directory");
