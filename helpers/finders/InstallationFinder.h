@@ -23,6 +23,7 @@ namespace DosboxStagingReplacer {
 
     /*
     * InstallationInfo struct. Contains the information about an installed application
+    * Note: When updating the struct, make sure to update DataExporter::stringify as well
     */
     struct InstallationInfo {
         std::string applicationName;
