@@ -9,25 +9,9 @@
 #include <vector>
 #include <filesystem>
 
+#include "CoreHelperModels.h"
+
 namespace DosboxStagingReplacer {
-
-    /**
-     *  FileType enum class. Lists down the supported file types
-     */
-    enum class FileType {
-        DIRECTORY = 0,
-        FILE = 1
-    };
-
-    /*
-     * FileEntity struct. Contains the information about a file
-     */
-    struct FileEntity {
-        std::string name;
-        std::string path;
-        FileType type;
-        unsigned long size;
-    };
 
     /**
      *  DirectoryScanner class meant to be used as a base class for other directory scanners. This class is meant to be
