@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD 20)
 # Add include directories for headers
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/libs/sqlite
+        ${CMAKE_CURRENT_SOURCE_DIR}/interfaces
+        ${CMAKE_CURRENT_SOURCE_DIR}/services/sql
+        ${CMAKE_CURRENT_SOURCE_DIR}/services/gog
 )
 
 add_executable(DosboxStagingReplacer
@@ -18,12 +21,10 @@ add_executable(DosboxStagingReplacer
         helpers/finders/InstallationFinder.h
         helpers/verifiers/InstallationVerifier.cpp
         helpers/verifiers/InstallationVerifier.h
-        factories/StatementEngineParserFactory.cpp
-        factories/StatementEngineParserFactory.h
+        services/sql/SQLService.cpp
+        services/sql/SQLService.h
         interfaces/StatementParser.cpp
         interfaces/StatementParser.h
-        models/Data.cpp
-        models/Data.h
-        services/sql/Service.cpp
-        services/sql/Service.h
+        services/gog/GoGService.cpp
+        services/gog/GoGService.h
 )
