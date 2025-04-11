@@ -1,4 +1,14 @@
 # Dosbox Staging Replacer For GOG Galaxy
+## Core Module
+
+[![Build Status](https://travis-ci.org/Shin-Aska/DosboxStagingReplacerForGOGGalaxy.svg?branch=master)](https://travis-ci.org/Shin-Aska/DosboxStagingReplacerForGOGGalaxy)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+This repository is the core module of the Dosbox Staging Replacer For GOG Galaxy project.
+
+This is the backend application that does the work of replacing Dosbox with Dosbox Staging for GOG Galaxy installed classic games.
+
+## About
 
 Replaces Dosbox with Dosbox staging on GOG Galaxy installed classic games
 This repository contains the core application which does the backend work
