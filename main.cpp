@@ -15,7 +15,6 @@
 int main(int argc, char *argv[]) {
 
     DosboxStagingReplacer::FileBackupService fileBackupService;
-    DosboxStagingReplacer::DataExporterFactory dataExporterFactory;
 
     argparse::ArgumentParser program("Dosbox Staging Replacer");
     program.add_argument("-f", "--file")
@@ -80,7 +79,7 @@ int main(int argc, char *argv[]) {
 
     const auto chosenFile = program.get<std::string>("--file");
     const auto chosenPath = program.get<std::string>("--directory");
-    const auto dataExporter = dataExporterFactory.createDataExporter(program.get<std::string>("--format"));
+    const auto dataExporter = DosboxStagingReplacer::DataExporterFactory::createDataExporter(program.get<std::string>("--format"));
     std::vector<DosboxStagingReplacer::FileEntity> files;
     DosboxStagingReplacer::GogGalaxyService service;
 
