@@ -88,11 +88,10 @@ namespace DosboxStagingReplacer {
         return getRegisteredApplications(RPM_COMMAND, RPM);
     }
 
-#endif
+#elif _WIN32
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> getInstalledApplications() {
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromWindows() {
         auto result = std::vector<DosboxStagingReplacer::InstallationInfo>();
-#ifdef _WIN32
         HKEY hKey;
         DWORD index = 0;
         TCHAR subKeyName[256];
@@ -143,8 +142,17 @@ namespace DosboxStagingReplacer {
             subKeySize = std::size(subKeyName);
             index++;
         }
-
         RegCloseKey(hKey);
+        return result;
+    }
+
+#endif
+
+    std::vector<DosboxStagingReplacer::InstallationInfo> getInstalledApplications() {
+        auto result = std::vector<DosboxStagingReplacer::InstallationInfo>();
+#ifdef _WIN32
+        auto win32_apps = getRegisteredApplicationsFromWindows();
+        result.insert(result.end(), win32_apps.begin(), win32_apps.end());
 #elif __linux__
         // Apt logic code, also if dpkg is available as well (because dpkg is a dependency of apt)
         // Apt will be used to get the list of installed applications
