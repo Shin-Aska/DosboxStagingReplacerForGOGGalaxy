@@ -42,6 +42,8 @@ The following third party libraries are used in this project:
 - [SQLite](https://www.sqlite.org/index.html) - Used for database operations
 - [argparse](https://github.com/p-ranav/argparse) - Used for command line argument parsing
 
+It is located in the libs directory and is included in the project as a submodule for compilation purposes.
+
 This repository only allows public domain and MIT licensed third party libraries.
 
 In addition, it is preferred that the libraries introduced are the amalgamated versions as to increase the portability of the project.
