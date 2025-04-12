@@ -22,3 +22,12 @@
             - isPrimary is 1
           - Set the previously inserted row's isPrimary to 1
     - When adding PlayTasks, we must ensure that customLaunchParameters under ProductSettings is set to 1
+- [ ] Batch file handling where the application modifies the batch file to align with the current adjustments
+
+# CLI
+- [ ] Ability to add a special dosbox build as a custom launch parameter
+- [ ] Make the added custom launch parameter a default option
+
+# Unit Testing
+- [ ] Add unit tests for the core functionality
+- [ ] Add unit tests for the CLI

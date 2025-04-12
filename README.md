@@ -34,5 +34,19 @@ This repository contains the core application which does the backend work
 
 ## Documentation
 
-Currently there is no documentation available, but the code is well commented and should be easy to understand.
+Currently, there is no documentation available, but the code is well commented and should be easy to understand.
 I am planning to create a wiki page for this project in the future.
+
+## Third Party Libraries
+The following third party libraries are used in this project:
+- [SQLite](https://www.sqlite.org/index.html) - Used for database operations
+- [argparse](https://github.com/p-ranav/argparse) - Used for command line argument parsing
+
+This repository only allows public domain and MIT licensed third party libraries.
+
+In addition, it is preferred that the libraries introduced are the amalgamated versions as to increase the portability of the project.
+
+That being said since these are amalgamated versions, this repository is responsible for updating the libraries to the latest version.
+
+### License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
