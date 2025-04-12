@@ -179,7 +179,7 @@ namespace DosboxStagingReplacer {
         std::array<char, 512> buffer {};
         std::string result;
 
-        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
+        const std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
         if (!pipe) throw std::runtime_error("popen() failed!");
 
         while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
@@ -190,12 +190,12 @@ namespace DosboxStagingReplacer {
 
     bool lazyStringMatching(const std::string &text, const std::vector<std::string> &keywords) {
         std::string lowerText = text;
-        std::transform(lowerText.begin(), lowerText.end(), lowerText.begin(), ::tolower);
+        std::ranges::transform(lowerText, lowerText.begin(), ::tolower);
         int matchCount = 0;
         for (const auto &keyword : keywords) {
             // Create a copy of keyword and store it to k
             std::string k = keyword;
-            std::transform(k.begin(), k.end(), k.begin(), ::tolower);
+            std::ranges::transform(k, k.begin(), ::tolower);
             if (lowerText.find(keyword) != std::string::npos) {
                 matchCount += 1;
             }
@@ -205,9 +205,17 @@ namespace DosboxStagingReplacer {
 
     std::vector<DosboxStagingReplacer::InstallationInfo> InstallationFinder::findApplication(const std::string &applicationName) {
         std::vector<DosboxStagingReplacer::InstallationInfo> result;
-        auto installedApps = getInstalledApplications();
-        for (auto &app : installedApps) {
-            if (lazyStringMatching(app.applicationName, {"dosbox", "staging"})) {
+        for (auto installedApps = getInstalledApplications(); auto &app : installedApps) {
+            // Split the application name by spaces and then consider that as keywords to fed to lazyStringMatching
+            std::istringstream iss(applicationName);
+            std::vector<std::string> keywords;
+            std::string keyword;
+            while (iss >> keyword) {
+                keywords.push_back(keyword);
+            }
+
+            // Check if the application name contains all the keywords and if so, add it to the result
+            if (lazyStringMatching(app.applicationName, keywords)) {
                 result.push_back(app);
             }
         }

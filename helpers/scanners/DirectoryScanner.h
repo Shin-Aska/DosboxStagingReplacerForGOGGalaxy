@@ -14,17 +14,21 @@
 namespace DosboxStagingReplacer {
 
     /**
-     *  DirectoryScanner class meant to be used as a base class for other directory scanners. This class is meant to be
-     *  inherited from and not used directly. This class provides the basic framework for scanning a directory
+     * @brief Base class for scanning a directory.
+     *
+     * DirectoryScanner is meant to be inherited and provides a framework
+     * for listing file entities in a specified path.
      */
     class DirectoryScanner {
     public:
-        // Scans a directory and returns a list of files
-        // @param path The path to the directory
-        // @return A list of files in the directory
+        /**
+         * @brief Scans a directory and returns a list of files.
+         * @param path The path to the directory.
+         * @return A list of FileEntity objects found in the directory.
+         */
         std::vector<FileEntity> scanDirectory(std::string path);
     };
 
-} // DosboxStagingReplacer
+} // namespace DosboxStagingReplacer
 
-#endif //DIRECTORYSCANNER_H
+#endif // DIRECTORYSCANNER_H

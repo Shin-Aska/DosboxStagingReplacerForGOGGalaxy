@@ -5,13 +5,13 @@
 #ifndef INSTALLATIONFINDER_H
 #define INSTALLATIONFINDER_H
 
-#include <string>
-#include <memory>
-#include <vector>
+#include <algorithm>
 #include <array>
 #include <iostream>
-#include <algorithm>
+#include <memory>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -22,87 +22,101 @@
 namespace DosboxStagingReplacer {
 
     /*
-    * InstallationInfo struct. Contains the information about an installed application
-    * Note: When updating the struct, make sure to update DataExporter::stringify as well
-    */
+     * InstallationInfo struct. Contains the information about an installed application
+     * Note: When updating the struct, make sure to update DataExporter::stringify as well
+     */
     struct InstallationInfo {
         std::string applicationName;
         std::string installationPath;
         std::string source;
     };
 
-    // Gets all installed applications
-    // @param void
-    // @return std::vector<DosboxStagingReplacer::InstallationInfo>
+    /**
+     * @brief Utility class that provides the functionality to find an application in the system.
+     * @return A vector of InstallationInfo objects containing the information about the installed applications.
+     */
     std::vector<DosboxStagingReplacer::InstallationInfo> getInstalledApplications();
-    // Executes a command and returns the output using pipes
-    // @param const std::string &command
-    // @return std::string
+    /**
+     * @brief Utility function to check if a command is available in the system.
+     * @param command The command to check.
+     * @return True if the command is available, false otherwise.
+     */
     std::string executeCommand(const std::string &command);
-    // Checks if a string contains all the keywords
-    // @param const std::string &text
-    // @param const std::vector<std::string> &keywords
+    /**
+     * @brief Utility function to match strings from a set of keywords.
+     * @param text The text to search in.
+     * @param keywords The keywords to search for.
+     */
     bool lazyStringMatching(const std::string &text, const std::vector<std::string> &keywords);
 
 #ifdef __linux__
-    // Checks if apt is available
-    // @param void
-    // @return bool
+    /**
+     * @brief Utility function specific to Linux to check if Apt is installed in the system.
+     */
     bool isAptAvailable();
-    // Checks if dpkg is available
-    // @param void
-    // @return bool
+    /**
+     * @brief Utility function specific to Linux to check if Dpkg is installed in the system.
+     */
     bool isDpkgAvailable();
-    // Checks if rpm is available
-    // @param void
-    // @return bool
+    /**
+     * @brief Utility function specific to Linux to check if Rpm is installed in the system.
+     */
     bool isRpmAvailable();
-    // Checks if flatpak is available
-    // @param void
-    // @return bool
+    /**
+     * @brief Utility function specific to Linux to check if Flatpak is installed in the system.
+     */
     bool isFlatpakAvailable();
-    // Checks if snap is available
-    // @param void
-    // @return bool
+    /**
+     * @brief Utility function specific to Linux to check if Snap is installed in the system.
+     */
     bool isSnapAvailable();
-
-    // Gets all registered applications using executeCommand
-    // @param const std::string &commands
-    // @param const std::string &source
-    // @return std::vector<DosboxStagingReplacer::InstallationInfo>
-    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplications(const std::string &commands, const std::string &source);
-    // Gets all registered applications from apt
-    // @param void
-    // @return std::vector<DosboxStagingReplacer::InstallationInfo>
+    /**
+     * @brief Utility function specific to Linux to obtain the list of installed applications.
+     * @param commands The command to execute.
+     * @param source The source of the application
+     * @return A vector of InstallationInfo objects containing the information about the installed applications.
+     */
+    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplications(const std::string &commands,
+                                                                                   const std::string &source);
+    /**
+     * @brief Utility function specific to Linux to obtain the list of installed applications from Apt.
+     * @return A vector of InstallationInfo objects containing the information about the installed applications.
+     */
     std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromApt();
-    // Gets all registered applications from dpkg
-    // @param void
-    // @return std::vector<DosboxStagingReplacer::InstallationInfo>
+    /**
+     * @brief Utility function specific to Linux to obtain the list of installed applications from Dpkg.
+     * @return A vector of InstallationInfo objects containing the information about the installed applications.
+     */
     std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromDpkg();
-    // Gets all registered applications from rpm
-    // @param void
-    // @return std::vector<DosboxStagingReplacer::InstallationInfo>
+    /**
+     * @brief Utility function specific to Linux to obtain the list of installed applications from Rpm.
+     * @return A vector of InstallationInfo objects containing the information about the installed applications.
+     */
     std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromRpm();
-    // Gets all registered applications from flatpak
-    // @param void
-    // @return std::vector<DosboxStagingReplacer::InstallationInfo>
+    /**
+     * @brief Utility function specific to Linux to obtain the list of installed applications from Flatpak.
+     * @return A vector of InstallationInfo objects containing the information about the installed applications.
+     */
     std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromFlatpak();
-    // Gets all registered applications from snap
-    // @param void
-    // @return std::vector<DosboxStagingReplacer::InstallationInfo>
+    /**
+     * @brief Utility function specific to Linux to obtain the list of installed applications from Snap.
+     * @return A vector of InstallationInfo objects containing the information about the installed applications.
+     */
     std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromSnap();
 #endif
 
     /**
-     *  InstallationFinder is a utility class that provides the functionality to find an application in the system
+     * @brief Utility class that provides the functionality to find an application in the system.
      */
     class InstallationFinder {
     public:
-        // Finds an application by name in the registered applications in the system
-        // @param const std::string &applicationName
-        // @return std::vector<DosboxStagingReplacer::InstallationInfo>
-        std::vector<DosboxStagingReplacer::InstallationInfo> static findApplication(const std::string &applicationName);
+        /**
+         * @brief Finds an application by name in the registered applications in the system.
+         * @param applicationName The name of the application to search for.
+         * @return A vector of InstallationInfo objects matching the application name.
+         */
+        static std::vector<DosboxStagingReplacer::InstallationInfo> findApplication(const std::string &applicationName);
     };
-} // DosboxStagingReplacer
+} // namespace DosboxStagingReplacer
 
-#endif //INSTALLATIONFINDER_H
+#endif // INSTALLATIONFINDER_H

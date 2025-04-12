@@ -15,7 +15,7 @@
 int main(int argc, char *argv[]) {
 
     DosboxStagingReplacer::FileBackupService fileBackupService;
-    DosboxStagingReplacer::DataExporter dataExporter;
+    DosboxStagingReplacer::DataExporterFactory dataExporterFactory;
 
     argparse::ArgumentParser program("Dosbox Staging Replacer");
     program.add_argument("-f", "--file")
@@ -65,18 +65,24 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // TODO: Add flag checking for what flags can be used together or each other
-    // TODO: The checking must start below
+    // backup, restore, list-applications, list-games if two or more are used together, then we throw an error
+    std::vector<bool> flags = {
+        program["--backup"] == true,
+        program["--restore"] == true,
+        program["--list-applications"] == true,
+        program["--list-games"] == true
+    };
+    if (std::ranges::count(flags, true) > 1) {
+        std::cerr << "Error: You can only use one of the following flags at a time: --backup, --restore, --list-applications, --list-games" << std::endl;
+        return -1;
+    }
+
 
     const auto chosenFile = program.get<std::string>("--file");
     const auto chosenPath = program.get<std::string>("--directory");
+    const auto dataExporter = dataExporterFactory.createDataExporter(program.get<std::string>("--format"));
     std::vector<DosboxStagingReplacer::FileEntity> files;
     DosboxStagingReplacer::GogGalaxyService service;
-
-    // auto applications = DosboxStagingReplacer::getInstalledApplications();
-    // for (const auto &application : applications) {
-    //     std::cout << application.applicationName << " (" << application.installationPath << ")" << std::endl;
-    // }
 
     try {
         DosboxStagingReplacer::DirectoryScanner scanner;
@@ -107,8 +113,8 @@ int main(int argc, char *argv[]) {
         fileBackupService.restoreFromBackup(chosenPath + "\\" + chosenFile, files);
     }
     else if (program["--list-applications"] == true) {
-        auto applications = DosboxStagingReplacer::getInstalledApplications();
-        std::cout << dataExporter.serialize(applications) << std::endl;
+        const auto applications = DosboxStagingReplacer::getInstalledApplications();
+        std::cout << dataExporter->serialize(applications) << std::endl;
     }
     else if (program["--list-games"] == true) {
         // Need to convert the result of getProducts to a vector of shared pointers so we can
@@ -118,7 +124,7 @@ int main(int argc, char *argv[]) {
         for (auto& product : service.getProducts()) {
             games.push_back(std::make_shared<DosboxStagingReplacer::ProductDetails>(product));
         }
-        std::cout << dataExporter.serialize(games) << std::endl;
+        std::cout << dataExporter->serialize(games) << std::endl;
         service.closeConnection();
     }
 

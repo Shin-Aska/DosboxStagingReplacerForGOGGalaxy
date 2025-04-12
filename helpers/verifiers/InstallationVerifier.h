@@ -11,14 +11,19 @@
 
 namespace DosboxStagingReplacer {
 
-    // Check if a file exists
-    // @param std::string path: The path to the file to check
-    // @return bool
+    /**
+     * @brief Check if a file exists.
+     *
+     * @param path The path to the file to check.
+     * @return True if the file exists, false otherwise.
+     */
     bool fileExists(std::string path);
 
     /**
-     *  InstallationVerifier class meant to be used as a base class for other installation verifiers. This class is meant to be
-     *  inherited from and not used directly. This class provides the basic framework for verifying an installation
+     * @brief Base class for verifying an installation.
+     *
+     * Meant to be inherited from. Provides a framework for checking if a target application
+     * is installed correctly in a given path.
      */
     class InstallationVerifier {
     private:
@@ -28,39 +33,59 @@ namespace DosboxStagingReplacer {
         explicit InstallationVerifier(std::string installationPath, std::string targetExecutable);
         ~InstallationVerifier();
 
-        // Check if the installation is valid. This a virtual function that has built-in implementation
-        // but can be overridden by the child class
-        // @param void
-        // @return bool
+        /**
+         * @brief Checks if the installation is valid.
+         *
+         * Can be overridden by derived classes to implement specific logic.
+         *
+         * @return True if valid, false otherwise.
+         */
         virtual bool isInstallationValid();
-        // Set the installation path of the application to be verified
-        // @param std::string installationPath
-        // @return void
+
+        /**
+         * @brief Sets the installation path.
+         *
+         * @param installationPath The new installation path.
+         */
         void setInstallationPath(std::string installationPath);
-        // Set the target executable of the application to be verified
-        // @param std::string targetExecutable
-        // @return void
+
+        /**
+         * @brief Sets the target executable name.
+         *
+         * @param targetExecutable The executable file name.
+         */
         void setTargetExecutable(std::string targetExecutable);
-        // Get the installation path of the application to be verified
+
+        /**
+         * @brief Gets the installation path.
+         *
+         * @return The installation path.
+         */
         std::string getInstallationPath() { return installationPath; }
-        // Get the target executable of the application to be verified
+
+        /**
+         * @brief Gets the target executable name.
+         *
+         * @return The target executable.
+         */
         std::string getTargetExecutable() { return targetExecutable; }
     };
 
     /**
-     *  DosboxVerifier class is the implementation of the InstallationVerifier class for the Dosbox application.
+     * @brief Verifier for DOSBox installations.
      */
     class DosboxVerifier: public InstallationVerifier {
-
         using InstallationVerifier::InstallationVerifier;
 
     public:
-        // Checks if Dosbox installation is valid
-        // @param void
-        // @return bool
+        /**
+         * @brief Checks if the DOSBox installation is valid.
+         *
+         * @return True if valid, false otherwise.
+         */
         bool isInstallationValid() override;
     };
 
-} // DosboxStagingReplacer
+} // namespace DosboxStagingReplacer
 
-#endif //INSTALLATIONVERIFIER_H
+#endif // INSTALLATIONVERIFIER_H

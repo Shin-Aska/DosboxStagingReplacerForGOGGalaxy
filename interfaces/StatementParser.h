@@ -14,26 +14,33 @@
 
 namespace DosboxStagingReplacer {
 
+    enum class DataResultDataType {
+        Number, String, Boolean
+    };
+
     /**
-     *  SqlDataResult class meant to be used as a base class for other result classes. This class is meant to be
-     *  inherited from and not used directly. This class provides the basic framework for filling an object with data
-     *  from a statement but also represents
+     * @brief Abstract base class for statement parsers.
+     * Provides an interface for parsing SQL statements into data objects.
      */
     class SqlDataResult {
     public:
         virtual ~SqlDataResult() = default;
-        // Fills the object with the data from the statement, depending on the parameters and the engine provided
-        // With the intention of the object obtaining the data from the statement. This is a pure virtual function
-        // @param std::any stmt: The statement to fill the object with
-        // @param std::vector<std::string> parameters: The parameters to fill the object with
-        // @param SqlEngine engine: The engine to use to fill the object
-        // @return std::any
+
+        /**
+         * Fills the object with the data from the statement.
+         *
+         * @param stmt The statement to fill the object with.
+         * @param parameters The parameters to fill the object with.
+         * @param engine The engine to use to fill the object.
+         * @return std::any
+         */
         virtual std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine);
-        // Manual implementation of reflection, where the class will return all the attributes of the class and their
-        // values. This is a virtual function meant to be overridden by the derived classes
-        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
-        // First element is the name of the attribute, second is the value and the third is the type of the attribute
-        virtual std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const {
+
+        /**
+         * Returns all attributes of the class and their values.
+         * @return Vector of (attribute name, value, data type).
+         */
+        virtual std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const {
             return {};
         }
     };
@@ -49,28 +56,35 @@ namespace DosboxStagingReplacer {
         const char *msg;
     };
 
+    /**
+     * @brief SqliteLastRowId class. Contains the information about the last row id.
+     */
     class SqliteLastRowId: public SqlDataResult {
         using SqlDataResult::SqlDataResult;
     public:
         int id;
-        // Implementation of filling the SqliteLastRowId object with the data from the statement, depending on the
-        // parameters and the engine provided.
-        // @param std::any stmt: The statement to fill the object with
-        // @param std::vector<std::string> parameters: The parameters to fill the object with
-        // @param SqlEngine engine: The engine to use to fill the object
-        // @return std::any
+
+        /**
+         * @brief Fills the SqliteLastRowId object with data from the statement.
+         * @param stmt Statement to fill the object with.
+         * @param parameters Parameters to use.
+         * @param engine SQL engine.
+         * @return std::any
+         */
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
-        // Manual implementation of reflection, where the class will return all the attributes of the class and their
-        // values.
-        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
-        // First element is the name of the attribute, second is the value and the third is the type of the attribute
-        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
-            return {{"id", std::to_string(id), "Number"}};
+
+        /**
+         * Returns all attributes of the object.
+         *
+         * @return Vector of (attribute name, value, data type).
+         */
+        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
+            return {{"id", std::to_string(id), DataResultDataType::Number}};
         }
     };
 
     /**
-     * The data class representation of the SqliteSchema in a Sqlite database.
+     * @brief SqliteSchema class. Contains the information about a SQLite schema.
      */
     class SqliteSchema: public SqlDataResult {
         using SqlDataResult::SqlDataResult;
@@ -79,29 +93,32 @@ namespace DosboxStagingReplacer {
         std::string name;
         std::string tbl_name;
         int rootpage;
-        // Implementation of filling the SqliteSchema object with the data from the statement, depending on the
-        // parameters and the engine provided.
-        // @param std::any stmt: The statement to fill the object with
-        // @param std::vector<std::string> parameters: The parameters to fill the object with
-        // @param SqlEngine engine: The engine to use to fill the object
-        // @return std::any
+
+        /**
+         * @brief Fills the SqliteSchema object with data from the statement.
+         * @param stmt Statement to fill the object with.
+         * @param parameters Parameters to use.
+         * @param engine SQL engine.
+         * @return std::any
+         */
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
-        // Manual implementation of reflection, where the class will return all the attributes of the class and their
-        // values.
-        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
-        // First element is the name of the attribute, second is the value and the third is the type of the attribute
-        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+
+        /**
+         * @brief Returns all attributes of the object.
+         * @return Vector of (attribute name, value, data type).
+         */
+        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {
-                {"type", type, "String"},
-                {"name", name, "String"},
-                {"tbl_name", tbl_name, "String"},
-                {"rootpage", std::to_string(rootpage), "Number"}
+                {"type", type, DataResultDataType::String},
+                {"name", name, DataResultDataType::String},
+                {"tbl_name", tbl_name, DataResultDataType::String},
+                {"rootpage", std::to_string(rootpage), DataResultDataType::Number}
             };
         }
     };
 
     /**
-     * The data class representations of the Products in the Gog Galaxy database.
+     * @brief ProductDetails class. Contains the information about a GOG product.
      */
     class ProductDetails: public SqlDataResult {
         using SqlDataResult::SqlDataResult;
@@ -113,59 +130,62 @@ namespace DosboxStagingReplacer {
         std::string releaseKey;
         std::string installationPath;
         std::string installationDate;
-        // Implementation of filling the ProductDetails object with the data from the statement, depending on the
-        // parameters and the engine provided.
-        // @param std::any stmt: The statement to fill the object with
-        // @param std::vector<std::string> parameters: The parameters to fill the object with
-        // @param SqlEngine engine: The engine to use to fill the object
-        // @return std::any
+
+        /**
+         * @brief Fills the ProductDetails object with data from the statement.
+         * @param stmt Statement to fill the object with.
+         * @param parameters Parameters to use.
+         * @param engine SQL engine.
+         * @return std::any
+         */
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
-        // Manual implementation of reflection, where the class will return all the attributes of the class and their
-        // values.
-        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
-        // First element is the name of the attribute, second is the value and the third is the type of the attribute
-        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+
+        /**
+         * @brief Returns all attributes of the object.
+         * @return Vector of (attribute name, value, data type).
+         */
+        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {
-                {"productId", std::to_string(productId), "Number"},
-                {"title", title, "String"},
-                {"slug", slug, "String"},
-                {"gogId", std::to_string(gogId), "Number"},
-                {"releaseKey", releaseKey, "String"},
-                {"installationPath", installationPath, "String"},
-                {"installationDate", installationDate, "String"}
+                {"productId", std::to_string(productId), DataResultDataType::Number},
+                {"title", title, DataResultDataType::String},
+                {"slug", slug, DataResultDataType::String},
+                {"gogId", std::to_string(gogId), DataResultDataType::Number},
+                {"releaseKey", releaseKey, DataResultDataType::String},
+                {"installationPath", installationPath, DataResultDataType::String},
+                {"installationDate", installationDate, DataResultDataType::String}
             };
         }
     };
 
     /**
-     * The data class representation of a User in the Gog Galaxy database.
+     * @brief GogUser class. Contains the information about a GOG user.
      */
     class GogUser: public SqlDataResult {
         using SqlDataResult::SqlDataResult;
     public:
         int id;
 
-        // Implementation of filling the GogUser object with the data from the statement, depending on the
-        // parameters and the engine provided.
-        // @param std::any stmt: The statement to fill the object with
-        // @param std::vector<std::string> parameters: The parameters to fill the object with
-        // @param SqlEngine engine: The engine to use to fill the object
-        // @return std::any
+        /**
+         * @brief Fills the GogUser object with data from the statement.
+         * @param stmt Statement to fill the object with.
+         * @param parameters Parameters to use.
+         * @param engine SQL engine.
+         * @return std::any
+         */
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
-        // Manual implementation of reflection, where the class will return all the attributes of the class and their
-        // values.
-        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
-        // First element is the name of the attribute, second is the value and the third is the type of the attribute
-        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
-            return {
-                {"id", std::to_string(id), "Number"}
-            };
+
+        /**
+         * Returns all attributes of the object.
+         *
+         * @return Vector of (attribute name, value, data type).
+         */
+        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
+            return {{"id", std::to_string(id), DataResultDataType::Number}};
         }
     };
 
     /**
-     * The data class representation of the PlayTask in the Gog Galaxy database.
-     * We have added a join statement to PlayTaskType and get the type name as well to lessen the number of queries
+     * @brief PlayTaskInformation class. Contains the information about a play task.
      */
     class PlayTaskInformation: public SqlDataResult {
         using SqlDataResult::SqlDataResult;
@@ -178,32 +198,34 @@ namespace DosboxStagingReplacer {
         std::string type;
         bool isPrimary;
 
-        // Implementation of filling the PlayTaskInformation object with the data from the statement, depending on the
-        // parameters and the engine provided.
-        // @param std::any stmt: The statement to fill the object with
-        // @param std::vector<std::string> parameters: The parameters to fill the object with
-        // @param SqlEngine engine: The engine to use to fill the object
-        // @return std::any
+        /**
+         * @brief Fills the PlayTaskInformation object with data from the statement.
+         * @param stmt Statement to fill the object with.
+         * @param parameters Parameters to use.
+         * @param engine SQL engine.
+         * @return std::any
+         */
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
-        // Manual implementation of reflection, where the class will return all the attributes of the class and their
-        // values.
-        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
-        // First element is the name of the attribute, second is the value and the third is the type of the attribute
-        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+
+        /**
+         * @brief Returns all attributes of the object.
+         * @return Vector of (attribute name, value, data type).
+         */
+        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {
-                {"id", std::to_string(id), "Number"},
-                {"gameReleaseKey", gameReleaseKey, "String"},
-                {"userId", std::to_string(userId), "Number"},
-                {"order", std::to_string(order), "Number"},
-                {"typeId", std::to_string(typeId), "Number"},
-                {"type", type, "String"},
-                {"isPrimary", isPrimary ? "true" : "false", "Boolean"}
+                {"id", std::to_string(id), DataResultDataType::Number},
+                {"gameReleaseKey", gameReleaseKey, DataResultDataType::String},
+                {"userId", std::to_string(userId), DataResultDataType::Number},
+                {"order", std::to_string(order), DataResultDataType::Number},
+                {"typeId", std::to_string(typeId), DataResultDataType::Number},
+                {"type", type, DataResultDataType::String},
+                {"isPrimary", isPrimary ? "true" : "false", DataResultDataType::Boolean}
             };
         }
     };
 
     /**
-     * The data class representation of the PlayTaskLaunchParameters in the Gog Galaxy database.
+     * @brief PlayTaskLaunchParameters class. Contains the information about a play task launch parameters.
      */
     class PlayTaskLaunchParameters: public SqlDataResult {
         using SqlDataResult::SqlDataResult;
@@ -213,140 +235,122 @@ namespace DosboxStagingReplacer {
         std::string commandLineArgs;
         std::string label;
 
-        // Implementation of filling the PlayTaskLaunchParameters object with the data from the statement, depending on the
-        // parameters and the engine provided.
-        // @param std::any stmt: The statement to fill the object with
-        // @param std::vector<std::string> parameters: The parameters to fill the object with
-        // @param SqlEngine engine: The engine to use to fill the object
-        // @return std::any
+        /**
+         * @brief Fills the PlayTaskLaunchParameters object with data from the statement.
+         * @param stmt Statement to fill the object with.
+         * @param parameters Parameters to use.
+         * @param engine SQL engine.
+         * @return std::any
+         */
         std::any fillFromStatement(std::any stmt, std::vector<std::string> parameters, SqlEngine engine) override;
-        // Manual implementation of reflection, where the class will return all the attributes of the class and their
-        // values.
-        // @return std::vector<std::tuple<std::string, std::string, std::string>>: A vector of tuples
-        // First element is the name of the attribute, second is the value and the third is the type of the attribute
-        std::vector<std::tuple<std::string, std::string, std::string>> getAttributes() const override {
+
+        /**
+         * @brief Returns all attributes of the object.
+         * @return Vector of (attribute name, value, data type).
+         */
+        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {
-                {"playTaskId", std::to_string(playTaskId), "Number"},
-                {"executablePath", executablePath, "String"},
-                {"commandLineArgs", commandLineArgs, "String"},
-                {"label", label, "String"}
+                {"playTaskId", std::to_string(playTaskId), DataResultDataType::Number},
+                {"executablePath", executablePath, DataResultDataType::String},
+                {"commandLineArgs", commandLineArgs, DataResultDataType::String},
+                {"label", label, DataResultDataType::String}
             };
         }
     };
 
     /**
-     *  StatementParser class meant to be used as a base class for other statement parsers. This class is meant to be
-     *  inherited from and not used directly. This class provides the basic framework for parsing the result of a
-     *  statement into an object
+     * @brief Base class for parsing SQL statements.
      */
     class StatementParser {
     public:
         StatementParser();
         virtual ~StatementParser();
-        // Sql Statement Parser with the intention of parsing the result into the SqlDataResult object. This is a pure virtual function
-        // @params SqlDataResult& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+
+        /**
+         * @brief Parses a SQL result into a SqlDataResult object.
+         * @param result The SqlDataResult object to fill.
+         * @param parameters The parameters to use.
+         * @param stmt The statement to parse.
+         */
         virtual void parseInto(SqlDataResult& result, std::vector<std::string> parameters, std::any stmt) = 0;
-        // Sql Statement Parser with the intention of parsing the result into the SqliteLastRowId object. This is a pure virtual function
-        // @params SqliteLastRowId& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+
+        /**
+         * @brief Parses a SQL result into a SqliteLastRowId object.
+         * @param result The SqliteLastRowId object to fill.
+         * @param parameters The parameters to use.
+         * @param stmt The statement to parse.
+         */
         virtual void parseInto(SqliteLastRowId& result, std::vector<std::string> parameters, std::any stmt) = 0;
-        // Sql Statement Parser with the intention of parsing the result into the SqliteSchema object. This is a pure virtual function
-        // @params SqliteSchema& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        /**
+         * @brief Parses a SQL result into a SqliteSchema object.
+         * @param result The SqliteSchema object to fill.
+         * @param parameters The parameters to use.
+         * @param stmt The statement to parse.
+         */
         virtual void parseInto(SqliteSchema& result, std::vector<std::string> parameters, std::any stmt) = 0;
-        // Sql Statement Parser with the intention of parsing the result into the ProductDetails object. This is a pure virtual function
-        // @params ProductDetails& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        /**
+         * @brief Parses a SQL result into a ProductDetails object.
+         * @param result The ProductDetails object to fill.
+         * @param parameters The parameters to use.
+         * @param stmt The statement to parse.
+         */
         virtual void parseInto(ProductDetails& result, std::vector<std::string> parameters, std::any stmt) = 0;
-        // Sql Statement Parser with the intention of parsing the result into the GogUser object. This is a pure virtual function
-        // @params GogUser& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        /**
+         * @brief Parses a SQL result into a GogUser object.
+         * @param result The GogUser object to fill.
+         * @param parameters The parameters to use.
+         * @param stmt The statement to parse.
+         */
         virtual void parseInto(GogUser& result, std::vector<std::string> parameters, std::any stmt) = 0;
-        // Sql Statement Parser with the intention of parsing the result into the PlayTaskInformation object. This is a pure virtual function
-        // @params PlayTaskInformation& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        /**
+         * @brief Parses a SQL result into a PlayTaskInformation object.
+         * @param result The PlayTaskInformation object to fill.
+         * @param parameters The parameters to use.
+         * @param stmt The statement to parse.
+         */
         virtual void parseInto(PlayTaskInformation& result, std::vector<std::string> parameters, std::any stmt) = 0;
-        // Sql Statement Parser with the intention of parsing the result into the PlayTaskLaunchParameters object. This is a pure virtual function
-        // @params PlayTaskLaunchParameters& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        /**
+         * @brief Parses a SQL result into a PlayTaskLaunchParameters object.
+         * @param result The PlayTaskLaunchParameters object to fill.
+         * @param parameters The parameters to use.
+         * @param stmt The statement to parse.
+         */
         virtual void parseInto(PlayTaskLaunchParameters& result, std::vector<std::string> parameters, std::any stmt) = 0;
     };
 
-    /**
-     *  SqliteStatementParser class is the implementation of the StatementParser class for the Sqlite database engine.
-     */
     class SqliteStatementParser: public StatementParser {
-        using StatementParser::StatementParser;
     public:
         SqliteStatementParser();
         ~SqliteStatementParser() override;
-        // Sqlite Statement Parser with the intention of parsing the result into the SqlDataResult object.
-        // @params SqlDataResult& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+
+        //! \copydoc DosboxStagingReplacer::StatementParser::parseInto(DosboxStagingReplacer::SqlDataResult&, std::vector<std::string>, std::any)
         void parseInto(SqlDataResult& result, std::vector<std::string> parameters, std::any stmtAny) override;
-        // Sqlite Statement Parser with the intention of parsing the result into the SqliteLastRowId object.
-        // @params SqliteLastRowId& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        //! \copydoc DosboxStagingReplacer::StatementParser::parseInto(DosboxStagingReplacer::SqliteLastRowId&, std::vector<std::string>, std::any)
         void parseInto(SqliteLastRowId& result, std::vector<std::string> parameters, std::any stmtAny) override;
-        // Sqlite Statement Parser with the intention of parsing the result into the SqliteSchema object.
-        // @params SqliteSchema& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        //! \copydoc DosboxStagingReplacer::StatementParser::parseInto(DosboxStagingReplacer::SqliteSchema&, std::vector<std::string>, std::any)
         void parseInto(SqliteSchema& result, std::vector<std::string> parameters, std::any stmtAny) override;
-        // Sqlite Statement Parser with the intention of parsing the result into the ProductDetails object.
-        // @params ProductDetails& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        //! \copydoc DosboxStagingReplacer::StatementParser::parseInto(DosboxStagingReplacer::ProductDetails&, std::vector<std::string>, std::any)
         void parseInto(ProductDetails& result, std::vector<std::string> parameters, std::any stmtAny) override;
-        // Sqlite Statement Parser with the intention of parsing the result into the GogUser object.
-        // @params GogUser& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        //! \copydoc DosboxStagingReplacer::StatementParser::parseInto(DosboxStagingReplacer::GogUser&, std::vector<std::string>, std::any)
         void parseInto(GogUser& result, std::vector<std::string> parameters, std::any stmtAny) override;
-        // Sqlite Statement Parser with the intention of parsing the result into the PlayTaskInformation object.
-        // @params PlayTaskInformation& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        //! \copydoc DosboxStagingReplacer::StatementParser::parseInto(DosboxStagingReplacer::PlayTaskInformation&, std::vector<std::string>, std::any)
         void parseInto(PlayTaskInformation& result, std::vector<std::string> parameters, std::any stmtAny) override;
-        // Sqlite Statement Parser with the intention of parsing the result into the PlayTaskLaunchParameters object.
-        // @params PlayTaskLaunchParameters& result - The result object that will be populated with the parsed data
-        // @params std::vector<std::string> parameters - The parameters that will be used to parse the data
-        // @params std::any stmt - The statement that will be used to parse the data
-        // @return void
+        //! \copydoc DosboxStagingReplacer::StatementParser::parseInto(DosboxStagingReplacer::PlayTaskLaunchParameters&, std::vector<std::string>, std::any)
         void parseInto(PlayTaskLaunchParameters& result, std::vector<std::string> parameters, std::any stmtAny) override;
+
     };
 
     /**
-     *  StatementParserFactory class is a factory class that creates a StatementParser object based on the SqlEngine
+     * @brief Factory class for creating StatementParser objects.
      */
     class StatementParserFactory {
     public:
-        // Create a StatementParser object based on the SqlEngine
-        // @param SqlEngine engine: The SqlEngine to create the StatementParser object for
-        // @return std::unique_ptr<StatementParser>
+        /**
+         * Creates a StatementParser object based on the SqlEngine.
+         *
+         * @param engine SQL engine type.
+         * @return A unique_ptr to a StatementParser.
+         */
         static std::unique_ptr<StatementParser> createParser(SqlEngine engine);
     };
 
@@ -361,7 +365,6 @@ namespace DosboxStagingReplacer {
         const char *msg;
     };
 
-} // DosboxStagingReplacer
+} // namespace DosboxStagingReplacer
 
-
-#endif //STATEMENTPARSER_H
+#endif // STATEMENTPARSER_H
