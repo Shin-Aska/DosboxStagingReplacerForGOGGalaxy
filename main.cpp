@@ -1,6 +1,10 @@
 #include <iostream>
 #include <string>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include "DataExporter.h"
 #include "FileBackupService.h"
 #include "StatementParser.h"
@@ -13,9 +17,18 @@
 
 
 int main(int argc, char *argv[]) {
+#ifdef _WIN32
+    // Set the console output code page to UTF-8
+    // Exclusively for Windows as other platforms rely on the locale
+    SetConsoleOutputCP(CP_UTF8);
+#endif
+    // Set the locale to UTF-8
+    setlocale(LC_ALL, "en_US.utf8");
 
+    // Initialize the file backup service
     DosboxStagingReplacer::FileBackupService fileBackupService;
 
+    // Parse command line arguments using argparse
     argparse::ArgumentParser program("Dosbox Staging Replacer");
     program.add_argument("-f", "--file")
         .help("The Galaxy database file")
@@ -76,11 +89,15 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-
+    // We set the values from --file and --directory to variables
     const auto chosenFile = program.get<std::string>("--file");
     const auto chosenPath = program.get<std::string>("--directory");
+    // Initialize a data exporter base on the format chosen by the user
     const auto dataExporter = DosboxStagingReplacer::DataExporterFactory::createDataExporter(program.get<std::string>("--format"));
+    // We initialize a vector of FileEntity objects to store the files and use it later with DirectoryScanner
+    // Then keep it so we can pass it to the file backup service, this skips the FileBackupService from re-scanning the directory
     std::vector<DosboxStagingReplacer::FileEntity> files;
+    // The service class for the GoG Galaxy database
     DosboxStagingReplacer::GogGalaxyService service;
 
     try {
