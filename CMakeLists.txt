@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.30)
 project(DosboxStagingReplacer)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 
 # Add include directories for headers
