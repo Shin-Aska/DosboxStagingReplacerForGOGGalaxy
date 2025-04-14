@@ -8,15 +8,16 @@
 #define SQL_H
 
 #include <any>
+#include <iostream>
+#include <limits>
 #include <string>
 #include <unordered_map>
-#include <iostream>
 #include <vector>
 #include "sqlite3.h"
 
 namespace DosboxStagingReplacer {
 
-    class SqlServiceException : public std::exception {
+    class SqlServiceException final : public std::exception {
     public:
         explicit SqlServiceException(const char *message) : msg(message) {}
         SqlServiceException(SqlServiceException const &) noexcept = default;
@@ -24,7 +25,7 @@ namespace DosboxStagingReplacer {
         ~SqlServiceException() override = default;
 
         /// @brief Returns the exception message.
-        const char *what() const noexcept override { return msg; }
+        [[nodiscard]] const char *what() const noexcept override { return msg; }
 
     private:
         const char *msg;
@@ -36,7 +37,7 @@ namespace DosboxStagingReplacer {
      */
     class SqlService {
     protected:
-        std::string connectionString = "";
+        std::string connectionString;
         bool connectedFlag = false;
 
     public:
@@ -100,7 +101,7 @@ namespace DosboxStagingReplacer {
      */
     enum class SqlEngine { SQLITE };
 
-    class SqlLiteServiceException : public std::exception {
+    class SqlLiteServiceException final : public std::exception {
     public:
         explicit SqlLiteServiceException(const char *message) : msg(message) {}
         SqlLiteServiceException(SqlLiteServiceException const &) noexcept = default;
@@ -117,7 +118,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief SQLite implementation of the SqlService interface.
      */
-    class SqlLiteService : public SqlService {
+    class SqlLiteService final : public SqlService {
         using SqlService::SqlService;
 
         int connection = 0;
@@ -150,8 +151,12 @@ namespace DosboxStagingReplacer {
                 throw SqlLiteServiceException("Connection is not open");
             }
 
+            if (query.length() > static_cast<size_t>(std::numeric_limits<int>::max())) {
+                throw std::length_error("SQL query string too long for sqlite3_prepare_v2");
+            }
+
             sqlite3_stmt *stmt = nullptr;
-            int rc = sqlite3_prepare_v2(this->db, query.c_str(), query.length(), &stmt, nullptr);
+            int rc = sqlite3_prepare_v2(this->db, query.c_str(), static_cast<int>(query.length()), &stmt, nullptr);
             if (rc != SQLITE_OK) {
                 std::cerr << "Error preparing statement: " << sqlite3_errmsg(this->db) << std::endl;
                 sqlite3_finalize(stmt);
@@ -174,9 +179,7 @@ namespace DosboxStagingReplacer {
                     continue;
                 }
 
-                const std::any &value = it->second;
-
-                if (value.type() == typeid(int)) {
+                if (const std::any &value = it->second; value.type() == typeid(int)) {
                     sqlite3_bind_int(stmt, i, std::any_cast<int>(value));
                 } else if (value.type() == typeid(double)) {
                     sqlite3_bind_double(stmt, i, std::any_cast<double>(value));
@@ -194,6 +197,7 @@ namespace DosboxStagingReplacer {
             }
 
             std::vector<std::string> columns;
+            columns.reserve(sqlite3_column_count(stmt));
             for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
                 columns.emplace_back(sqlite3_column_name(stmt, i));
             }

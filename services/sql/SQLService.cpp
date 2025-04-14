@@ -87,8 +87,12 @@ namespace DosboxStagingReplacer {
             throw SqlLiteServiceException("Connection is not open");
         }
 
+        if (query.length() > static_cast<size_t>(std::numeric_limits<int>::max())) {
+            throw std::length_error("SQL query string too long for sqlite3_prepare_v2");
+        }
+
         sqlite3_stmt *stmt = nullptr;
-        int rc = sqlite3_prepare_v2(this->db, query.c_str(), query.length(), &stmt, nullptr);
+        int rc = sqlite3_prepare_v2(this->db, query.c_str(), static_cast<int>(query.length()), &stmt, nullptr);
         if (rc != SQLITE_OK) {
             std::cerr << "Error preparing statement: " << sqlite3_errmsg(this->db) << std::endl;
             sqlite3_finalize(stmt);
@@ -111,9 +115,7 @@ namespace DosboxStagingReplacer {
                 continue;
             }
 
-            const std::any &value = it->second;
-
-            if (value.type() == typeid(int)) {
+            if (const std::any &value = it->second; value.type() == typeid(int)) {
                 sqlite3_bind_int(stmt, i, std::any_cast<int>(value));
             } else if (value.type() == typeid(double)) {
                 sqlite3_bind_double(stmt, i, std::any_cast<double>(value));

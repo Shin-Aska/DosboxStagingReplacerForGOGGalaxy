@@ -6,18 +6,17 @@
 
 namespace DosboxStagingReplacer {
 
-    bool fileExists(const std::string path) {
+    bool fileExists(const std::string &path) {
         return std::filesystem::exists(path);
     }
 
-    InstallationVerifier::InstallationVerifier(std::string installationPath, std::string targetExecutable) {
+    InstallationVerifier::InstallationVerifier(const std::string &installationPath,
+                                               const std::string &targetExecutable) {
         this->installationPath = installationPath;
         this->targetExecutable = targetExecutable;
     }
 
-    InstallationVerifier::~InstallationVerifier() {
-        // Destructor
-    }
+    InstallationVerifier::~InstallationVerifier() = default;
 
     bool InstallationVerifier::isInstallationValid() {
         /*
@@ -31,11 +30,11 @@ namespace DosboxStagingReplacer {
         return fileExists(path);
     }
 
-    void InstallationVerifier::setInstallationPath(std::string installationPath) {
+    void InstallationVerifier::setInstallationPath(const std::string &installationPath) {
         this->installationPath = installationPath;
     }
 
-    void InstallationVerifier::setTargetExecutable(std::string targetExecutable) {
+    void InstallationVerifier::setTargetExecutable(const std::string &targetExecutable) {
         this->targetExecutable = targetExecutable;
     }
 

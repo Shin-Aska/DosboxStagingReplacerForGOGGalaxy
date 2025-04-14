@@ -46,8 +46,8 @@ namespace DosboxStagingReplacer {
         return !executeCommand("command -v rpm").empty();
     }
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplications(const std::string &commands, const std::string &source) {
-        std::vector<DosboxStagingReplacer::InstallationInfo> registeredApplications;
+    std::vector<InstallationInfo> getRegisteredApplications(const std::string &commands, const std::string &source) {
+        std::vector<InstallationInfo> registeredApplications;
         std::string output = executeCommand(commands);
         // Get all lines from the output and process each line
         std::istringstream stream(output);
@@ -59,7 +59,7 @@ namespace DosboxStagingReplacer {
             std::string installationPath;
             std::getline(lineStream, applicationName, DELIMITER);
             std::getline(lineStream, installationPath, DELIMITER);
-            DosboxStagingReplacer::InstallationInfo info;
+            InstallationInfo info;
             info.applicationName = applicationName;
             info.installationPath = installationPath;
             info.source = source;
@@ -68,30 +68,30 @@ namespace DosboxStagingReplacer {
         return registeredApplications;
     }
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromApt() {
+    std::vector<InstallationInfo> getRegisteredApplicationsFromApt() {
         return getRegisteredApplications(APT_COMMAND, APT);
     }
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromFlatpak() {
+    std::vector<InstallationInfo> getRegisteredApplicationsFromFlatpak() {
         return getRegisteredApplications(FLATPAK_COMMAND, FLATPAK);
     }
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromSnap() {
+    std::vector<InstallationInfo> getRegisteredApplicationsFromSnap() {
         return getRegisteredApplications(SNAP_COMMAND, SNAP);
     }
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromDpkg() {
+    std::vector<InstallationInfo> getRegisteredApplicationsFromDpkg() {
         return getRegisteredApplications(DPKG_COMMAND, DPKG);
     }
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromRpm() {
+    std::vector<InstallationInfo> getRegisteredApplicationsFromRpm() {
         return getRegisteredApplications(RPM_COMMAND, RPM);
     }
 
 #elif _WIN32
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> getRegisteredApplicationsFromWindows() {
-        auto result = std::vector<DosboxStagingReplacer::InstallationInfo>();
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindows() {
+        auto result = std::vector<InstallationInfo>();
         HKEY hKey;
         DWORD index = 0;
         TCHAR subKeyName[256];
@@ -129,7 +129,7 @@ namespace DosboxStagingReplacer {
                         }
                     }
 
-                    DosboxStagingReplacer::InstallationInfo info;
+                    InstallationInfo info;
                     info.applicationName = displayName;
                     info.installationPath = installLocation;
                     info.source = "Registry";
@@ -148,8 +148,8 @@ namespace DosboxStagingReplacer {
 
 #endif
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> getInstalledApplications() {
-        auto result = std::vector<DosboxStagingReplacer::InstallationInfo>();
+    std::vector<InstallationInfo> getInstalledApplications() {
+        auto result = std::vector<InstallationInfo>();
 #ifdef _WIN32
         auto win32_apps = getRegisteredApplicationsFromWindows();
         result.insert(result.end(), win32_apps.begin(), win32_apps.end());
@@ -198,12 +198,12 @@ namespace DosboxStagingReplacer {
 
     bool lazyStringMatching(const std::string &text, const std::vector<std::string> &keywords) {
         std::string lowerText = text;
-        std::ranges::transform(lowerText, lowerText.begin(), ::tolower);
+        std::ranges::transform(lowerText, lowerText.begin(), tolower);
         int matchCount = 0;
         for (const auto &keyword : keywords) {
             // Create a copy of keyword and store it to k
             std::string k = keyword;
-            std::ranges::transform(k, k.begin(), ::tolower);
+            std::ranges::transform(k, k.begin(), tolower);
             if (lowerText.find(keyword) != std::string::npos) {
                 matchCount += 1;
             }
@@ -211,8 +211,8 @@ namespace DosboxStagingReplacer {
         return keywords.size() == matchCount;
     }
 
-    std::vector<DosboxStagingReplacer::InstallationInfo> InstallationFinder::findApplication(const std::string &applicationName) {
-        std::vector<DosboxStagingReplacer::InstallationInfo> result;
+    std::vector<InstallationInfo> InstallationFinder::findApplication(const std::string &applicationName) {
+        std::vector<InstallationInfo> result;
         for (auto installedApps = getInstalledApplications(); auto &app : installedApps) {
             // Split the application name by spaces and then consider that as keywords to fed to lazyStringMatching
             std::istringstream iss(applicationName);

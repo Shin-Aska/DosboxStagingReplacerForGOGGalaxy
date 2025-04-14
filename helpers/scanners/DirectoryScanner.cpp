@@ -6,17 +6,17 @@
 
 namespace DosboxStagingReplacer {
 
-    std::vector<DosboxStagingReplacer::FileEntity> DirectoryScanner::scanDirectory(std::string path) {
+    std::vector<FileEntity> DirectoryScanner::scanDirectory(const std::string& path) {
 
-        auto files = std::vector<DosboxStagingReplacer::FileEntity>();
+        auto files = std::vector<FileEntity>();
         for (const auto &entry : std::filesystem::directory_iterator(path)) {
-            DosboxStagingReplacer::FileEntity file;
+            FileEntity file;
             file.name = entry.path().filename().string();
             file.path = entry.path().string();
             file.size = 0;
-            file.type = DosboxStagingReplacer::FileType::FILE;
+            file.type = FileType::FILE;
             if (entry.is_directory())
-                file.type = DosboxStagingReplacer::FileType::DIRECTORY;
+                file.type = FileType::DIRECTORY;
             else
                 file.size = entry.file_size();
             files.push_back(file);

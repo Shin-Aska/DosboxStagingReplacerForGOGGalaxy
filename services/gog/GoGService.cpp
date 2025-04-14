@@ -55,18 +55,18 @@ namespace DosboxStagingReplacer {
             this->sqlService.executeQuery(R"SQL(
                 INSERT INTO PlayTasks (gameReleaseKey, userId, "order", typeId, isPrimary)
                 VALUES (:gameReleaseKey, :userId, :new_order, :typeId, :isPrimary);
-            ")SQL", {
-                {"gameReleaseKey", playTask.gameReleaseKey},
-                {"userId", userId},
-                {"new_order", new_order},
-                {"typeId", playTask.typeId},
-                {"isPrimary", playTask.isPrimary}
-            });
+            ")SQL",
+                                          {{"gameReleaseKey", playTask.gameReleaseKey},
+                                           {"userId", userId},
+                                           {"new_order", new_order},
+                                           {"typeId", playTask.typeId},
+                                           {"isPrimary", playTask.isPrimary}});
 
             // Get the id of the new PlayTask
-            auto result = this->sqlService.executeQuery<SqliteLastRowId>(R"SQL(
+            const auto result = this->sqlService.executeQuery<SqliteLastRowId>(R"SQL(
                 SELECT last_insert_rowid() AS id;
-            )SQL", {});
+            )SQL",
+                                                                               {});
 
             // Check if the result is empty
             if (result.empty()) {
@@ -78,9 +78,8 @@ namespace DosboxStagingReplacer {
             newPlayTask.userId = userId;
             newPlayTask.order = new_order;
             return newPlayTask;
-        } else {
-            throw GogGalaxyServiceException("Database connection is not open");
         }
+        throw GogGalaxyServiceException("Database connection is not open");
     }
 
     void GogGalaxyService::insertPlayTaskLaunchParameters(const PlayTaskInformation &playTask, const PlayTaskLaunchParameters &launchParameters) {
@@ -102,7 +101,7 @@ namespace DosboxStagingReplacer {
 
     bool GogGalaxyService::verifyDatabase() {
         if (this->sqlService.isConnectionOpen()) {
-            auto result = this->sqlService.executeQuery<SqliteSchema>(R"SQL(
+            const auto result = this->sqlService.executeQuery<SqliteSchema>(R"SQL(
                 SELECT
                     type,
                     name,
@@ -208,7 +207,7 @@ namespace DosboxStagingReplacer {
         throw GogGalaxyServiceException("Database connection is not open");
     }
 
-    void GogGalaxyService::addPlayTask(int userId, const std::string& gameReleaseKey, const PlayTaskInformation &playTask, const PlayTaskLaunchParameters &launchParameters) {
+    void GogGalaxyService::addPlayTask(const int userId, const std::string& gameReleaseKey, const PlayTaskInformation &playTask, const PlayTaskLaunchParameters &launchParameters) {
         if (this->validDatabase) {
             // Get all PlayTasks under the given gameReleaseKey
             auto existingPlayTasks = this->getPlayTasksFromGameReleaseKey(gameReleaseKey);
@@ -216,14 +215,12 @@ namespace DosboxStagingReplacer {
 
             // Get the maximum order of the existing PlayTasks
             for (const auto &task : existingPlayTasks) {
-                if (task.order > max_order) {
-                    max_order = task.order;
-                }
+                if (task.order > max_order) max_order = task.order;
             }
 
             // If there are no existing PlayTasks, set max_order to 1
             // This will only become -1 if there are no PlayTasks at all
-            max_order = (max_order == -1) ? 1 : max_order + 1;
+            max_order = max_order == -1 ? 1 : max_order + 1;
 
             // Set all existing PlayTasks to not primary
             this->disableAllPlayTaskFor(gameReleaseKey);
@@ -231,6 +228,7 @@ namespace DosboxStagingReplacer {
             const PlayTaskInformation updatedPlayTask = this->insertPlayTask(userId, max_order, playTask);
             // Add the PlayTaskLaunchParameters
             this->insertPlayTaskLaunchParameters(updatedPlayTask, launchParameters);
+            return;
         }
         throw GogGalaxyServiceException("Database connection is not open");
     }

@@ -40,7 +40,7 @@ namespace DosboxStagingReplacer {
          * Returns all attributes of the class and their values.
          * @return Vector of (attribute name, value, data type).
          */
-        virtual std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const {
+        [[nodiscard]] virtual std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const {
             return {};
         }
     };
@@ -78,7 +78,7 @@ namespace DosboxStagingReplacer {
          *
          * @return Vector of (attribute name, value, data type).
          */
-        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
+        [[nodiscard]] std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {{"id", std::to_string(id), DataResultDataType::Number}};
         }
     };
@@ -107,7 +107,7 @@ namespace DosboxStagingReplacer {
          * @brief Returns all attributes of the object.
          * @return Vector of (attribute name, value, data type).
          */
-        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
+        [[nodiscard]] std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {
                 {"type", type, DataResultDataType::String},
                 {"name", name, DataResultDataType::String},
@@ -144,7 +144,7 @@ namespace DosboxStagingReplacer {
          * @brief Returns all attributes of the object.
          * @return Vector of (attribute name, value, data type).
          */
-        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
+        [[nodiscard]] std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {
                 {"productId", std::to_string(productId), DataResultDataType::Number},
                 {"title", title, DataResultDataType::String},
@@ -179,7 +179,7 @@ namespace DosboxStagingReplacer {
          *
          * @return Vector of (attribute name, value, data type).
          */
-        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
+        [[nodiscard]] std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {{"id", std::to_string(id), DataResultDataType::Number}};
         }
     };
@@ -211,7 +211,7 @@ namespace DosboxStagingReplacer {
          * @brief Returns all attributes of the object.
          * @return Vector of (attribute name, value, data type).
          */
-        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
+        [[nodiscard]] std::vector <std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {
                 {"id", std::to_string(id), DataResultDataType::Number},
                 {"gameReleaseKey", gameReleaseKey, DataResultDataType::String},
@@ -248,7 +248,7 @@ namespace DosboxStagingReplacer {
          * @brief Returns all attributes of the object.
          * @return Vector of (attribute name, value, data type).
          */
-        std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
+        [[nodiscard]] std::vector<std::tuple<std::string, std::string, DataResultDataType>> getAttributes() const override {
             return {
                 {"playTaskId", std::to_string(playTaskId), DataResultDataType::Number},
                 {"executablePath", executablePath, DataResultDataType::String},

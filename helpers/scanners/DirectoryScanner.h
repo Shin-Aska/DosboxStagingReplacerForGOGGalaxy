@@ -26,7 +26,7 @@ namespace DosboxStagingReplacer {
          * @param path The path to the directory.
          * @return A list of FileEntity objects found in the directory.
          */
-        std::vector<FileEntity> scanDirectory(std::string path);
+        static std::vector<FileEntity> scanDirectory(const std::string &path);
     };
 
 } // namespace DosboxStagingReplacer

@@ -17,7 +17,7 @@ namespace DosboxStagingReplacer {
      * @param path The path to the file to check.
      * @return True if the file exists, false otherwise.
      */
-    bool fileExists(std::string path);
+    bool fileExists(const std::string &path);
 
     /**
      * @brief Base class for verifying an installation.
@@ -30,7 +30,7 @@ namespace DosboxStagingReplacer {
         std::string installationPath;
         std::string targetExecutable;
     public:
-        explicit InstallationVerifier(std::string installationPath, std::string targetExecutable);
+        explicit InstallationVerifier(const std::string &installationPath, const std::string &targetExecutable);
         virtual ~InstallationVerifier();
 
         /**
@@ -47,14 +47,14 @@ namespace DosboxStagingReplacer {
          *
          * @param installationPath The new installation path.
          */
-        void setInstallationPath(std::string installationPath);
+        void setInstallationPath(const std::string &installationPath);
 
         /**
          * @brief Sets the target executable name.
          *
          * @param targetExecutable The executable file name.
          */
-        void setTargetExecutable(std::string targetExecutable);
+        void setTargetExecutable(const std::string &targetExecutable);
 
         /**
          * @brief Gets the installation path.
