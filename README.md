@@ -46,6 +46,12 @@ cd cmake-build-debug
   cmake --build . --config Debug
  ```
 
+### IDE Integration
+* For CLion users, the IDE will automatically pick up everything that is configured in this repository.
+* For VSCode users, you will need to install the C++ extension (it has CMake support baked in already) and after configure
+the extension to use the CMakeLists.txt file in the root of the repository.
+* For the rest of the IDEs, you will need to configure them to use the CMakeLists.txt file in the root of the repository.
+
 **Note**: When creating a build folder, I recommend starting your folders with a **cmake-build-** prefixes. 
 This is what the repository .gitignore is set to ignore.
 
