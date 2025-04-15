@@ -47,13 +47,13 @@ cd cmake-build-debug
  ```
 
 ### IDE Integration
-* For CLion users, the IDE will automatically pick up everything that is configured in this repository.
-* For VSCode users, you will need to install the C++ extension (it has CMake support baked in already) and after configure
-the extension to use the CMakeLists.txt file in the root of the repository.
-* For the rest of the IDEs, you will need to configure them to use the CMakeLists.txt file in the root of the repository.
 
-**Note**: When creating a build folder, I recommend starting your folders with a **cmake-build-** prefixes. 
-This is what the repository .gitignore is set to ignore.
+- **CLion**: CLion automatically detects and configures the project using the provided `CMakeLists.txt`. No additional setup is required.
+- **Visual Studio Code (VSCode)**: Install the **C++ extension** (by Microsoft), which includes built-in support for CMake. Once installed, open the repository folder and VSCode will detect the `CMakeLists.txt` file at the root. You can configure build settings and targets via the Command Palette (`Ctrl+Shift+P`) using commands like `CMake: Configure` and `CMake: Build`.
+- **Other IDEs**: If your IDE supports CMake natively, it should recognize the root `CMakeLists.txt` file and configure the project automatically. If not, check whether a CMake plugin is available for your IDE. Alternatively, you can use CMake's `-G` option to generate project files (e.g., for Code::Blocks or Eclipse), though note that this method is deprecated by CMake since version 3.27
+
+**Note**: It is recommended to name build directories with a `cmake-build-` prefix (e.g., `cmake-build-debug`, `cmake-build-release`). The repository's `.gitignore` is configured to exclude such folders automatically.
+
 
 ## Documentation
 
