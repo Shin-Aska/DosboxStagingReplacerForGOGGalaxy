@@ -29,8 +29,22 @@ This repository contains the core application which does the backend work
 ## How to build
 
 1. Clone the repository
-2. Use the CMakeLists.txt to generate the build files for this project.
-3. Build the project
+2. Create a build folder (in this example, we will create a folder for debug)
+```bash
+mkdir -p cmake-build-debug
+```
+3. Change to the build folder
+```bash
+cd cmake-build-debug
+```
+4. Run CMake to generate the build files
+```bash
+  cmake ..
+```
+5. Build the project
+```bash
+  cmake --build . --config Debug
+ ```
 
 **Note**: When creating a build folder, I recommend starting your folders with a **cmake-build-** prefixes. 
 This is what the repository .gitignore is set to ignore.
