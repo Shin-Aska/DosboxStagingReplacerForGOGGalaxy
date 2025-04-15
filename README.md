@@ -29,13 +29,16 @@ This repository contains the core application which does the backend work
 ## How to build
 
 1. Clone the repository
-2. Use the CmakeLists.txt to generate the project files for your desired IDE (I use CLion)
+2. Use the CMakeLists.txt to generate the build files for this project.
 3. Build the project
+
+**Note**: When creating a build folder, I recommend starting your folders with a **cmake-build-** prefixes. 
+This is what the repository .gitignore is set to ignore.
 
 ## Documentation
 
 Currently, there is no documentation available, but the code is well commented and should be easy to understand.
-I am planning to create a wiki page for this project in the future.
+I am planning to create a detailed wiki page for this project in the future.
 
 ## Third Party Libraries
 The following third party libraries are used in this project:
