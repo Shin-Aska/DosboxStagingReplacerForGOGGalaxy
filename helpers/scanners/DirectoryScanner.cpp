@@ -10,11 +10,10 @@ namespace DosboxStagingReplacer {
 
         auto files = std::vector<FileEntity>();
         for (const auto &entry : std::filesystem::directory_iterator(path)) {
-            FileEntity file;
-            file.name = entry.path().filename().string();
-            file.path = entry.path().string();
-            file.size = 0;
-            file.type = FileType::FILE;
+            auto file = FileEntity(entry.path().filename().string(),
+                                    entry.path().string(),
+                                    FileType::FILE,
+                                    0);
             if (entry.is_directory())
                 file.type = FileType::DIRECTORY;
             else
