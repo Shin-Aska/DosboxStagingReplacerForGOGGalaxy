@@ -214,8 +214,11 @@ namespace DosboxStagingReplacer {
     std::vector<InstallationInfo> InstallationFinder::findApplication(const std::string &applicationName) {
         std::vector<InstallationInfo> result;
         for (auto installedApps = getInstalledApplications(); auto &app : installedApps) {
+            // Lowercase the application name for case-insensitive comparison
+            std::string lowerAppName = applicationName;
+            std::ranges::transform(lowerAppName, lowerAppName.begin(), tolower);
             // Split the application name by spaces and then consider that as keywords to fed to lazyStringMatching
-            std::istringstream iss(applicationName);
+            std::istringstream iss(lowerAppName);
             std::vector<std::string> keywords;
             std::string keyword;
             while (iss >> keyword) {
