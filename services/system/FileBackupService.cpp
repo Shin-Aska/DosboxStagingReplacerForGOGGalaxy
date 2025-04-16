@@ -10,16 +10,16 @@
 
 namespace DosboxStagingReplacer {
 
-    void FileBackupService::setBackupFileExtension(const std::string& extension) {
+    void FileBackupService::setBackupFileExtension(const std::string &extension) {
         backupFileExtension = extension;
     }
 
-    std::string FileBackupService::getBackupFileExtension() {
-        return backupFileExtension;
-    }
+    std::string FileBackupService::getBackupFileExtension() { return backupFileExtension; }
 
-    void FileBackupService::createBackup(const std::string& filePath, const std::vector<FileEntity> &filesInPath) const {
+    FileEntity FileBackupService::createBackup(const std::string &filePath,
+                                               const std::vector<FileEntity> &filesInPath) const {
         auto filesInDirectory = filesInPath;
+        FileEntity result;
         // Check if filesInPath is empty
         if (filesInDirectory.empty()) {
             DirectoryScanner scanner;
@@ -27,7 +27,7 @@ namespace DosboxStagingReplacer {
             filesInDirectory = scanner.scanDirectory(directoryPath);
         }
 
-        for (const auto& file : filesInDirectory) {
+        for (const auto &file: filesInDirectory) {
             if (file.path == filePath) {
                 int backupCounter = 2;
                 std::string backupFilePath = file.path + backupFileExtension;
@@ -40,17 +40,24 @@ namespace DosboxStagingReplacer {
                 }
                 // Copy the file to the backup file
                 try {
-                    std::filesystem::copy_file(file.path, backupFilePath, std::filesystem::copy_options::overwrite_existing);
+                    std::filesystem::copy_file(file.path, backupFilePath,
+                                               std::filesystem::copy_options::overwrite_existing);
                     std::cout << "Backup created: " << backupFilePath << std::endl;
-                } catch (const std::filesystem::filesystem_error& e) {
+                    result = file;
+                    result.path = backupFilePath;
+                } catch (const std::filesystem::filesystem_error &e) {
                     std::cerr << "Error creating backup: " << e.what() << std::endl;
                 }
             }
         }
+        return result;
     }
 
-    void FileBackupService::restoreFromBackup(const std::string &filePath, const std::vector<FileEntity> filesInPath) {
+    FileEntity FileBackupService::restoreFromBackup(const std::string &filePath,
+                                                    const std::vector<FileEntity> &filesInPath) {
         auto filesInDirectory = filesInPath;
+
+        FileEntity result;
         // Check if filesInPath is empty
         if (filesInDirectory.empty()) {
             DirectoryScanner scanner;
@@ -68,6 +75,11 @@ namespace DosboxStagingReplacer {
             // We assume that the backup file is named file.bak, file.bak.2, file.bak.3, etc.
             // This is done by getting the last number in the file name
             FileEntity mostRecentBackupFile;
+            mostRecentBackupFile.path = "";
+            mostRecentBackupFile.name = "";
+            mostRecentBackupFile.size = 0;
+            mostRecentBackupFile.type = FileType::NONE;
+
             int highestBackupNumber = -1;
             for (const auto& file : backupFiles) {
                 std::string fileName = file.path.substr(file.path.find_last_of("\\/") + 1);
@@ -77,7 +89,12 @@ namespace DosboxStagingReplacer {
                     mostRecentBackupFile = file;
                 }
             }
+
+            if (highestBackupNumber != -1) {
+                result = mostRecentBackupFile;
+            }
         }
+        return result;
     }
 
     bool FileBackupService::backupExists(const std::string& filePath, const std::vector<FileEntity> &filesInPath) {

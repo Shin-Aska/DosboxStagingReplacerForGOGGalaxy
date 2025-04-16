@@ -23,7 +23,7 @@ namespace DosboxStagingReplacer {
          * @brief Sets the file extension used for backups.
          * @param extension The new backup file extension.
          */
-        void setBackupFileExtension(const std::string& extension);
+        void setBackupFileExtension(const std::string &extension);
 
         /**
          * @brief Retrieves the current backup file extension.
@@ -35,16 +35,19 @@ namespace DosboxStagingReplacer {
          * @brief Creates a backup of a file.
          * @param filePath The path of the file to back up.
          * @param filesInPath A vector of FileEntity objects representing the files in the path.
+         * @return The FileEntity object representing the backup file.
          * If empty, the method will gather file information from the file system.
          */
-        void createBackup(const std::string& filePath, const std::vector<FileEntity> &filesInPath = {}) const;
+        FileEntity createBackup(const std::string &filePath, const std::vector<FileEntity> &filesInPath = {}) const;
 
         /**
          * @brief Restores a file from its backup.
          * @param filePath The path of the file to restore.
          * @param filesInPath A vector of FileEntity objects representing the files in the path.
+         * @return The FileEntity object representing the restored file.
          */
-        void restoreFromBackup(const std::string &filePath, std::vector<FileEntity> filesInPath = {});
+        static FileEntity restoreFromBackup(const std::string &filePath,
+                                            const std::vector<FileEntity> &filesInPath = {});
 
         /**
          * @brief Checks whether a backup exists for a given file.
