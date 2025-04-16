@@ -3,8 +3,6 @@
 //
 
 #include "DataExporter.h"
-
-#include <format>
 #include <sstream>
 
 namespace DosboxStagingReplacer {
@@ -114,9 +112,12 @@ namespace DosboxStagingReplacer {
     }
 
     std::string JSONDataExporter::stringify(const InstallationInfo &data) {
-        return std::format(R"({{"applicationName": "{}", "installationPath": "{}", "source": "{}"}})",
-                           addEscapeCharacters(data.applicationName), addEscapeCharacters(data.installationPath),
-                           addEscapeCharacters(data.source));
+        std::ostringstream oss;
+        oss << R"({"applicationName": ")" << addEscapeCharacters(data.applicationName)
+            << R"(", "installationPath": ")" << addEscapeCharacters(data.installationPath)
+            << R"(", "source": ")" << addEscapeCharacters(data.source) << R"("})";
+
+        return oss.str();
     }
 
     std::string CSVDataExporter::serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) {
