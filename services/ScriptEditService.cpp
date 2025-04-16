@@ -20,10 +20,9 @@ namespace DosboxStagingReplacer {
         }
     }
 
-    static bool isConfigFileDosboxAutoExec(std::filesystem::path filePath) {
+    static bool isConfigFileDosboxAutoExec(const std::filesystem::path &filePath) {
         // We open the file and check if it contains the string "[autoexec] (case insensitive)"
-        std::fstream file(filePath);
-        if (file.is_open()) {
+        if (std::fstream file(filePath); file.is_open()) {
             std::string line;
             while (std::getline(file, line)) {
                 auto lowerLine = line;

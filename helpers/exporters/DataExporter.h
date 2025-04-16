@@ -16,7 +16,6 @@ namespace DosboxStagingReplacer {
      * Although all the methods are virtual, they do have working implementations.
      */
     class DataExporter {
-    private:
         std::string separator = ",";
     public:
         /// @brief Constructor
@@ -97,7 +96,6 @@ namespace DosboxStagingReplacer {
     };
 
     class CSVDataExporter final : public DataExporter {
-    private:
         std::string separator = ",";
     public:
         /**
@@ -143,11 +141,11 @@ namespace DosboxStagingReplacer {
         static std::unique_ptr<DataExporter> createDataExporter(const std::string &type) {
             if (type == ".json") {
                 return std::make_unique<JSONDataExporter>();
-            } else if (type == ".csv") {
-                return std::make_unique<CSVDataExporter>();
-            } else {
-                return std::make_unique<DataExporter>();
             }
+            if (type == ".csv") {
+                return std::make_unique<CSVDataExporter>();
+            }
+            return std::make_unique<DataExporter>();
         }
     };
 

@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
 
     // Let us add flags checking where flags such as backup, restore, list-applications, list-games and replace-dosbox
     // cannot be used together. We declare a vector of bools to check, with the set of flags we want to check
-    std::vector<bool> flags = {program["--backup"] == true,
+    std::vector flags = {program["--backup"] == true,
                                program["--restore"] == true,
                                program["--list-applications"] == true,
                                program["--list-games"] == true,
@@ -137,7 +137,7 @@ int main(int argc, char *argv[]) {
     // 1. The replace-dosbox flag must be set to true and if so there must be a value for either dosbox-version or
     // dosbox-version-manual
     // 2. If there is value on both dosbox-version and dosbox-version-manual, we print an error message and exit
-    std::vector<bool> replaceDosboxFlags = {!program.get<std::string>("--dosbox-version").empty(),
+    std::vector replaceDosboxFlags = {!program.get<std::string>("--dosbox-version").empty(),
                                             !program.get<std::string>("--dosbox-version-manual").empty()};
 
     // If the show playtask flag is set to true, we check if the --release-key flag has a value provided, otherwise

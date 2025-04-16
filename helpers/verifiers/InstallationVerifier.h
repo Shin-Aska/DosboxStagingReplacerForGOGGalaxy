@@ -26,7 +26,6 @@ namespace DosboxStagingReplacer {
      * is installed correctly in a given path.
      */
     class InstallationVerifier {
-    private:
         std::string installationPath;
         std::string targetExecutable;
     public:
@@ -74,7 +73,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief Verifier for DOSBox installations.
      */
-    class DosboxVerifier: public InstallationVerifier {
+    class DosboxVerifier final : public InstallationVerifier {
         using InstallationVerifier::InstallationVerifier;
 
     public:

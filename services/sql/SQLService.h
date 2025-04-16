@@ -70,7 +70,7 @@ namespace DosboxStagingReplacer {
          * @brief Checks whether a database connection is open.
          * @return true if connection is open, false otherwise.
          */
-        bool isConnectionOpen() const;
+        [[nodiscard]] bool isConnectionOpen() const;
 
         /**
          * @brief Executes a query and returns the results as a vector.
@@ -109,7 +109,7 @@ namespace DosboxStagingReplacer {
         ~SqlLiteServiceException() override = default;
 
         /// @brief Returns the exception message.
-        const char *what() const noexcept override { return msg; }
+        [[nodiscard]] const char *what() const noexcept override { return msg; }
 
     private:
         const char *msg;

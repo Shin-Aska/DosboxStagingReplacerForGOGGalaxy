@@ -184,14 +184,14 @@ namespace DosboxStagingReplacer {
     }
 
     std::string executeCommand(const std::string &command) {
-        std::array<char, 512> buffer {};
+        std::array<char, 512> buffer{};
         std::string result;
 
         const std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
         if (!pipe) throw std::runtime_error("popen() failed!");
 
         while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-            result += buffer.data();
+            result += std::string(buffer.data());
         }
         return result;
     }

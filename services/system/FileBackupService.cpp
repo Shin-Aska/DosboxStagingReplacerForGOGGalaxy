@@ -22,9 +22,8 @@ namespace DosboxStagingReplacer {
         FileEntity result;
         // Check if filesInPath is empty
         if (filesInDirectory.empty()) {
-            DirectoryScanner scanner;
             const std::string directoryPath = filePath.substr(0, filePath.find_last_of("\\/"));
-            filesInDirectory = scanner.scanDirectory(directoryPath);
+            filesInDirectory = DirectoryScanner::scanDirectory(directoryPath);
         }
 
         for (const auto &file: filesInDirectory) {
@@ -40,7 +39,7 @@ namespace DosboxStagingReplacer {
                 }
                 // Copy the file to the backup file
                 try {
-                    std::filesystem::copy_file(file.path, backupFilePath,
+                    copy_file(file.path, backupFilePath,
                                                std::filesystem::copy_options::overwrite_existing);
                     std::cout << "Backup created: " << backupFilePath << std::endl;
                     result = file;
@@ -60,12 +59,11 @@ namespace DosboxStagingReplacer {
         FileEntity result;
         // Check if filesInPath is empty
         if (filesInDirectory.empty()) {
-            DirectoryScanner scanner;
             const std::string directoryPath = filePath.substr(0, filePath.find_last_of("\\/"));
             filesInDirectory = DirectoryScanner::scanDirectory(directoryPath);
         }
 
-        if (FileBackupService::backupExists(filePath, filesInPath)) {
+        if (backupExists(filePath, filesInPath)) {
             // We first get all possible backup files
             std::vector<FileEntity> backupFiles;
             std::ranges::copy_if(filesInDirectory, std::back_inserter(backupFiles), [&](const auto& file) {

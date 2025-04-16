@@ -45,13 +45,13 @@ namespace DosboxStagingReplacer {
         }
     };
 
-    class SqlDataResultException : public std::exception {
+    class SqlDataResultException final : public std::exception {
     public:
         explicit SqlDataResultException(const char *message) : msg(message) {}
         SqlDataResultException(SqlDataResultException const &) noexcept = default;
         SqlDataResultException &operator=(SqlDataResultException const &) noexcept = default;
         ~SqlDataResultException() override = default;
-        const char *what() const noexcept override { return msg; }
+        [[nodiscard]] const char *what() const noexcept override { return msg; }
     private:
         const char *msg;
     };
@@ -59,7 +59,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief SqliteLastRowId class. Contains the information about the last row id.
      */
-    class SqliteLastRowId: public SqlDataResult {
+    class SqliteLastRowId final : public SqlDataResult {
         using SqlDataResult::SqlDataResult;
     public:
         int id;
@@ -86,7 +86,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief SqliteSchema class. Contains the information about a SQLite schema.
      */
-    class SqliteSchema: public SqlDataResult {
+    class SqliteSchema final : public SqlDataResult {
         using SqlDataResult::SqlDataResult;
     public:
         std::string type;
@@ -120,7 +120,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief ProductDetails class. Contains the information about a GOG product.
      */
-    class ProductDetails: public SqlDataResult {
+    class ProductDetails final : public SqlDataResult {
         using SqlDataResult::SqlDataResult;
     public:
         int productId;
@@ -160,7 +160,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief GogUser class. Contains the information about a GOG user.
      */
-    class GogUser: public SqlDataResult {
+    class GogUser final : public SqlDataResult {
         using SqlDataResult::SqlDataResult;
     public:
         int id;
@@ -187,7 +187,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief PlayTaskInformation class. Contains the information about a play task.
      */
-    class PlayTaskInformation: public SqlDataResult {
+    class PlayTaskInformation final : public SqlDataResult {
         using SqlDataResult::SqlDataResult;
     public:
         int id;
@@ -227,7 +227,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief PlayTaskLaunchParameters class. Contains the information about a play task launch parameters.
      */
-    class PlayTaskLaunchParameters: public SqlDataResult {
+    class PlayTaskLaunchParameters final: public SqlDataResult {
         using SqlDataResult::SqlDataResult;
     public:
         int playTaskId;
@@ -318,7 +318,7 @@ namespace DosboxStagingReplacer {
         virtual void parseInto(PlayTaskLaunchParameters& result, std::vector<std::string> parameters, std::any stmt) = 0;
     };
 
-    class SqliteStatementParser: public StatementParser {
+    class SqliteStatementParser final: public StatementParser {
     public:
         SqliteStatementParser();
         ~SqliteStatementParser() override;
@@ -354,13 +354,13 @@ namespace DosboxStagingReplacer {
         static std::unique_ptr<StatementParser> createParser(SqlEngine engine);
     };
 
-    class StatementEngineParserFactoryException: public std::exception {
+    class StatementEngineParserFactoryException final: public std::exception {
     public:
         explicit StatementEngineParserFactoryException(const char *message) : msg(message) {}
         StatementEngineParserFactoryException(StatementEngineParserFactoryException const &) noexcept = default;
         StatementEngineParserFactoryException &operator=(StatementEngineParserFactoryException const &) noexcept = default;
         ~StatementEngineParserFactoryException() override = default;
-        const char *what() const noexcept override { return msg; }
+        [[nodiscard]] const char *what() const noexcept override { return msg; }
     private:
         const char *msg;
     };

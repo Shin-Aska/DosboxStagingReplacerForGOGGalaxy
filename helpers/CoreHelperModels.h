@@ -37,15 +37,15 @@ namespace DosboxStagingReplacer {
             this->size = size;
         }
 
-        bool isFile() const {
+        [[nodiscard]] bool isFile() const {
             return type == FileType::FILE;
         }
 
-        bool isDirectory() const {
+        [[nodiscard]] bool isDirectory() const {
             return type == FileType::DIRECTORY;
         }
 
-        bool isNull() const {
+        [[nodiscard]] bool isNull() const {
             return type == FileType::NONE;
         }
     };

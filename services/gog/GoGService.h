@@ -18,7 +18,6 @@ namespace DosboxStagingReplacer {
      * using the SQLite backend of the GOG Galaxy client.
      */
     class GogGalaxyService {
-    private:
         SqlLiteService sqlService;
         bool validDatabase = false;
 
@@ -117,7 +116,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief Exception class for GOG Galaxy service errors.
      */
-    class GogGalaxyServiceException : public std::exception {
+    class GogGalaxyServiceException final : public std::exception {
     public:
         explicit GogGalaxyServiceException(const char *message) : msg(message) {}
         GogGalaxyServiceException(GogGalaxyServiceException const &) noexcept = default;
@@ -125,7 +124,7 @@ namespace DosboxStagingReplacer {
         ~GogGalaxyServiceException() override = default;
 
         /// @brief Returns the exception message.
-        const char *what() const noexcept override { return msg; }
+        [[nodiscard]] const char *what() const noexcept override { return msg; }
 
     private:
         const char *msg;

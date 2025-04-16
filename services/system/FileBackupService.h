@@ -12,7 +12,6 @@ namespace DosboxStagingReplacer {
      * @brief Service responsible for creating, restoring, and managing file backups.
      */
     class FileBackupService {
-    private:
         std::string backupFileExtension = ".bak";
 
     public:
