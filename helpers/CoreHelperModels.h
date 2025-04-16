@@ -14,17 +14,40 @@ namespace DosboxStagingReplacer {
      */
     enum class FileType {
         DIRECTORY = 0,
-        FILE = 1
+        FILE = 1,
+        NONE = -1,
     };
 
     /*
      * FileEntity struct. Contains the information about a file
      */
-    struct FileEntity {
+    class FileEntity {
+    public:
+
         std::string name;
         std::string path;
         FileType type;
         unsigned long size;
+
+        explicit FileEntity(const std::string &name = "", const std::string &path = "", const FileType type = FileType::NONE,
+                   const unsigned long size = 0) : type(), size(0) {
+            this->name = name;
+            this->path = path;
+            this->type = type;
+            this->size = size;
+        }
+
+        bool isFile() const {
+            return type == FileType::FILE;
+        }
+
+        bool isDirectory() const {
+            return type == FileType::DIRECTORY;
+        }
+
+        bool isNull() const {
+            return type == FileType::NONE;
+        }
     };
 
 } // namespace DosboxStagingReplacer
