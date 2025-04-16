@@ -30,14 +30,14 @@ namespace DosboxStagingReplacer {
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a string.
          */
-        virtual std::string serialize(std::vector<std::shared_ptr<SqlDataResult>> dataset);
+        virtual std::string serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset);
 
         /**
          * @brief Serializes the InstallInfo dataset into a string format.
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a string.
          */
-        virtual std::string serialize(std::vector<InstallationInfo> dataset);
+        virtual std::string serialize(const std::vector<InstallationInfo> &dataset);
 
         /**
          * @brief Converts the SqlDataResult object into a string format.
@@ -72,14 +72,14 @@ namespace DosboxStagingReplacer {
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a JSON string.
          */
-        std::string serialize(std::vector<std::shared_ptr<SqlDataResult>> dataset) override;
+        std::string serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) override;
 
         /**
          * @brief Serializes the InstallationInfo dataset into JSON format.
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a JSON string.
          */
-        std::string serialize(std::vector<InstallationInfo> dataset) override;
+        std::string serialize(const std::vector<InstallationInfo> &dataset) override;
 
         /**
          * @brief Converts the SqlDataResult object into a JSON string.
@@ -105,14 +105,14 @@ namespace DosboxStagingReplacer {
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a JSON string.
          */
-        std::string serialize(std::vector<std::shared_ptr<SqlDataResult>> dataset) override;
+        std::string serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) override;
 
         /**
          * @brief Serializes the InstallationInfo dataset into JSON format.
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a JSON string.
          */
-        std::string serialize(std::vector<InstallationInfo> dataset) override;
+        std::string serialize(const std::vector<InstallationInfo> &dataset) override;
 
         /**
          * @brief Converts the SqlDataResult object into a JSON string.
