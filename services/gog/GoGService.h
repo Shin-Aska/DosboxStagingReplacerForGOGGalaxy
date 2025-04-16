@@ -67,9 +67,10 @@ namespace DosboxStagingReplacer {
 
         /**
          * @brief Retrieves all products in the database.
+         * @param showDosOnly If true, only DOS games are shown.
          * @return A vector of ProductDetails objects.
          */
-        std::vector<ProductDetails> getProducts();
+        std::vector<ProductDetails> getProducts(bool showDosOnly = true);
 
         /**
          * @brief Retrieves all users in the database.

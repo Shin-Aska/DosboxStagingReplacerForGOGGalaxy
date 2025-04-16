@@ -2,7 +2,10 @@
 // Created by Richard Orilla on 3/24/2025.
 //
 
+#include <algorithm>
+
 #include "GoGService.h"
+#include "DirectoryScanner.h"
 
 namespace DosboxStagingReplacer {
 
@@ -121,7 +124,7 @@ namespace DosboxStagingReplacer {
         return this->validDatabase;
     }
 
-    std::vector<ProductDetails> GogGalaxyService::getProducts() {
+    std::vector<ProductDetails> GogGalaxyService::getProducts(const bool showDosOnly) {
         if (this->validDatabase) {
             auto result = this->sqlService.executeQuery<ProductDetails>(R"SQL(
                 SELECT
@@ -138,6 +141,26 @@ namespace DosboxStagingReplacer {
                      INNER JOIN InstalledBaseProducts ibp
                                 ON ibp.productId = pdv.productId;
             )SQL", {});
+
+            // If showDosOnly is true, filter the results to only include DOS games
+            // To do this, we use DirectoryScanner to get all the listed files in installationPath
+            // and if it contains the folder DOSBOX, we add it to the result
+            if (showDosOnly) {
+                std::vector<ProductDetails> filteredResult;
+                try {
+                    for (const auto &product : result) {
+                        if (auto filesInPath = DirectoryScanner::scanDirectory(product.installationPath);
+                            std::ranges::any_of(filesInPath, [](const auto &file) {
+                            return file.path.find("DOSBOX") != std::string::npos;
+                        })) {
+                            filteredResult.push_back(product);
+                        }
+                    }
+                } catch (const std::exception &e) {
+                    std::cerr << "Error scanning directory: " << e.what() << std::endl;
+                }
+                return filteredResult;
+            }
             return result;
         }
         throw GogGalaxyServiceException("Database connection is not open");
