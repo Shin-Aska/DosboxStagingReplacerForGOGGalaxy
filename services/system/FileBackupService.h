@@ -38,7 +38,7 @@ namespace DosboxStagingReplacer {
          * @return The FileEntity object representing the backup file.
          * If empty, the method will gather file information from the file system.
          */
-        FileEntity createBackup(const std::string &filePath, const std::vector<FileEntity> &filesInPath = {}) const;
+        [[nodiscard]] FileEntity createBackup(const std::string &filePath, const std::vector<FileEntity> &filesInPath = {}) const;
 
         /**
          * @brief Restores a file from its backup.
@@ -46,7 +46,7 @@ namespace DosboxStagingReplacer {
          * @param filesInPath A vector of FileEntity objects representing the files in the path.
          * @return The FileEntity object representing the restored file.
          */
-        static FileEntity restoreFromBackup(const std::string &filePath,
+        FileEntity restoreFromBackup(const std::string &filePath,
                                             const std::vector<FileEntity> &filesInPath = {});
 
         /**
@@ -56,7 +56,7 @@ namespace DosboxStagingReplacer {
          * If empty, the method will gather file information from the file system.
          * @return true if a backup exists, false otherwise.
          */
-        static bool backupExists(const std::string& filePath, const std::vector<FileEntity> &filesInPath = {});
+        bool backupExists(const std::string& filePath, const std::vector<FileEntity> &filesInPath = {});
     };
 
 }

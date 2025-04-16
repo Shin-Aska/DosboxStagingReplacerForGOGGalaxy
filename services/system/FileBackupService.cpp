@@ -62,10 +62,10 @@ namespace DosboxStagingReplacer {
         if (filesInDirectory.empty()) {
             DirectoryScanner scanner;
             const std::string directoryPath = filePath.substr(0, filePath.find_last_of("\\/"));
-            filesInDirectory = scanner.scanDirectory(directoryPath);
+            filesInDirectory = DirectoryScanner::scanDirectory(directoryPath);
         }
 
-        if (DosboxStagingReplacer::FileBackupService::backupExists(filePath, filesInPath)) {
+        if (FileBackupService::backupExists(filePath, filesInPath)) {
             // We first get all possible backup files
             std::vector<FileEntity> backupFiles;
             std::ranges::copy_if(filesInDirectory, std::back_inserter(backupFiles), [&](const auto& file) {
@@ -83,7 +83,7 @@ namespace DosboxStagingReplacer {
             int highestBackupNumber = -1;
             for (const auto& file : backupFiles) {
                 std::string fileName = file.path.substr(file.path.find_last_of("\\/") + 1);
-                std::string backupNumberString = fileName.substr(fileName.find_last_of(".") + 1);
+                std::string backupNumberString = fileName.substr(fileName.find_last_of(this->backupFileExtension) + 1);
                 if (const int backupNumber = std::stoi(backupNumberString); backupNumber > highestBackupNumber) {
                     highestBackupNumber = backupNumber;
                     mostRecentBackupFile = file;
@@ -101,16 +101,15 @@ namespace DosboxStagingReplacer {
         auto filesInDirectory = filesInPath;
         // Check if filesInPath is empty
         if (filesInDirectory.empty()) {
-            DirectoryScanner scanner;
             const std::string directoryPath = filePath.substr(0, filePath.find_last_of("\\/"));
-            filesInDirectory = scanner.scanDirectory(directoryPath);
+            filesInDirectory = DirectoryScanner::scanDirectory(directoryPath);
         }
 
         // We check if the file exists in the directory, to do this we check if filePath is a substring of file.path
         // and if the length of file.path is greater than filePath, then we know that the file is a backup
         // This is also to cover other .bak files such as .bak.2, .bak.3, etc.
         return std::ranges::any_of(filesInDirectory, [&](const auto& file) {
-            return file.path.find(filePath) != std::string::npos && file.path.length() > filePath.length();
+            return file.path.find(filePath + this->backupFileExtension) != std::string::npos && file.path.length() > filePath.length();
         });
     }
 }
