@@ -17,6 +17,7 @@ include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/services/system
         ${CMAKE_CURRENT_SOURCE_DIR}/services/sql
         ${CMAKE_CURRENT_SOURCE_DIR}/services/gog
+        ${CMAKE_CURRENT_SOURCE_DIR}/services
 )
 
 add_executable(DosboxStagingReplacer
@@ -39,4 +40,6 @@ add_executable(DosboxStagingReplacer
         services/gog/GoGService.h
         services/system/FileBackupService.cpp
         services/system/FileBackupService.h
+        services/ScriptEditService.cpp
+        services/ScriptEditService.h
 )
