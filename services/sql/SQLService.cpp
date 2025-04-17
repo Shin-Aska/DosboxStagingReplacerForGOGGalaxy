@@ -2,6 +2,7 @@
 // Created by Richard Orilla on 3/23/2025.
 //
 
+#include <cstdint>
 #ifndef SQL_CPP
 #define SQL_CPP
 
@@ -115,7 +116,10 @@ namespace DosboxStagingReplacer {
                 continue;
             }
 
-            if (const std::any &value = it->second; value.type() == typeid(int)) {
+            if (const std::any &value = it->second; value.type() == typeid(int64_t)) {
+                sqlite3_bind_int64(stmt, i, std::any_cast<int64_t>(value));
+            }
+            else if (value.type() == typeid(int)) {
                 sqlite3_bind_int(stmt, i, std::any_cast<int>(value));
             } else if (value.type() == typeid(double)) {
                 sqlite3_bind_double(stmt, i, std::any_cast<double>(value));
@@ -125,6 +129,8 @@ namespace DosboxStagingReplacer {
                 sqlite3_bind_text(stmt, i, std::any_cast<const char *>(value), -1, SQLITE_TRANSIENT);
             } else if (value.type() == typeid(nullptr)) {
                 sqlite3_bind_null(stmt, i);
+            } else if (value.type() == typeid(bool)) {
+                sqlite3_bind_int(stmt, i, std::any_cast<bool>(value));
             } else {
                 std::cerr << "Unsupported type for key: " << key << std::endl;
                 sqlite3_finalize(stmt);
