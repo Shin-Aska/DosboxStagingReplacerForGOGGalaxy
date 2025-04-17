@@ -57,6 +57,12 @@ namespace DosboxStagingReplacer {
         return *this;
     }
 
+    std::any PlayTaskType::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters, const SqlEngine engine) {
+        const auto parser = StatementParserFactory::createParser(engine);
+        parser->parseInto(*this, parameters, stmt);
+        return *this;
+    }
+
     StatementParser::StatementParser() = default;
     StatementParser::~StatementParser() = default;
 
@@ -119,7 +125,7 @@ namespace DosboxStagingReplacer {
         auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
         for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
             if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "id") {
-                result.id = sqlite3_column_int(stmt, i);
+                result.id = sqlite3_column_int64(stmt, i);
             }
         }
     }
@@ -158,6 +164,17 @@ namespace DosboxStagingReplacer {
                 result.commandLineArgs = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
             } else if (columnName == "label") {
                 result.label = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+            }
+        }
+    }
+
+    void SqliteStatementParser::parseInto(PlayTaskType &result, std::vector<std::string> parameters, const std::any stmtAny) {
+        auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
+        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
+            if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "id") {
+                result.id = sqlite3_column_int(stmt, i);
+            } else if (columnName == "type") {
+                result.type = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
             }
         }
     }
