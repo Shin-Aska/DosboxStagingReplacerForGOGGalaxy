@@ -1,0 +1,784 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
+  <diagram name="Page-1" id="ieSlPCqyH4HHOz5-o-X9">
+    <mxGraphModel dx="6460" dy="2887" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-62" value="Main" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=47.2;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="2390" y="20" width="265" height="102.2" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-63" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-62">
+          <mxGeometry y="47.2" width="265" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-64" value="+int main(int argc, char** argv)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-62">
+          <mxGeometry y="55.2" width="265" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-226" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-65" target="NECy_0C4Ndhl-S2kP_Gk-189">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="1170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-227" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-65" target="NECy_0C4Ndhl-S2kP_Gk-194">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="1280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-228" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-65" target="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1190" y="1300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-280" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-65" target="NECy_0C4Ndhl-S2kP_Gk-241">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-65" value="GogGalaxyService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30.105263157894736;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="640" y="550" width="923" height="638.1052631578948" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-171" value="-SqlLiteService sqlService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="30.105263157894736" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-172" value="-bool validDatabase" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="60.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-66" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="90.10526315789474" width="923" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-67" value="+GogGalaxyService(std::string connectionString)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="98.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-68" value="+~GogGalaxyService()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="128.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-174" value="-void disableAllPlayTaskFor(string gameReleaseKey)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="158.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-175" value="- PlayTaskInformation insertPlayTask(int64_t userId, int new_order, PlayTaskInformation playTask)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="188.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-173" value="-void insertPlayTaskLaunchParameters(PlayTaskInformation playTask, PlayTaskLaunchParameters launchParameters)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="218.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-176" value="+void openConnection(std::string connectionString)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="248.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-177" value="+bool verifyDatabase()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="278.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-69" value="+bool isDatabaseValid()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="308.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-178" value="+void setConnectionString(std::string connectionString)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="338.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-70" value="+vector&lt;ProductDetails&gt; getProducts(string releaseKey, bool showDosOnly)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="368.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-71" value="+std::vector&lt;GogUser&gt; getUsers()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="398.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-180" value="+vector&lt;PlayTaskInformation&gt; getPlayTasks()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="428.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-179" value="+vector&lt;PlayTaskType&gt; getPlayTaskTypes()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="458.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-181" value="+vector&lt;PlayTaskInformation&gt; getPlayTasksFromGameReleaseKey(string gameReleaseKey)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="488.10526315789474" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-72" value="+vector&lt;PlayTaskLaunchParameters&gt; getPlayTaskLaunchParameters()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="518.1052631578948" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-182" value="+vector&lt;PlayTaskLaunchParameters&gt; getPlayTaskLaunchParametersFromPlayTaskId(int playTaskId)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="548.1052631578948" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-73" value="+PlayTaskInformation insertPlayTask(int userId, int newOrder, PlayTaskInformation playTask)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="578.1052631578948" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-74" value="+void setCustomLaunchParametersForProduct(string gameReleaseKey, bool enabled)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry y="608.1052631578948" width="923" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-75" value="ScriptEditService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=31.733333333333334;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1799" y="220" width="491" height="242.00333333333336" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-76" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-75">
+          <mxGeometry y="31.733333333333334" width="491" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-79" value="+static void replaceAll(string str, string from, string to)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-75">
+          <mxGeometry y="39.733333333333334" width="491" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-80" value="+void isConfigFileDosboxAutoExec(filesystem::path filePath)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-75">
+          <mxGeometry y="71.73333333333333" width="491" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-143" value="+void isConfigFileDosboxConfig(filesystem::path filePath)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-75">
+          <mxGeometry y="103.73333333333333" width="491" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-144" value="+void resolveRelativePathsFromString(string cmd, filesystem::path basePath)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-75">
+          <mxGeometry y="135.73333333333335" width="491" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-82" value="+void resolveRelativePathsForDosboxAutoExec(filesystem::path filePath, filesystem::path basePath)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-75">
+          <mxGeometry y="167.73333333333335" width="491" height="42.27" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-81" value="+void disableFullScreen(string path)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-75">
+          <mxGeometry y="210.00333333333336" width="491" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-313" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-83" target="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2750" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-83" value="FileBackupService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32.92307692307692;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="2330" y="170.05" width="364" height="330.0030769230769" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-146" value="-string backupFileExtension" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry y="32.92307692307692" width="364" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-84" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry y="65.92307692307692" width="364" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-85" value="+FileBackupService()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry y="73.92307692307692" width="364" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-86" value="+~FileBackupService()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry y="106.92307692307692" width="364" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-87" value="+void setBackupFileExtension(string extension)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry y="139.9230769230769" width="364" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-88" value="+string getBackupFileExtension()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry y="172.9230769230769" width="364" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-89" value="+FileEntity createBackup(string filePath, vector&lt;FileEntity&gt; filesInpath)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry y="205.9230769230769" width="364" height="44.08" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-147" value="+FileEntity restoreFromBackup(string filePath, vector&lt;FileEntity&gt; filesInpath)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry y="250.0030769230769" width="364" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-148" value="+bool backupExists(string filePath, vector&lt;FileEntity&gt; filesInpath)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry y="290.0030769230769" width="364" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-314" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-90" target="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2240" y="1030" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-90" value="DirectoryScanner" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40.57142857142857;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1941" y="650" width="684" height="89.57142857142857" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-91" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-90">
+          <mxGeometry y="40.57142857142857" width="684" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-92" value="+static vector&lt;FileEntity&gt; scanDirectory(string path)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-90">
+          <mxGeometry y="48.57142857142857" width="684" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-326" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-94" target="NECy_0C4Ndhl-S2kP_Gk-315">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-94" value="InstallationFinder" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=34.54545454545455;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="2754" y="244" width="416" height="77.54545454545455" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-95" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-94">
+          <mxGeometry y="34.54545454545455" width="416" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-96" value="+static vector&lt;InstallationInfo&gt; findApplication(string applicationName)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-94">
+          <mxGeometry y="42.54545454545455" width="416" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-100" value="InstallationVerifier" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=34.54545454545455;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="3220" y="244" width="404" height="357.54545454545456" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-150" value="-string installationPath" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="34.54545454545455" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-149" value="-string targetExecutable" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="69.54545454545455" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-101" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="104.54545454545455" width="404" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-152" value="+InstallationVerifier(string installationPath, string targetExecutable)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="112.54545454545455" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-151" value="~InstallationVerifier()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="147.54545454545456" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-102" value="+bool isInstallationValid()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="182.54545454545456" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-103" value="+void setInstallationPath(string installationPath)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="217.54545454545456" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-154" value="+void setTargetExecutable(string targetExecutable)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="252.54545454545456" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-104" value="+string getInstallationPath()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="287.54545454545456" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-155" value="+string getTargetExecutable()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry y="322.54545454545456" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-132" value="" style="curved=1;startArrow=none;endArrow=open;endSize=12;exitX=0;exitY=0.56;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-62" target="NECy_0C4Ndhl-S2kP_Gk-65">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1260" y="71" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-133" value="" style="curved=1;startArrow=none;endArrow=open;endSize=12;exitX=0;exitY=0.69;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-62" target="NECy_0C4Ndhl-S2kP_Gk-75">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2044" y="171" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-134" value="" style="curved=1;startArrow=none;endArrow=open;endSize=12;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-62" target="NECy_0C4Ndhl-S2kP_Gk-83">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-135" value="" style="curved=1;startArrow=none;endArrow=open;endSize=12;exitX=1;exitY=0.71;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-62" target="NECy_0C4Ndhl-S2kP_Gk-94">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2962" y="171" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-136" value="" style="curved=1;startArrow=none;endArrow=open;endSize=12;exitX=1;exitY=0.6;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-62" target="NECy_0C4Ndhl-S2kP_Gk-100">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3422" y="171" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-141" value="" style="curved=1;startArrow=none;endArrow=open;endSize=12;exitX=0.5;exitY=1;entryX=0.34;entryY=0;rounded=0;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-75" target="NECy_0C4Ndhl-S2kP_Gk-90">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2044" y="515" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-142" value="" style="curved=1;startArrow=none;endArrow=open;endSize=12;exitX=0.5;exitY=1;entryX=0.66;entryY=0;rounded=0;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-83" target="NECy_0C4Ndhl-S2kP_Gk-90">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2522" y="515" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-156" value="DosboxVerifier" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=34.54545454545455;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="3220" y="670" width="404" height="77.54545454545455" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-159" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-156">
+          <mxGeometry y="34.54545454545455" width="404" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-162" value="+bool isInstallationValid()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-156">
+          <mxGeometry y="42.54545454545455" width="404" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-170" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1.021;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=blockThin;endFill=0;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-156" target="NECy_0C4Ndhl-S2kP_Gk-155">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-184" value="SqlDataResult" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=36.888888888888886;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="443" y="1782" width="694" height="155.88888888888889" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-185" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-184">
+          <mxGeometry y="36.888888888888886" width="694" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-186" value="+~SqlDataResult()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-184">
+          <mxGeometry y="44.888888888888886" width="694" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-187" value="+std::any fillFromStatement(std::any stmt, std::vector parameters, SqlEngine engine)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-184">
+          <mxGeometry y="81.88888888888889" width="694" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-188" value="+std::vector&amp;gt; getAttributes() : const" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-184">
+          <mxGeometry y="118.88888888888889" width="694" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-189" value="SqliteLastRowId" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="-680" y="1492" width="702" height="168" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-190" value="+int id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-189">
+          <mxGeometry y="40" width="702" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-191" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-189">
+          <mxGeometry y="80" width="702" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-192" value="+StatementParser fillFromStatement(any stmt, vector&lt;string&gt; parameters, SqlEngine engine)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-189">
+          <mxGeometry y="88" width="702" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-193" value="+vector&lt;tuple&lt;string, DataResultType&gt;&gt; getAttributes()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-189">
+          <mxGeometry y="128" width="702" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-194" value="SqliteSchema" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=33.142857142857146;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="72" y="1456" width="692" height="239.14285714285714" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-195" value="+string type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-194">
+          <mxGeometry y="33.142857142857146" width="692" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-196" value="+string name" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-194">
+          <mxGeometry y="66.14285714285714" width="692" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-197" value="+string tbl_name" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-194">
+          <mxGeometry y="99.14285714285714" width="692" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-198" value="+int rootpage" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-194">
+          <mxGeometry y="132.14285714285714" width="692" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-199" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-194">
+          <mxGeometry y="165.14285714285714" width="692" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-200" value="+StatementParser fillFromStatement(any stmt, vector&lt;string&gt; parameters, SqlEngine engine)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-194">
+          <mxGeometry y="173.14285714285714" width="692" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-201" value="+vector&lt;tuple&lt;string, DataResultType&gt;&gt; getAttributes()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-194">
+          <mxGeometry y="206.14285714285714" width="692" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-202" value="ProductDetails" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30.4;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="814" y="1420" width="697" height="308.4" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-203" value="+int productId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="30.4" width="697" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-204" value="+string title" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="60.4" width="697" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-205" value="+string slug" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="90.4" width="697" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-206" value="+int gogId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="120.4" width="697" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-207" value="+string releaseKey" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="150.4" width="697" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-209" value="+string installationDate" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="180.4" width="697" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-208" value="+string installationPath" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="210.4" width="697" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-210" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="240.4" width="697" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-211" value="+StatementParser fillFromStatement(any stmt, vector&lt;string&gt; parameters, SqlEngine engine)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="248.4" width="697" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-212" value="+vector&lt;tuple&lt;string, DataResultType&gt;&gt; getAttributes()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-202">
+          <mxGeometry y="278.4" width="697" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-213" value="GogUser" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1561" y="1492" width="673" height="168" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-214" value="+int64_t id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-213">
+          <mxGeometry y="40" width="673" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-215" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-213">
+          <mxGeometry y="80" width="673" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-216" value="+StatementParser fillFromStatement(any stmt, vector&lt;string&gt; parameters, SqlEngine engine)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-213">
+          <mxGeometry y="88" width="673" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-217" value="+vector&lt;tuple&lt;string, DataResultType&gt;&gt; getAttributes()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-213">
+          <mxGeometry y="128" width="673" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-222" value="" style="curved=1;startArrow=none;endArrow=block;endSize=16;endFill=0;exitX=0.5;exitY=1;entryX=0;entryY=0.3;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-189" target="NECy_0C4Ndhl-S2kP_Gk-184">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-329" y="1757" />
+              <mxPoint x="100" y="1757" />
+              <mxPoint x="100" y="1829" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-223" value="" style="curved=1;startArrow=none;endArrow=block;endSize=16;endFill=0;exitX=0.5;exitY=1;entryX=0.08;entryY=0;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-194" target="NECy_0C4Ndhl-S2kP_Gk-184">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="418" y="1757" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-224" value="" style="curved=1;startArrow=none;endArrow=block;endSize=16;endFill=0;exitX=0.5;exitY=1;entryX=0.92;entryY=0;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-202" target="NECy_0C4Ndhl-S2kP_Gk-184">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1162" y="1757" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-225" value="" style="curved=1;startArrow=none;endArrow=block;endSize=16;endFill=0;exitX=0.5;exitY=1;entryX=1;entryY=0.3;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-213" target="NECy_0C4Ndhl-S2kP_Gk-184">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1897" y="1757" />
+              <mxPoint x="1510" y="1757" />
+              <mxPoint x="1510" y="1829" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-229" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.521;entryY=0.01;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-178" target="NECy_0C4Ndhl-S2kP_Gk-213">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1930" y="1030" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-286" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-236" target="NECy_0C4Ndhl-S2kP_Gk-284">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-890" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-236" value="PlayTaskInformation" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30.4;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="-540" y="128.57" width="718" height="308.4" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-237" value="+int id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="30.4" width="718" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-238" value="+std::string gameReleaseKey" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="60.4" width="718" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-239" value="+int userId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="90.4" width="718" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-240" value="+int order" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="120.4" width="718" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-241" value="+int typeId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="150.4" width="718" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-242" value="+std::string type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="180.4" width="718" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-243" value="+bool isPrimary" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="210.4" width="718" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-244" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="240.4" width="718" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-245" value="+StatementParser fillFromStatement(any stmt, vector&lt;string&gt; parameters, SqlEngine engine)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="248.4" width="718" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-246" value="+vector&lt;tuple&lt;string, DataResultType&gt;&gt; getAttributes()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-236">
+          <mxGeometry y="278.4" width="718" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-285" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-247" target="NECy_0C4Ndhl-S2kP_Gk-284">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-247" value="PlayTaskLaunchParameters" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=33.142857142857146;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="550" width="743" height="239.14285714285714" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-248" value="+int playTaskId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-247">
+          <mxGeometry y="33.142857142857146" width="743" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-249" value="+std::string executablePath" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-247">
+          <mxGeometry y="66.14285714285714" width="743" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-250" value="+std::string commandLineArgs" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-247">
+          <mxGeometry y="99.14285714285714" width="743" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-251" value="+std::string label" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-247">
+          <mxGeometry y="132.14285714285714" width="743" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-252" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-247">
+          <mxGeometry y="165.14285714285714" width="743" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-253" value="+StatementParser fillFromStatement(any stmt, vector&lt;string&gt; parameters, SqlEngine engine)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-247">
+          <mxGeometry y="173.14285714285714" width="743" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-254" value="+vector&lt;tuple&lt;string, DataResultType&gt;&gt; getAttributes()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-247">
+          <mxGeometry y="206.14285714285714" width="743" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-287" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-255" target="NECy_0C4Ndhl-S2kP_Gk-284">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-970" y="990" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-255" value="PlayTaskType" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=36.8;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="907" width="692" height="192.8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-256" value="+int id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-255">
+          <mxGeometry y="36.8" width="692" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-257" value="+string type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-255">
+          <mxGeometry y="73.8" width="692" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-258" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-255">
+          <mxGeometry y="110.8" width="692" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-259" value="+StatementParser fillFromStatement(any stmt, vector&lt;string&gt; parameters, SqlEngine engine)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-255">
+          <mxGeometry y="118.8" width="692" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-260" value="+vector&lt;tuple&lt;string, DataResultType&gt;&gt; getAttributes()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-255">
+          <mxGeometry y="155.8" width="692" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-288" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=block;endFill=0;endSize=16;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-261" target="NECy_0C4Ndhl-S2kP_Gk-188">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-261" value="StatementParser" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=36.888888888888886;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="50" y="2090" width="450" height="155.88888888888889" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-262" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-261">
+          <mxGeometry y="36.888888888888886" width="450" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-263" value="+StatementParser()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-261">
+          <mxGeometry y="44.888888888888886" width="450" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-264" value="+~StatementParser()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-261">
+          <mxGeometry y="81.88888888888889" width="450" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-265" value="+void parseInto(SqlDataResult result, vector&lt;string&lt; parameters, string stmt)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-261">
+          <mxGeometry y="118.88888888888889" width="450" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-292" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=block;endFill=0;endSize=16;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-266" target="NECy_0C4Ndhl-S2kP_Gk-261">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-266" value="SqliteStatementParserFactory" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=36.888888888888886;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="86" y="2390" width="378" height="155.88888888888889" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-267" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-266">
+          <mxGeometry y="36.888888888888886" width="378" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-268" value="+SqliteStatementParserFactory()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-266">
+          <mxGeometry y="44.888888888888886" width="378" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-269" value="+~SqliteStatementParserFactory()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-266">
+          <mxGeometry y="81.88888888888889" width="378" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-270" value="+std::unique_ptr createParser()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-266">
+          <mxGeometry y="118.88888888888889" width="378" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-278" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.007;entryY=-0.037;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-65" target="NECy_0C4Ndhl-S2kP_Gk-259">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="910" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-279" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.001;entryY=-0.035;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-65" target="NECy_0C4Ndhl-S2kP_Gk-251">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="690" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-282" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;SQL&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" parent="1">
+          <mxGeometry x="750" y="2030" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-283" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.497;entryY=1.165;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-282" target="NECy_0C4Ndhl-S2kP_Gk-188">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-284" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;SQL&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;" vertex="1" parent="1">
+          <mxGeometry x="-1010" y="601.55" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-299" value="FileEntity" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30.4;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="2420" y="860" width="636" height="308.4" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-300" value="+string name" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="30.4" width="636" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-301" value="+string path" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="60.4" width="636" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-302" value="+FileType type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="90.4" width="636" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-303" value="+unsigned long size" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="120.4" width="636" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-304" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="150.4" width="636" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-305" value="+FileEntity(string name, string path, FileType type, unsigned long size)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="158.4" width="636" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-306" value="+bool isFile() : const" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="188.4" width="636" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-307" value="+bool isDirectory() : const" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="218.4" width="636" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-308" value="+bool isNull() : const" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="248.4" width="636" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-309" value="+string getTypeName() : const" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-299">
+          <mxGeometry y="278.4" width="636" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-310" value="FileType &lt;&lt;Enum&gt;&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=38;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="2900" y="1310" width="170" height="57" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-311" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-310">
+          <mxGeometry y="38" width="170" height="19" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-312" value="" style="curved=1;startArrow=none;endArrow=open;endSize=12;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-299" target="NECy_0C4Ndhl-S2kP_Gk-310">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-315" value="InstallationInfo" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30.4;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="2802" y="440" width="320" height="128.4" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-316" value="+string applicationName" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-315">
+          <mxGeometry y="30.4" width="320" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-317" value="+string installationPath" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-315">
+          <mxGeometry y="60.4" width="320" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-318" value="+string source" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-315">
+          <mxGeometry y="90.4" width="320" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-320" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-315">
+          <mxGeometry y="120.4" width="320" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-327" value="SqlServiceException" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32.92307692307692;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="2194.5" y="2413.9500000000003" width="586" height="205.9230769230769" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-328" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-327">
+          <mxGeometry y="32.92307692307692" width="586" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-329" value="+SqlServiceException(char* message)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-327">
+          <mxGeometry y="40.92307692307692" width="586" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-330" value="+SqlServiceException(SqlServiceException&amp;) : noexcept" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-327">
+          <mxGeometry y="73.92307692307692" width="586" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-331" value="+SqlServiceException&amp; operator=(SqlServiceException&amp;) : noexcept" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-327">
+          <mxGeometry y="106.92307692307692" width="586" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-332" value="+~SqlServiceException()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-327">
+          <mxGeometry y="139.9230769230769" width="586" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-333" value="+ char* what() : noexcept" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-327">
+          <mxGeometry y="172.9230769230769" width="586" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-334" value="SqlLiteServiceException" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=32.92307692307692;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="2194.5" y="2050.59" width="656" height="205.9230769230769" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-335" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-334">
+          <mxGeometry y="32.92307692307692" width="656" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-336" value="+SqlLiteServiceException(char* message)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-334">
+          <mxGeometry y="40.92307692307692" width="656" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-337" value="+SqlLiteServiceException(SqlLiteServiceException&amp;) : noexcept" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-334">
+          <mxGeometry y="73.92307692307692" width="656" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-338" value="+SqlLiteServiceException&amp; operator=(SqlLiteServiceException&amp;) : noexcept" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-334">
+          <mxGeometry y="106.92307692307692" width="656" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-339" value="+~SqlLiteServiceException()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-334">
+          <mxGeometry y="139.9230769230769" width="656" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-340" value="+ char* what() : noexcept" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-334">
+          <mxGeometry y="172.9230769230769" width="656" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-373" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-341" target="NECy_0C4Ndhl-S2kP_Gk-327">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-341" value="SqlService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=29.818181818181817;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1628" y="2348" width="497" height="337.8181818181818" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-342" value="#string connectionString" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="29.818181818181817" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-343" value="#bool connectedFlag" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="59.81818181818181" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-344" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="89.81818181818181" width="497" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-345" value="+SqlService(string connectionString)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="97.81818181818181" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-346" value="+~SqlService()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="127.81818181818181" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-347" value="+void openConnection(string connectionString)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="157.8181818181818" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-348" value="+void reconnect()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="187.8181818181818" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-349" value="+void closeConnection()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="217.8181818181818" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-350" value="+bool isConnectionOpen()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="247.8181818181818" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-351" value="+void executeQuery(string query, unordered_map params)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="277.8181818181818" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-352" value="+vector executeQuery(string query, unordered_map params)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry y="307.8181818181818" width="497" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-367" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=block;endFill=0;endSize=16;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-353" target="NECy_0C4Ndhl-S2kP_Gk-184">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1876" y="1880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-370" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-353" target="NECy_0C4Ndhl-S2kP_Gk-368">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2050" y="1830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-372" style="edgeStyle=none;shape=connector;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;startArrow=none;endArrow=open;endSize=12;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-353" target="NECy_0C4Ndhl-S2kP_Gk-334">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-353" value="SqlLiteService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=31.11111111111111;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1620" y="2010" width="511" height="287.1111111111111" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-354" value="-int connection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-353">
+          <mxGeometry y="31.11111111111111" width="511" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-355" value="-sqlite3* db" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-353">
+          <mxGeometry y="62.111111111111114" width="511" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-356" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-353">
+          <mxGeometry y="93.11111111111111" width="511" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-357" value="+SqlLiteService(string connectionString)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-353">
+          <mxGeometry y="101.11111111111111" width="511" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-358" value="+~SqlLiteService()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-353">
+          <mxGeometry y="132.11111111111111" width="511" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-359" value="+void openConnection(string connectionString)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-353">
+          <mxGeometry y="163.11111111111111" width="511" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-360" value="+void closeConnection()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-353">
+          <mxGeometry y="194.11111111111111" width="511" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-361" value="+void executeQuery(string query, unordered_map params)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-353">
+          <mxGeometry y="225.11111111111111" width="511" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-362" value="+vector executeQuery(string query, unordered_map params)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-353">
+          <mxGeometry y="256.1111111111111" width="511" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-366" value="" style="curved=1;startArrow=none;endArrow=block;endSize=16;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="NECy_0C4Ndhl-S2kP_Gk-353" target="NECy_0C4Ndhl-S2kP_Gk-341">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-368" value="SqlEngine &lt;&lt;Enum&gt;&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=38;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="2280" y="1810" width="170" height="57" as="geometry" />
+        </mxCell>
+        <mxCell id="NECy_0C4Ndhl-S2kP_Gk-369" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="NECy_0C4Ndhl-S2kP_Gk-368">
+          <mxGeometry y="38" width="170" height="19" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
