@@ -5,7 +5,7 @@
 #include <algorithm>
 
 #include "DirectoryScanner.h"
-#include "GoGService.h"
+#include "GogGalaxyService.h"
 
 namespace DosboxStagingReplacer {
 

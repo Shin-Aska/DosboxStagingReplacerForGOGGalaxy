@@ -6,7 +6,7 @@
 #ifndef SQL_CPP
 #define SQL_CPP
 
-#include "SQLService.h"
+#include "SqlService.h"
 
 namespace DosboxStagingReplacer {
 

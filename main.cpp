@@ -8,7 +8,7 @@
 
 #include "DataExporter.h"
 #include "FileBackupService.h"
-#include "GoGService.h"
+#include "GogGalaxyService.h"
 #include "ScriptEditService.h"
 #include "StatementParser.h"
 #include "helpers/finders/InstallationFinder.h"
