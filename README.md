@@ -1,75 +1,53 @@
-# Dosbox Staging Replacer For GOG Galaxy
-## Core Module
+# Dosbox Staging Replacer for GOG Galaxy
 
-[![Build Status](https://travis-ci.org/Shin-Aska/DosboxStagingReplacerForGOGGalaxy.svg?branch=main)](https://travis-ci.org/Shin-Aska/DosboxStagingReplacerForGOGGalaxy)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+![GitHub](https://img.shields.io/github/license/Shin-Aska/DosboxStagingReplacerForGOGGalaxy)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Shin-Aska/DosboxStagingReplacerForGOGGalaxy)
 
-This repository is the core module of the Dosbox Staging Replacer For GOG Galaxy project.
+A utility designed to seamlessly replace the default DOSBox bundled with GOG Galaxy with the enhanced [DOSBox Staging](https://dosbox-staging.github.io/). It automatically adjusts configuration files, updates the GOG Galaxy database, and ensures easy rollback with backups.
 
-This is the backend application that does the work of replacing Dosbox with Dosbox Staging for GOG Galaxy installed classic games.
+---
 
-## About
+## 📚 Full Documentation
 
-Replaces Dosbox with Dosbox staging on GOG Galaxy installed classic games. This repository contains the core application which does the backend work
+Complete details about installation, usage, development, and internal architecture are available on the [**Wiki**](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/wiki).
 
-## Requirements
-1. Windows OS (As currently GOG Galaxy is only available on Windows). Compilable on Linux but is not compatible with GOG Galaxy database (Expect certain functionalities to not work)
-2. Must have GOG Galaxy installed
-3. Must have a custom Dosbox build installed (Dosbox Staging, Dosbox-X, Dosbox-ECE)
-4. Must have a classic game installed via GOG Galaxy
+- **[How It Works](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/wiki/How-It-Works)**  
+  Learn about the technical implementation, architecture, and internal workflow.
 
-## How to use
+- **[How to Use](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/wiki/How-to-Use)**  
+  Step-by-step guide for running the tool, command-line options, and usage examples.
 
-1. Download the latest release from the [releases page](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/releases)
-2. Download DosboxStagingReplacer.exe
-3. Run the application (DosboxStagingReplacerForGOGGalaxy.exe -h)
-4. For further information, visit the wiki page. This page specifically discusses on how to use this tool
+- **[Contributing to Development](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/wiki/Contributing-to-Development)**  
+  Get involved! Find development guidelines, how to submit pull requests, and improvement ideas.
 
-## How to build
+---
 
-1. Clone the repository
-2. Create a build folder (in this example, we will create a folder for debug)
+## ⚡ Quick Start
+
+Download the latest binary from [Releases](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/releases):
+
 ```bash
-mkdir -p cmake-build-debug
-```
-3. Change to the build folder
-```bash
-cd cmake-build-debug
-```
-4. Run CMake to generate the build files
-```bash
-  cmake ..
-```
-5. Build the project
-```bash
-  cmake --build . --config Debug
+DosboxStagingReplacer --replace-dosbox --release-key your_game_release_key
 ```
 
-### IDE Integration
+See [How to Use](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/wiki/How-to-Use) for detailed instructions.
 
-- **CLion**: CLion automatically detects and configures the project using the provided `CMakeLists.txt`. No additional setup is required.
-- **Visual Studio Code (VSCode)**: Install the **C++ extension** (by Microsoft), which includes built-in support for CMake. Once installed, open the repository folder and VSCode will detect the `CMakeLists.txt` file at the root. You can configure build settings and targets via the Command Palette (`Ctrl+Shift+P`) using commands like `CMake: Configure` and `CMake: Build`.
-- **Other IDEs**: If your IDE supports CMake natively, it should recognize the root `CMakeLists.txt` file and configure the project automatically. If not, check whether a CMake plugin is available for your IDE. Alternatively, you can use CMake's `-G` option to generate project files (e.g., for Code::Blocks or Eclipse), though note that this method is deprecated by CMake since version 3.27
+------
 
-**Note**: It is recommended to name build directories with a `cmake-build-` prefix (e.g., `cmake-build-debug`, `cmake-build-release`). The repository's `.gitignore` is configured to exclude such folders automatically.
+## 🚩 Requirements
 
+- Windows 10 or later (Recommended)
+- GOG Galaxy client installed
+- DOSBox Staging (portable or installed)
 
-## Documentation
+------
 
-The wiki discusses the 
+## 🤝 Contributions
 
-## Third Party Libraries
-The following third party libraries are used in this project:
-- [SQLite](https://www.sqlite.org/index.html) (Public Domain) - Used for database operations
-- [argparse](https://github.com/p-ranav/argparse) (MIT License) - Used for command line argument parsing
+Contributions, improvements, and suggestions are welcome! Visit the [Contributing Guide](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/wiki/Contributing-to-Development) for details.
 
-It is located in the libs directory and is included in the project as a submodule for compilation purposes.
+------
 
-This repository only allows public domain and MIT licensed third party libraries.
+## 📜 License
 
-In addition, it is preferred that the libraries introduced are the amalgamated versions as to increase the portability of the project.
-
-That being said since these are amalgamated versions, this repository is responsible for updating the libraries to the latest version.
-
-### License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+Licensed under the MIT License.

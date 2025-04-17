@@ -266,7 +266,11 @@ int main(int argc, char *argv[]) {
             if (!searchString.empty()) {
                 std::vector<DosboxStagingReplacer::InstallationInfo> filteredApplications;
                 std::ranges::copy_if(applications, std::back_inserter(filteredApplications), [&](const auto &app) {
-                    return app.applicationName.find(searchString) != std::string::npos;
+                    std::string lowerCaseName = app.applicationName;
+                    std::ranges::transform(lowerCaseName, lowerCaseName.begin(), tolower);
+                    std::string lowerCaseSearchString = searchString;
+                    std::ranges::transform(lowerCaseSearchString, lowerCaseSearchString.begin(), tolower);
+                    return lowerCaseName.find(lowerCaseSearchString) != std::string::npos;
                 });
                 applications = filteredApplications;
             }
@@ -285,9 +289,17 @@ int main(int argc, char *argv[]) {
                 std::ranges::copy_if(games, std::back_inserter(filteredGames),
                                      [&](const std::shared_ptr<DosboxStagingReplacer::SqlDataResult> &game) {
                                          // We need to cast the SqlDataResult to ProductDetails to access the title
-                                         const auto *gameDetails =
+                                         if (game) {
+                                             const auto *gameDetails =
                                                  dynamic_cast<DosboxStagingReplacer::ProductDetails *>(game.get());
-                                         return game && gameDetails->title.find(searchString) != std::string::npos;
+                                             std::string lowerCaseTitle = gameDetails->title;
+                                             std::ranges::transform(lowerCaseTitle, lowerCaseTitle.begin(), tolower);
+                                             std::string lowerCaseSearchString = searchString;
+                                             std::ranges::transform(lowerCaseSearchString, lowerCaseSearchString.begin(),
+                                                                    tolower);
+                                             return lowerCaseTitle.find(lowerCaseSearchString) != std::string::npos;
+                                         }
+                                         return false;
                                      });
                 games = filteredGames;
             }
