@@ -139,10 +139,10 @@ int main(int argc, char *argv[]) {
                          program["--replace-dosbox"] == true,
                          program["--show-playtasks"] == true};
 
-    const auto operations_count = std::ranges::count(flags, true);
+    const auto operationsCount = std::ranges::count(flags, true);
 
     // If more than one flag is set to true, we print an error message and exit
-    if (operations_count > 1) {
+    if (operationsCount > 1) {
         std::cerr << "Error: You can only use one of the following flags at a time: --backup, --restore, "
                      "--list-applications, --list-games, --list-backups, --replace-dosbox, --show-playtasks"
                   << std::endl;
@@ -206,7 +206,7 @@ int main(int argc, char *argv[]) {
     }
 
     // If there are no operation flags set, we do not do anything but print help
-    if (operations_count == 1) {
+    if (operationsCount == 1) {
         DosboxStagingReplacer::FileBackupService fileBackupService;
         // Search string for the --search flag
         const auto searchString = program.get<std::string>("--search");
