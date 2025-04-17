@@ -160,18 +160,20 @@ namespace DosboxStagingReplacer {
             // and if it contains the folder DOSBOX, we add it to the result
             if (showDosOnly) {
                 std::vector<ProductDetails> filteredResult;
-                try {
-                    for (const auto &product: result) {
+
+                for (const auto &product: result) {
+                    try {
                         if (auto filesInPath = DirectoryScanner::scanDirectory(product.installationPath);
-                            std::ranges::any_of(filesInPath, [](const auto &file) {
-                                return file.path.find("DOSBOX") != std::string::npos;
-                            })) {
+                        std::ranges::any_of(filesInPath, [](const auto &file) {
+                            return file.path.find("DOSBOX") != std::string::npos;
+                        })) {
                             filteredResult.push_back(product);
                         }
+                    } catch (const std::exception &e) {
+                        std::cerr << "Error scanning directory: " << e.what() << std::endl;
                     }
-                } catch (const std::exception &e) {
-                    std::cerr << "Error scanning directory: " << e.what() << std::endl;
                 }
+
                 return filteredResult;
             }
             return result;
