@@ -276,34 +276,49 @@ int main(int argc, char *argv[]) {
             }
             std::cout << dataExporter->serialize(playTasks) << std::endl;
             service.closeConnection();
-        } else if (const auto dosboxArgument = program.get<std::string>("--dosbox-version");
-                   program["--replace-dosbox"] == true && !dosboxArgument.empty()) {
-            auto application =
-                    DosboxStagingReplacer::InstallationFinder::findApplication(dosBoxVersionParameters[dosboxArgument]);
-            // No need to do checking here and should not be done because we already did that at the earlier parts of
-            // the code Scan the files in the application installation path
-            std::cout << "Scanning chosen dosbox directory" << std::endl;
-            auto dosBoxFiles =
-                    DosboxStagingReplacer::DirectoryScanner::scanDirectory(application.front().installationPath);
-            // If somehow there are no files under that folder, we return an error
-            if (dosBoxFiles.empty()) {
-                std::cerr << "Error: There are no files in the application installation path" << std::endl;
+        } else if (program["--replace-dosbox"] == true) {
+            const auto dosboxArgument = program.get<std::string>("--dosbox-version");
+            const auto dosboxManualPath = program.get<std::string>("--dosbox-version-manual");
+            std::shared_ptr<DosboxStagingReplacer::FileEntity> dosBoxExe;
+
+            if (!dosboxArgument.empty()) {
+                auto application =
+                        DosboxStagingReplacer::InstallationFinder::findApplication(dosBoxVersionParameters[dosboxArgument]);
+                // No need to do checking here and should not be done because we already did that at the earlier parts of
+                // the code Scan the files in the application installation path
+                std::cout << "Scanning chosen dosbox directory" << std::endl;
+                auto dosBoxFiles =
+                        DosboxStagingReplacer::DirectoryScanner::scanDirectory(application.front().installationPath);
+                // If somehow there are no files under that folder, we return an error
+                if (dosBoxFiles.empty()) {
+                    std::cerr << "Error: There are no files in the application installation path" << std::endl;
+                }
+
+                std::cout << "Searching for dosbox.exe in the application installation path" << std::endl;
+
+                // We search if there is dosbox.exe in the directory, we search in non-case sensitive search
+                auto dosBoxExeSearch = std::ranges::find_if(dosBoxFiles, [&](const auto &file) {
+                    std::string lowerCaseName = file.name;
+                    std::ranges::transform(lowerCaseName, lowerCaseName.begin(), tolower);
+                    return lowerCaseName == "dosbox.exe";
+                });
+                // We search if there is dosbox.exe, if there is none, then we return an error
+                if (dosBoxExeSearch == dosBoxFiles.end()) {
+                    std::cerr << "Error: There is no dosbox.exe in the application installation path" << std::endl;
+                    return -1;
+                }
+                // Assign dosBoxExeSearch to dosBoxExe
+                dosBoxExe = std::make_shared<DosboxStagingReplacer::FileEntity>(*dosBoxExeSearch);
+                std::cout << "Successfully found dosbox.exe in the application installation path" << std::endl;
             }
-
-            std::cout << "Searching for dosbox.exe in the application installation path" << std::endl;
-
-            // We search if there is dosbox.exe in the directory, we search in non-case sensitive search
-            auto dosBoxExe = std::ranges::find_if(dosBoxFiles, [&](const auto &file) {
-                std::string lowerCaseName = file.name;
-                std::ranges::transform(lowerCaseName, lowerCaseName.begin(), tolower);
-                return lowerCaseName == "dosbox.exe";
-            });
-            // We search if there is dosbox.exe, if there is none, then we return an error
-            if (dosBoxExe == dosBoxFiles.end()) {
-                std::cerr << "Error: There is no dosbox.exe in the application installation path" << std::endl;
+            else if (!dosboxManualPath.empty()) {
+                std::filesystem::path manualPath = dosboxManualPath;
+                DosboxStagingReplacer::FileEntity fileEntity;
+                fileEntity.name = manualPath.filename().string();
+                fileEntity.path = manualPath.string();
+                dosBoxExe = std::make_shared<DosboxStagingReplacer::FileEntity>(std::move(fileEntity));
+                std::cout << "Successfully parsed --dosbox-manual-version parameter value for finding dosbox.exe" << std::endl;
             }
-
-            std::cout << "Successfully found dosbox.exe in the application installation path" << std::endl;
 
             service.openConnection((chosenPath / chosenFile).string());
 
@@ -312,6 +327,7 @@ int main(int argc, char *argv[]) {
             auto products = service.getProducts(releaseKey, program.get<bool>("--dos-only"));
             if (products.empty()) {
                 std::cerr << "Error: There are no products with the release key " << releaseKey << std::endl;
+                return -1;
             }
 
             auto product = products.front();
@@ -375,7 +391,7 @@ int main(int argc, char *argv[]) {
             }
 
             // Afterward we set the custom launch parameters to enable for this
-            // service.setCustomLaunchParametersForProduct(releaseKey, true);
+            service.setCustomLaunchParametersForProduct(releaseKey, true);
 
             std::cout << "Modifications completed" << std::endl;
 
