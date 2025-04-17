@@ -48,6 +48,15 @@ namespace DosboxStagingReplacer {
         [[nodiscard]] bool isNull() const {
             return type == FileType::NONE;
         }
+
+        [[nodiscard]] std::string getTypeName() const {
+            if (isFile()) {
+                return "File";
+            } else if (isDirectory()) {
+                return "Directory";
+            }
+            return "NULL";
+        }
     };
 
 } // namespace DosboxStagingReplacer
