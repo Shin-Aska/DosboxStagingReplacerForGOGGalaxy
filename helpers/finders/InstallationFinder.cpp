@@ -98,7 +98,7 @@ namespace DosboxStagingReplacer {
         DWORD subKeySize = std::size(subKeyName);
 
         // Open the uninstall registry key
-        if (auto uninstallKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+        if (const auto uninstallKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
             RegOpenKeyEx(HKEY_LOCAL_MACHINE, uninstallKey, 0, KEY_READ, &hKey) != ERROR_SUCCESS) {
             std::cerr << "Failed to open registry key." << std::endl;
         }
