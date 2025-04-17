@@ -4,8 +4,8 @@
 
 #include <algorithm>
 
-#include "GoGService.h"
 #include "DirectoryScanner.h"
+#include "GoGService.h"
 
 namespace DosboxStagingReplacer {
 
@@ -32,26 +32,27 @@ namespace DosboxStagingReplacer {
     void GogGalaxyService::closeConnection() {
         if (this->sqlService.isConnectionOpen()) {
             this->sqlService.closeConnection();
-        }
-        else {
+        } else {
             std::cerr << "Attempted to close a connection that is not open" << std::endl;
         }
     }
 
 
-    void GogGalaxyService::disableAllPlayTaskFor(const std::string& gameReleaseKey) {
+    void GogGalaxyService::disableAllPlayTaskFor(const std::string &gameReleaseKey) {
         if (this->validDatabase) {
             this->sqlService.executeQuery(R"SQL(
                 UPDATE PlayTasks
                 SET isPrimary = 0
                 WHERE gameReleaseKey = :gameReleaseKey;
-            ")SQL", {{"gameReleaseKey", gameReleaseKey}});
+            ")SQL",
+                                          {{"gameReleaseKey", gameReleaseKey}});
         } else {
             throw GogGalaxyServiceException("Database connection is not open");
         }
     }
 
-    PlayTaskInformation GogGalaxyService::insertPlayTask(int userId, int new_order, const PlayTaskInformation &playTask) {
+    PlayTaskInformation GogGalaxyService::insertPlayTask(int64_t userId, int new_order,
+                                                         const PlayTaskInformation &playTask) {
         if (this->validDatabase) {
             // Insert the new PlayTask into the database
             // Also get the id of the new PlayTask
@@ -85,17 +86,17 @@ namespace DosboxStagingReplacer {
         throw GogGalaxyServiceException("Database connection is not open");
     }
 
-    void GogGalaxyService::insertPlayTaskLaunchParameters(const PlayTaskInformation &playTask, const PlayTaskLaunchParameters &launchParameters) {
+    void GogGalaxyService::insertPlayTaskLaunchParameters(const PlayTaskInformation &playTask,
+                                                          const PlayTaskLaunchParameters &launchParameters) {
         if (this->validDatabase) {
             this->sqlService.executeQuery(R"SQL(
                 INSERT INTO PlayTaskLaunchParameters (playTaskId, executablePath, commandLineArgs, label)
                 VALUES (:playTaskId, :executablePath, :commandLineArgs, :label);
-            )SQL", {
-                {"playTaskId", playTask.id},
-                {"executablePath", launchParameters.executablePath},
-                {"commandLineArgs", launchParameters.commandLineArgs},
-                {"label", launchParameters.label}
-            });
+            )SQL",
+                                          {{"playTaskId", playTask.id},
+                                           {"executablePath", launchParameters.executablePath},
+                                           {"commandLineArgs", launchParameters.commandLineArgs},
+                                           {"label", launchParameters.label}});
         } else {
             throw GogGalaxyServiceException("Database connection is not open");
         }
@@ -113,20 +114,20 @@ namespace DosboxStagingReplacer {
                 FROM sqlite_schema
                 WHERE name IN
                 ('Product Details View', 'ProductsToReleaseKeys', 'InstalledBaseProducts');
-            )SQL", {});
+            )SQL",
+                                                                            {});
             this->validDatabase = result.size() == 3;
             return this->validDatabase;
         }
         throw GogGalaxyServiceException("Database connection is not open");
     }
 
-    bool GogGalaxyService::isDatabaseValid() const {
-        return this->validDatabase;
-    }
+    bool GogGalaxyService::isDatabaseValid() const { return this->validDatabase; }
 
-    std::vector<ProductDetails> GogGalaxyService::getProducts(const bool showDosOnly) {
+    std::vector<ProductDetails> GogGalaxyService::getProducts(const std::optional<std::string> &releaseKey,
+                                                              const bool showDosOnly) {
         if (this->validDatabase) {
-            auto result = this->sqlService.executeQuery<ProductDetails>(R"SQL(
+            std::string query = R"SQL(
                 SELECT
                     pdv.productId,
                     pdv.title,
@@ -139,8 +140,20 @@ namespace DosboxStagingReplacer {
                      INNER JOIN ProductsToReleaseKeys ptr
                                 ON ptr.gogId = pdv.productId
                      INNER JOIN InstalledBaseProducts ibp
-                                ON ibp.productId = pdv.productId;
-            )SQL", {});
+                                ON ibp.productId = pdv.productId
+            )SQL";
+
+            std::unordered_map<std::string, std::any> params;
+
+            if (releaseKey.has_value()) {
+                query += " WHERE ptr.releaseKey = :releaseKey;";
+                params.insert({"releaseKey", releaseKey.value()});
+            }
+            else {
+                query += ";";
+            }
+
+            auto result = this->sqlService.executeQuery<ProductDetails>(query, params);
 
             // If showDosOnly is true, filter the results to only include DOS games
             // To do this, we use DirectoryScanner to get all the listed files in installationPath
@@ -148,11 +161,11 @@ namespace DosboxStagingReplacer {
             if (showDosOnly) {
                 std::vector<ProductDetails> filteredResult;
                 try {
-                    for (const auto &product : result) {
+                    for (const auto &product: result) {
                         if (auto filesInPath = DirectoryScanner::scanDirectory(product.installationPath);
                             std::ranges::any_of(filesInPath, [](const auto &file) {
-                            return file.path.find("DOSBOX") != std::string::npos;
-                        })) {
+                                return file.path.find("DOSBOX") != std::string::npos;
+                            })) {
                             filteredResult.push_back(product);
                         }
                     }
@@ -177,6 +190,18 @@ namespace DosboxStagingReplacer {
         }
         throw GogGalaxyServiceException("Database connection is not open");
     }
+    std::vector<PlayTaskType> GogGalaxyService::getPlayTaskTypes() {
+        if (this->validDatabase) {
+            auto result = this->sqlService.executeQuery<PlayTaskType>(R"SQL(
+                SELECT
+                    id, type
+                FROM PlayTaskTypes;
+            )SQL",
+                                                                      {});
+            return result;
+        }
+        throw GogGalaxyServiceException("Database connection is not open");
+    }
 
     std::vector<PlayTaskInformation> GogGalaxyService::getPlayTasks() {
         if (this->validDatabase) {
@@ -185,7 +210,8 @@ namespace DosboxStagingReplacer {
                     pt.id, pt.gameReleaseKey, pt.userId, pt."order", pt.typeId, ptt.type, pt.isPrimary
                 FROM PlayTasks pt
                 INNER JOIN PlayTaskTypes ptt ON pt.typeId = ptt.id;
-            )SQL", {});
+            )SQL",
+                                                                             {});
             return result;
         }
         throw GogGalaxyServiceException("Database connection is not open");
@@ -199,7 +225,8 @@ namespace DosboxStagingReplacer {
                 FROM PlayTasks pt
                 INNER JOIN PlayTaskTypes ptt ON pt.typeId = ptt.id
                 WHERE pt.gameReleaseKey = :gameReleaseKey;
-            )SQL", {{"gameReleaseKey", gameReleaseKey}});
+            )SQL",
+                                                                             {{"gameReleaseKey", gameReleaseKey}});
             return result;
         }
         throw GogGalaxyServiceException("Database connection is not open");
@@ -211,7 +238,8 @@ namespace DosboxStagingReplacer {
                 SELECT
                     ptlp.playTaskId, ptlp.executablePath, ptlp.commandLineArgs, ptlp.label
                 FROM PlayTaskLaunchParameters ptlp
-            )SQL", {});
+            )SQL",
+                                                                                  {});
             return result;
         }
         throw GogGalaxyServiceException("Database connection is not open");
@@ -224,21 +252,25 @@ namespace DosboxStagingReplacer {
                     ptlp.playTaskId, ptlp.executablePath, ptlp.commandLineArgs, ptlp.label
                 FROM PlayTaskLaunchParameters ptlp
                 WHERE ptlp.playTaskId = :playTaskId;
-            )SQL", {{"playTaskId", playTaskId}});
+            )SQL",
+                                                                                  {{"playTaskId", playTaskId}});
             return result;
         }
         throw GogGalaxyServiceException("Database connection is not open");
     }
 
-    void GogGalaxyService::addPlayTask(const int userId, const std::string& gameReleaseKey, const PlayTaskInformation &playTask, const PlayTaskLaunchParameters &launchParameters) {
+    void GogGalaxyService::addPlayTask(const int64_t userId, const std::string &gameReleaseKey,
+                                       const PlayTaskInformation &playTask,
+                                       const PlayTaskLaunchParameters &launchParameters) {
         if (this->validDatabase) {
             // Get all PlayTasks under the given gameReleaseKey
             auto existingPlayTasks = this->getPlayTasksFromGameReleaseKey(gameReleaseKey);
             int max_order = -1;
 
             // Get the maximum order of the existing PlayTasks
-            for (const auto &task : existingPlayTasks) {
-                if (task.order > max_order) max_order = task.order;
+            for (const auto &task: existingPlayTasks) {
+                if (task.order > max_order)
+                    max_order = task.order;
             }
 
             // If there are no existing PlayTasks, set max_order to 1
@@ -248,7 +280,7 @@ namespace DosboxStagingReplacer {
             // Set all existing PlayTasks to not primary
             this->disableAllPlayTaskFor(gameReleaseKey);
             // Add the new PlayTask, get the updated PlayTask
-            const PlayTaskInformation updatedPlayTask = this->insertPlayTask(userId, max_order, playTask);
+            const auto updatedPlayTask = this->insertPlayTask(userId, max_order, playTask);
             // Add the PlayTaskLaunchParameters
             this->insertPlayTaskLaunchParameters(updatedPlayTask, launchParameters);
             return;
@@ -256,4 +288,16 @@ namespace DosboxStagingReplacer {
         throw GogGalaxyServiceException("Database connection is not open");
     }
 
-} // DosboxStagingReplacer
+    void GogGalaxyService::setCustomLaunchParametersForProduct(const std::string &gameReleaseKey, const bool enabled) {
+        if (this->validDatabase) {
+            this->sqlService.executeQuery(R"SQL(
+                UPDATE ProductSettings
+                SET customLaunchParameters = :enabled
+                WHERE gameReleaseKey = :releaseKey;
+            )SQL", {{"enabled", enabled}, {"releaseKey", gameReleaseKey}});
+            return;
+        }
+        throw GogGalaxyServiceException("Database connection is not open");
+    }
+
+} // namespace DosboxStagingReplacer

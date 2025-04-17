@@ -5,6 +5,7 @@
 #ifndef SERVICE_H
 #define SERVICE_H
 
+#include <optional>
 #include <string>
 #include "SQLService.h"
 #include "StatementParser.h"
@@ -22,7 +23,7 @@ namespace DosboxStagingReplacer {
         bool validDatabase = false;
 
         void disableAllPlayTaskFor(const std::string& gameReleaseKey);
-        PlayTaskInformation insertPlayTask(int userId, int new_order, const PlayTaskInformation &playTask);
+        PlayTaskInformation insertPlayTask(int64_t userId, int new_order, const PlayTaskInformation &playTask);
         void insertPlayTaskLaunchParameters(const PlayTaskInformation &playTask, const PlayTaskLaunchParameters &launchParameters);
 
     public:
@@ -66,10 +67,11 @@ namespace DosboxStagingReplacer {
 
         /**
          * @brief Retrieves all products in the database.
+         * @param releaseKey If provided, only returns product information for that releaseKey
          * @param showDosOnly If true, only DOS games are shown.
          * @return A vector of ProductDetails objects.
          */
-        std::vector<ProductDetails> getProducts(bool showDosOnly = true);
+        std::vector<ProductDetails> getProducts(const std::optional<std::string> &releaseKey = {}, bool showDosOnly = true);
 
         /**
          * @brief Retrieves all users in the database.
@@ -78,10 +80,16 @@ namespace DosboxStagingReplacer {
         std::vector<GogUser> getUsers();
 
         /**
-         * @brief Retrieves all play tasks from the database.
+         * @brief Retrieves all PlayTaskInformation from the database.
          * @return A vector of PlayTaskInformation objects.
          */
         std::vector<PlayTaskInformation> getPlayTasks();
+
+        /**
+         * @brief Retrieves all PlayTaskType from the database.
+         * @return A vector of PlayTaskType objects.
+         */
+        std::vector<PlayTaskType> getPlayTaskTypes();
 
         /**
          * @brief Retrieves play tasks associated with a specific game release key.
@@ -104,13 +112,27 @@ namespace DosboxStagingReplacer {
         std::vector<PlayTaskLaunchParameters> getPlayTaskLaunchParametersFromPlayTaskId(int playTaskId);
 
         /**
-         * @brief Adds a new play task and its associated launch parameters.
+         * @brief Inserts a new play task and its associated launch parameters to the database.
+         * This method ignores the ids provided in playTask and launchParameters parameters
          * @param userId ID of the user to assign the task to.
          * @param gameReleaseKey Release key of the game.
          * @param playTask The play task information.
          * @param launchParameters The associated launch parameters.
          */
-        void addPlayTask(int userId, const std::string& gameReleaseKey, const PlayTaskInformation &playTask, const PlayTaskLaunchParameters &launchParameters);
+        void addPlayTask(int64_t userId, const std::string &gameReleaseKey, const PlayTaskInformation &playTask,
+                         const PlayTaskLaunchParameters &launchParameters);
+
+        /**
+         * @brief Sets custom launch parameters for a specific product in the database.
+         *
+         * This method allows enabling or disabling custom launch parameters
+         * for the specified product using its release key.
+         *
+         * @param gameReleaseKey The release key of the game for which custom launch parameters are to be set.
+         * @param enabled A boolean indicating whether custom launch parameters should be enabled (true) or disabled
+         * (false).
+         */
+        void setCustomLaunchParametersForProduct(const std::string &gameReleaseKey, const bool enabled);
     };
 
     /**
