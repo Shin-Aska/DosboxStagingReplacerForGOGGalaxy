@@ -355,7 +355,7 @@ int main(int argc, char *argv[]) {
                 return -1;
             }
 
-            auto product = products.front();
+            const auto& product = products.front();
             std::filesystem::path productPath = product.installationPath;
             auto taskTypes = service.getPlayTaskTypes();
 
@@ -405,12 +405,12 @@ int main(int argc, char *argv[]) {
 
             // Now we do the real work, add play task here on Gog database
             if (program.get<bool>("--all-users") == true) {
-                for (auto user: users) {
+                for (const auto& user: users) {
                     service.addPlayTask(user.id, releaseKey, playTaskForInsertion, launchParametersForInsertion);
                 }
                 std::cout << "Successfully added play task for all users" << std::endl;
             } else {
-                auto user = users.back();
+                const auto& user = users.back();
                 service.addPlayTask(user.id, releaseKey, playTaskForInsertion, launchParametersForInsertion);
                 std::cout << "Successfully added play task for most recent user" << std::endl;
             }
