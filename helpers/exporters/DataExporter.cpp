@@ -21,6 +21,13 @@ namespace DosboxStagingReplacer {
         }
         return oss.str();
     }
+    std::string DataExporter::serialize(const std::vector<FileEntity> &dataset) {
+        std::ostringstream oss;
+        for (const auto &data: dataset) {
+            oss << this->stringify(data) << std::endl;
+        }
+        return oss.str();
+    }
 
     std::string DataExporter::stringify(const SqlDataResult &data) {
         std::ostringstream oss;
@@ -38,6 +45,15 @@ namespace DosboxStagingReplacer {
         std::ostringstream oss;
         oss << "applicationName=" << data.applicationName << this->separator
             << "installationPath=" << data.installationPath << this->separator << "source=" << data.source;
+        return oss.str();
+    }
+
+    std::string DataExporter::stringify(const FileEntity &data) {
+        std::ostringstream oss;
+        oss << "name=" << data.name << this->separator
+            << "path=" << data.path << this->separator
+            << "type=" << data.getTypeName() << this->separator
+            << "size=" << data.size;
         return oss.str();
     }
 
@@ -83,6 +99,18 @@ namespace DosboxStagingReplacer {
         oss << "]";
         return oss.str();
     }
+    std::string JSONDataExporter::serialize(const std::vector<FileEntity> &dataset) {
+        std::ostringstream oss;
+        oss << "[";
+        for (size_t i = 0; i < dataset.size(); ++i) {
+            oss << this->stringify(dataset[i]);
+            if (i != dataset.size() - 1) {
+                oss << ",";
+            }
+        }
+        oss << "]";
+        return oss.str();
+    }
 
     std::string JSONDataExporter::stringify(const SqlDataResult &data) {
         std::ostringstream oss;
@@ -113,10 +141,16 @@ namespace DosboxStagingReplacer {
 
     std::string JSONDataExporter::stringify(const InstallationInfo &data) {
         std::ostringstream oss;
-        oss << R"({"applicationName": ")" << addEscapeCharacters(data.applicationName)
-            << R"(", "installationPath": ")" << addEscapeCharacters(data.installationPath)
-            << R"(", "source": ")" << addEscapeCharacters(data.source) << R"("})";
+        oss << R"({"applicationName": ")" << addEscapeCharacters(data.applicationName) << R"(", "installationPath": ")"
+            << addEscapeCharacters(data.installationPath) << R"(", "source": ")" << addEscapeCharacters(data.source)
+            << R"("})";
 
+        return oss.str();
+    }
+    std::string JSONDataExporter::stringify(const FileEntity &data) {
+        std::ostringstream oss;
+        oss << R"({"name": ")" << addEscapeCharacters(data.name) << R"(", "path": ")" << addEscapeCharacters(data.path)
+            << R"(", "type": ")" << addEscapeCharacters(data.getTypeName()) << R"(", "size": )" << data.size << R"(})";
         return oss.str();
     }
 
@@ -129,6 +163,13 @@ namespace DosboxStagingReplacer {
     }
 
     std::string CSVDataExporter::serialize(const std::vector<InstallationInfo> &dataset) {
+        std::ostringstream oss;
+        for (const auto &data: dataset) {
+            oss << this->stringify(data) << std::endl;
+        }
+        return oss.str();
+    }
+    std::string CSVDataExporter::serialize(const std::vector<FileEntity> &dataset) {
         std::ostringstream oss;
         for (const auto &data: dataset) {
             oss << this->stringify(data) << std::endl;
@@ -151,6 +192,12 @@ namespace DosboxStagingReplacer {
     std::string CSVDataExporter::stringify(const InstallationInfo &data) {
         std::ostringstream oss;
         oss << data.applicationName << this->separator << data.installationPath << this->separator << data.source;
+        return oss.str();
+    }
+
+    std::string CSVDataExporter::stringify(const FileEntity &data) {
+        std::ostringstream oss;
+        oss << data.name << this->separator << data.path << this->separator << data.getTypeName() << this->separator << data.size;
         return oss.str();
     }
 } // namespace DosboxStagingReplacer
