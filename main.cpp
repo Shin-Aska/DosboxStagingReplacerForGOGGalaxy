@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     // Initialize the file backup service
 
     // Parse command line arguments using argparse
-    argparse::ArgumentParser program("Dosbox Staging Replacer");
+    argparse::ArgumentParser program("Dosbox Staging Replacer", "1.0.1");
     program.add_argument("-f", "--file")
             .help("The Galaxy database file")
             .default_value(std::string("galaxy-2.0.db"))
@@ -412,7 +412,7 @@ int main(int argc, char *argv[]) {
 
             std::cout << "Found " << configAutoExecFiles.size() << " config files to modify" << std::endl;
 
-            for (auto configAutoExec: configAutoExecFiles) {
+            for (const auto &configAutoExec: configAutoExecFiles) {
                 std::filesystem::path configAutoExecPath = configAutoExec.path;
                 std::cout << "Modifying " << configAutoExec.path << "..." << std::endl;
                 DosboxStagingReplacer::ScriptEditService::resolveRelativePathsForDosboxAutoExec(configAutoExecPath,
@@ -426,7 +426,7 @@ int main(int argc, char *argv[]) {
                 const std::filesystem::path filePath = file.path;
                 return DosboxStagingReplacer::ScriptEditService::isConfigFileDosboxConfig(filePath);
             });
-            for (auto dosboxConfig : dosboxConfigFiles) {
+            for (const auto &dosboxConfig : dosboxConfigFiles) {
                 std::filesystem::path dosboxConfigPath = dosboxConfig.path;
                 std::cout << "Modifying " << dosboxConfig.path << "..." << std::endl;
                 DosboxStagingReplacer::ScriptEditService::disableFullScreenForDosboxConfig(dosboxConfigPath);
