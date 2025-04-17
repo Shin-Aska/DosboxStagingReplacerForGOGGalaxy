@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "SQLService.h"
+#include "SqlService.h"
 
 namespace DosboxStagingReplacer {
 

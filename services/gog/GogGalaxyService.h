@@ -7,7 +7,7 @@
 
 #include <optional>
 #include <string>
-#include "SQLService.h"
+#include "SqlService.h"
 #include "StatementParser.h"
 
 namespace DosboxStagingReplacer {

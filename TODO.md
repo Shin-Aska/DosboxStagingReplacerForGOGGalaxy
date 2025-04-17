@@ -25,8 +25,8 @@
 - [x] Batch file handling where the application modifies the batch file to align with the current adjustments
 
 # CLI
-- [ ] Ability to add a special dosbox build as a custom launch parameter
-- [ ] Make the added custom launch parameter a default option
+- [x] Ability to add a special dosbox build as a custom launch parameter
+- [x] Make the added custom launch parameter a default option
 
 # Unit Testing
 - [ ] Add unit tests for the core functionality

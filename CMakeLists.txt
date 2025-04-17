@@ -30,14 +30,14 @@ add_executable(DosboxStagingReplacer
         helpers/finders/InstallationFinder.h
         helpers/verifiers/InstallationVerifier.cpp
         helpers/verifiers/InstallationVerifier.h
-        services/sql/SQLService.cpp
-        services/sql/SQLService.h
+        services/sql/SqlService.cpp
+        services/sql/SqlService.h
         interfaces/StatementParser.cpp
         interfaces/StatementParser.h
         helpers/exporters/DataExporter.cpp
         helpers/exporters/DataExporter.h
-        services/gog/GoGService.cpp
-        services/gog/GoGService.h
+        services/gog/GogGalaxyService.cpp
+        services/gog/GogGalaxyService.h
         services/system/FileBackupService.cpp
         services/system/FileBackupService.h
         services/ScriptEditService.cpp
