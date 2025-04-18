@@ -27,7 +27,7 @@ Complete details about installation, usage, development, and internal architectu
 Download the latest binary from [Releases](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/releases):
 
 ```bash
-DosboxStagingReplacer --replace-dosbox --release-key your_game_release_key
+DosboxStagingReplacer -h
 ```
 
 See [How to Use](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/wiki/How-to-Use) for detailed instructions.
