@@ -3,6 +3,7 @@
 //
 
 #include "InstallationVerifier.h"
+#include <filesystem>
 
 namespace DosboxStagingReplacer {
 
@@ -22,12 +23,9 @@ namespace DosboxStagingReplacer {
         /*
             * Check if the target executable exists in the installation path
          */
-        std::string path = installationPath;
-        if (path.back() != '/') {
-            path += "/";
-        }
+        std::filesystem::path path = installationPath;
         path += targetExecutable;
-        return fileExists(path);
+        return fileExists(path.string());
     }
 
     void InstallationVerifier::setInstallationPath(const std::string &installationPath) {
