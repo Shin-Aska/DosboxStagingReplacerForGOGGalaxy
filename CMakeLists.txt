@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.30)
 project(DosboxStagingReplacer)
 
+include(CTest)
+enable_testing()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXE_LINKER_FLAGS "-static")
-
 
 # Add include directories for headers
 include_directories(
@@ -20,9 +22,7 @@ include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/services
 )
 
-add_executable(DosboxStagingReplacer
-        libs/sqlite/sqlite3.c
-        main.cpp
+set(TEST_COMMON_SOURCES
         helpers/CoreHelperModels.h
         helpers/scanners/DirectoryScanner.cpp
         helpers/scanners/DirectoryScanner.h
@@ -43,3 +43,26 @@ add_executable(DosboxStagingReplacer
         services/ScriptEditService.cpp
         services/ScriptEditService.h
 )
+
+# Build shared sources once as object library (no .lib or .a, just .o/.obj)
+add_library(DosboxStagingReplacerObj OBJECT ${TEST_COMMON_SOURCES})
+
+add_executable(DosboxStagingReplacer
+        libs/sqlite/sqlite3.c
+        main.cpp
+        $<TARGET_OBJECTS:DosboxStagingReplacerObj>
+)
+
+# -------- TEST BUILD LOGIC --------
+
+file(GLOB TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp")
+
+foreach (test_file ${TEST_SOURCES})
+    get_filename_component(test_name ${test_file} NAME_WE)
+    add_executable(${test_name}
+            libs/sqlite/sqlite3.c
+            ${test_file}
+            $<TARGET_OBJECTS:DosboxStagingReplacerObj>
+    )
+    add_test(NAME ${test_name} COMMAND ${test_name})
+endforeach ()
