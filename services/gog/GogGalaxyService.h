@@ -24,7 +24,7 @@ namespace DosboxStagingReplacer {
 
         void disableAllPlayTaskFor(const std::string& gameReleaseKey);
         PlayTaskInformation insertPlayTask(int64_t userId, int new_order, const PlayTaskInformation &playTask);
-        void insertPlayTaskLaunchParameter(const PlayTaskInformation &playTask, const PlayTaskLaunchParameter &launchParameters);
+        void insertPlayTaskLaunchParameter(const PlayTaskInformation &playTask, const PlayTaskLaunchParameter &launchParameter);
 
     public:
         /**

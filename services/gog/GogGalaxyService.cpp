@@ -87,16 +87,16 @@ namespace DosboxStagingReplacer {
     }
 
     void GogGalaxyService::insertPlayTaskLaunchParameter(const PlayTaskInformation &playTask,
-                                                          const PlayTaskLaunchParameter &launchParameters) {
+                                                          const PlayTaskLaunchParameter &launchParameter) {
         if (this->validDatabase) {
             this->sqlService.executeQuery(R"SQL(
                 INSERT INTO PlayTaskLaunchParameters (playTaskId, executablePath, commandLineArgs, label)
                 VALUES (:playTaskId, :executablePath, :commandLineArgs, :label);
             )SQL",
                                           {{"playTaskId", playTask.id},
-                                           {"executablePath", launchParameters.executablePath},
-                                           {"commandLineArgs", launchParameters.commandLineArgs},
-                                           {"label", launchParameters.label}});
+                                           {"executablePath", launchParameter.executablePath},
+                                           {"commandLineArgs", launchParameter.commandLineArgs},
+                                           {"label", launchParameter.label}});
         } else {
             throw GogGalaxyServiceException("Database connection is not open");
         }
