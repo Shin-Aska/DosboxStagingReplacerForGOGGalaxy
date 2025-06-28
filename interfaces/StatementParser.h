@@ -231,7 +231,7 @@ namespace DosboxStagingReplacer {
     /**
      * @brief PlayTaskLaunchParameters class. Contains the information about a play task launch parameters.
      */
-    class PlayTaskLaunchParameters final : public SqlDataResult {
+    class PlayTaskLaunchParameter final : public SqlDataResult {
         using SqlDataResult::SqlDataResult;
 
     public:
@@ -239,6 +239,11 @@ namespace DosboxStagingReplacer {
         std::string executablePath;
         std::string commandLineArgs;
         std::string label;
+
+        bool operator==(const PlayTaskLaunchParameter &other) const {
+            return executablePath == other.executablePath &&
+                   commandLineArgs == other.commandLineArgs;
+        }
 
         /**
          * @brief Fills the PlayTaskLaunchParameters object with data from the statement.
@@ -345,7 +350,7 @@ namespace DosboxStagingReplacer {
          * @param parameters The parameters to use.
          * @param stmt The statement to parse.
          */
-        virtual void parseInto(PlayTaskLaunchParameters &result, std::vector<std::string> parameters,
+        virtual void parseInto(PlayTaskLaunchParameter &result, std::vector<std::string> parameters,
                                std::any stmt) = 0;
         /**
          * @brief Parses a SQL result into a PlayTaskLaunchParameters object.
@@ -381,7 +386,7 @@ namespace DosboxStagingReplacer {
         void parseInto(PlayTaskInformation &result, std::vector<std::string> parameters, std::any stmtAny) override;
         //! \copydoc DosboxStagingReplacer::StatementParser::parseInto(DosboxStagingReplacer::PlayTaskLaunchParameters&,
         //! std::vector<std::string>, std::any)
-        void parseInto(PlayTaskLaunchParameters &result, std::vector<std::string> parameters,
+        void parseInto(PlayTaskLaunchParameter &result, std::vector<std::string> parameters,
                        std::any stmtAny) override;
         //! \copydoc DosboxStagingReplacer::StatementParser::parseInto(DosboxStagingReplacer::PlayTaskType&,
         //! std::vector<std::string>, std::any)
