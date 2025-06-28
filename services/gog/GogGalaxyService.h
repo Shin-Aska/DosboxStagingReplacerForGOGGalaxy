@@ -24,7 +24,7 @@ namespace DosboxStagingReplacer {
 
         void disableAllPlayTaskFor(const std::string& gameReleaseKey);
         PlayTaskInformation insertPlayTask(int64_t userId, int new_order, const PlayTaskInformation &playTask);
-        void insertPlayTaskLaunchParameters(const PlayTaskInformation &playTask, const PlayTaskLaunchParameters &launchParameters);
+        void insertPlayTaskLaunchParameter(const PlayTaskInformation &playTask, const PlayTaskLaunchParameter &launchParameter);
 
     public:
         /**
@@ -102,14 +102,14 @@ namespace DosboxStagingReplacer {
          * @brief Retrieves all play task launch parameters from the database.
          * @return A vector of PlayTaskLaunchParameters objects.
          */
-        std::vector<PlayTaskLaunchParameters> getPlayTaskLaunchParameters();
+        std::vector<PlayTaskLaunchParameter> getPlayTaskLaunchParameters();
 
         /**
          * @brief Retrieves launch parameters associated with a specific play task ID.
          * @param playTaskId The ID of the play task.
          * @return A vector of PlayTaskLaunchParameters objects.
          */
-        std::vector<PlayTaskLaunchParameters> getPlayTaskLaunchParametersFromPlayTaskId(int playTaskId);
+        std::vector<PlayTaskLaunchParameter> getPlayTaskLaunchParametersFromPlayTaskId(int playTaskId);
 
         /**
          * @brief Inserts a new play task and its associated launch parameters to the database.
@@ -117,10 +117,10 @@ namespace DosboxStagingReplacer {
          * @param userId ID of the user to assign the task to.
          * @param gameReleaseKey Release key of the game.
          * @param playTask The play task information.
-         * @param launchParameters The associated launch parameters.
+         * @param launchParameter The associated launch parameters.
          */
         void addPlayTask(int64_t userId, const std::string &gameReleaseKey, const PlayTaskInformation &playTask,
-                         const PlayTaskLaunchParameters &launchParameters);
+                         const PlayTaskLaunchParameter &launchParameter);
 
         /**
          * @brief Sets custom launch parameters for a specific product in the database.

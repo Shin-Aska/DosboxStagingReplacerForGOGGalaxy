@@ -50,7 +50,7 @@ namespace DosboxStagingReplacer {
         return *this;
     }
 
-    std::any PlayTaskLaunchParameters::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters,
+    std::any PlayTaskLaunchParameter::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters,
                                                          const SqlEngine engine) {
         const auto parser = StatementParserFactory::createParser(engine);
         parser->parseInto(*this, parameters, stmt);
@@ -152,7 +152,7 @@ namespace DosboxStagingReplacer {
         }
     }
 
-    void SqliteStatementParser::parseInto(PlayTaskLaunchParameters &result, std::vector<std::string> parameters,
+    void SqliteStatementParser::parseInto(PlayTaskLaunchParameter &result, std::vector<std::string> parameters,
                                           const std::any stmtAny) {
         auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
         for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
