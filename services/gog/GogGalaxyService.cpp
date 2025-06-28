@@ -86,8 +86,8 @@ namespace DosboxStagingReplacer {
         throw GogGalaxyServiceException("Database connection is not open");
     }
 
-    void GogGalaxyService::insertPlayTaskLaunchParameters(const PlayTaskInformation &playTask,
-                                                          const PlayTaskLaunchParameters &launchParameters) {
+    void GogGalaxyService::insertPlayTaskLaunchParameter(const PlayTaskInformation &playTask,
+                                                          const PlayTaskLaunchParameter &launchParameters) {
         if (this->validDatabase) {
             this->sqlService.executeQuery(R"SQL(
                 INSERT INTO PlayTaskLaunchParameters (playTaskId, executablePath, commandLineArgs, label)
@@ -148,8 +148,7 @@ namespace DosboxStagingReplacer {
             if (releaseKey.has_value()) {
                 query += " WHERE ptr.releaseKey = :releaseKey;";
                 params.insert({"releaseKey", releaseKey.value()});
-            }
-            else {
+            } else {
                 query += ";";
             }
 
@@ -164,9 +163,9 @@ namespace DosboxStagingReplacer {
                 for (const auto &product: result) {
                     try {
                         if (auto filesInPath = DirectoryScanner::scanDirectory(product.installationPath);
-                        std::ranges::any_of(filesInPath, [](const auto &file) {
-                            return file.path.find("DOSBOX") != std::string::npos;
-                        })) {
+                            std::ranges::any_of(filesInPath, [](const auto &file) {
+                                return file.path.find("DOSBOX") != std::string::npos;
+                            })) {
                             filteredResult.push_back(product);
                         }
                     } catch (const std::exception &e) {
@@ -187,7 +186,8 @@ namespace DosboxStagingReplacer {
                 SELECT
                     id
                 FROM Users;
-            )SQL", {});
+            )SQL",
+                                                                 {});
             return result;
         }
         throw GogGalaxyServiceException("Database connection is not open");
@@ -234,28 +234,28 @@ namespace DosboxStagingReplacer {
         throw GogGalaxyServiceException("Database connection is not open");
     }
 
-    std::vector<PlayTaskLaunchParameters> GogGalaxyService::getPlayTaskLaunchParameters() {
+    std::vector<PlayTaskLaunchParameter> GogGalaxyService::getPlayTaskLaunchParameters() {
         if (this->validDatabase) {
-            auto result = this->sqlService.executeQuery<PlayTaskLaunchParameters>(R"SQL(
+            auto result = this->sqlService.executeQuery<PlayTaskLaunchParameter>(R"SQL(
                 SELECT
                     ptlp.playTaskId, ptlp.executablePath, ptlp.commandLineArgs, ptlp.label
                 FROM PlayTaskLaunchParameters ptlp
             )SQL",
-                                                                                  {});
+                                                                                 {});
             return result;
         }
         throw GogGalaxyServiceException("Database connection is not open");
     }
 
-    std::vector<PlayTaskLaunchParameters> GogGalaxyService::getPlayTaskLaunchParametersFromPlayTaskId(int playTaskId) {
+    std::vector<PlayTaskLaunchParameter> GogGalaxyService::getPlayTaskLaunchParametersFromPlayTaskId(int playTaskId) {
         if (this->validDatabase) {
-            auto result = this->sqlService.executeQuery<PlayTaskLaunchParameters>(R"SQL(
+            auto result = this->sqlService.executeQuery<PlayTaskLaunchParameter>(R"SQL(
                 SELECT
                     ptlp.playTaskId, ptlp.executablePath, ptlp.commandLineArgs, ptlp.label
                 FROM PlayTaskLaunchParameters ptlp
                 WHERE ptlp.playTaskId = :playTaskId;
             )SQL",
-                                                                                  {{"playTaskId", playTaskId}});
+                                                                                 {{"playTaskId", playTaskId}});
             return result;
         }
         throw GogGalaxyServiceException("Database connection is not open");
@@ -263,28 +263,50 @@ namespace DosboxStagingReplacer {
 
     void GogGalaxyService::addPlayTask(const int64_t userId, const std::string &gameReleaseKey,
                                        const PlayTaskInformation &playTask,
-                                       const PlayTaskLaunchParameters &launchParameters) {
+                                       const PlayTaskLaunchParameter &launchParameter) {
         if (this->validDatabase) {
             // Get all PlayTasks under the given gameReleaseKey
             auto existingPlayTasks = this->getPlayTasksFromGameReleaseKey(gameReleaseKey);
-            int max_order = -1;
+            int maxOrder = -1;
+
+            // Get all PlayTasks that have custom type
+            std::vector<int> customPlayTaskId;
 
             // Get the maximum order of the existing PlayTasks
             for (const auto &task: existingPlayTasks) {
-                if (task.order > max_order)
-                    max_order = task.order;
+                if (task.order > maxOrder)
+                    maxOrder = task.order;
+                if (task.type == "Custom")
+                    customPlayTaskId.push_back(task.id);
+            }
+
+            // Before we begin, we first check if there is need to create a new PlayTask
+            // To do this, we check if there are any existing PlayTasks having the same
+            // launch parameters as the one we are trying to add and if so we skip the insertion
+
+            for (const auto &playTaskId: customPlayTaskId) {
+                for (auto customLaunchParametersForCustomPlayTask =
+                             this->getPlayTaskLaunchParametersFromPlayTaskId(playTaskId);
+                     const auto &customLaunchParameter: customLaunchParametersForCustomPlayTask) {
+                    if (customLaunchParameter == launchParameter) {
+                        // If we find a PlayTask with the same launch parameters, we skip the insertion
+                        std::cerr << "PlayTask with the same launch parameters already exists. Skipping insertion."
+                                  << std::endl;
+                        return;
+                    }
+                }
             }
 
             // If there are no existing PlayTasks, set max_order to 1
             // This will only become -1 if there are no PlayTasks at all
-            max_order = max_order == -1 ? 1 : max_order + 1;
+            maxOrder = maxOrder == -1 ? 1 : maxOrder + 1;
 
             // Set all existing PlayTasks to not primary
             this->disableAllPlayTaskFor(gameReleaseKey);
             // Add the new PlayTask, get the updated PlayTask
-            const auto updatedPlayTask = this->insertPlayTask(userId, max_order, playTask);
+            const auto updatedPlayTask = this->insertPlayTask(userId, maxOrder, playTask);
             // Add the PlayTaskLaunchParameters
-            this->insertPlayTaskLaunchParameters(updatedPlayTask, launchParameters);
+            this->insertPlayTaskLaunchParameter(updatedPlayTask, launchParameter);
             return;
         }
         throw GogGalaxyServiceException("Database connection is not open");
@@ -296,7 +318,8 @@ namespace DosboxStagingReplacer {
                 UPDATE ProductSettings
                 SET customLaunchParameters = :enabled
                 WHERE gameReleaseKey = :releaseKey;
-            )SQL", {{"enabled", enabled}, {"releaseKey", gameReleaseKey}});
+            )SQL",
+                                          {{"enabled", enabled}, {"releaseKey", gameReleaseKey}});
             return;
         }
         throw GogGalaxyServiceException("Database connection is not open");
