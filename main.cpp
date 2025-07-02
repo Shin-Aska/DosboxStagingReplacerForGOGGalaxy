@@ -375,8 +375,14 @@ int main(int argc, char *argv[]) {
             auto customTaskType =
                     std::ranges::find_if(taskTypes, [&](const auto &taskType) { return taskType.type == "Custom"; });
             if (customTaskType == taskTypes.end()) {
-                std::cerr << "Error: There are no custom task types registered in the database" << std::endl;
-                return -1;
+                service.addTaskType("Custom");
+                std::cout << "Custom task type not found, adding it to the database" << std::endl;
+                taskTypes = service.getPlayTaskTypes();
+                customTaskType = std::ranges::find_if(taskTypes, [&](const auto &taskType) { return taskType.type == "Custom"; });
+                if (customTaskType == taskTypes.end()) {
+                    std::cerr << "Error: Could not find the custom task type after adding it to the database" << std::endl;
+                    return -1;
+                }
             }
 
             auto playTasks = service.getPlayTasksFromGameReleaseKey(releaseKey);
