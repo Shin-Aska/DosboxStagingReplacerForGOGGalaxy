@@ -119,6 +119,21 @@ int main(int argc, char *argv[]) {
             .help("The name of the output file. If \"\", the output will be printed to the console.")
             .default_value(std::string(""))
             .nargs(1);
+    program.add_argument("-cfsdf", "--change-fullscreen-default")
+            .help("Replaces the predefined value of the fullscreen value in the Dosbox config file to the Dosbox's defaults")
+            .default_value(std::string("yes"))
+            .choices("yes", "no", "true", "false")
+            .nargs(1);
+    program.add_argument("-crsdf", "--change-resolution-default")
+            .help("Replaces the predefined value of the resolutions(fullresolution, windowresolution) value in the Dosbox config file to the Dosbox's defaults")
+            .default_value(std::string("yes"))
+            .choices("yes", "no", "true", "false")
+            .nargs(1);
+    program.add_argument("-cmpdf", "--change-mapping-default")
+            .help("Removes the mapping value in the Dosbox config file")
+            .default_value(std::string("yes"))
+            .choices("yes", "no", "true", "false")
+            .nargs(1);
 
     try {
         program.parse_args(argc, argv);
@@ -127,6 +142,15 @@ int main(int argc, char *argv[]) {
         std::cerr << program;
         return 1;
     }
+
+    auto is_enabled = [&](const char* option) {
+        const auto value = program.get<std::string>(option);
+        return value != "no" && value != "false";
+    };
+
+    const bool replaceFullscreenDefaults = is_enabled("--change-fullscreen-default");
+    const bool replaceResolutionDefaults = is_enabled("--change-resolution-default");
+    const bool removeMappingDefaults     = is_enabled("--change-mapping-default");
 
     // Let us add flags checking where flags such as backup, restore, list-applications, list-games, list-backups
     //  and replace-dosbox cannot be used together. We declare a vector of bools to check, with the set of flags
@@ -472,7 +496,18 @@ int main(int argc, char *argv[]) {
             for (const auto &dosboxConfig: dosboxConfigFiles) {
                 std::filesystem::path dosboxConfigPath = dosboxConfig.path;
                 std::cout << "Modifying " << dosboxConfig.path << "..." << std::endl;
-                DosboxStagingReplacer::ScriptEditService::disableFullScreenForDosboxConfig(dosboxConfigPath);
+                if (replaceFullscreenDefaults) {
+                    std::cout << "Replacing fullscreen=true with fullscreen=false" << std::endl;
+                    DosboxStagingReplacer::ScriptEditService::disableFullScreenForDosboxConfig(dosboxConfigPath);
+                }
+                if (replaceResolutionDefaults) {
+                    std::cout << "Replacing resolution values for fullscreen and windowed display modes to defaults" << std::endl;
+                    DosboxStagingReplacer::ScriptEditService::replaceDisplayToDefaultForDosboxConfig(dosboxConfigPath);
+                }
+                if (removeMappingDefaults) {
+                    std::cout << "Removing overwritten mapping values and resetting it to defaults" << std::endl;
+                    DosboxStagingReplacer::ScriptEditService::disableOverwrittenMappingForDosboxConfig(dosboxConfigPath);
+                }
             }
             std::cout << "Successfully modified config files" << std::endl;
             std::cout << "Modifications complete! You may need to restart Gog galaxy to see the changes" << std::endl;

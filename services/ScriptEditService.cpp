@@ -111,7 +111,8 @@ namespace DosboxStagingReplacer {
         std::filesystem::remove(tmpFilePath);
     }
 
-    void ScriptEditService::disableFullScreenForDosboxConfig(std::filesystem::path &filePath, const std::string &tmpExtension) {
+    void ScriptEditService::disableFullScreenForDosboxConfig(std::filesystem::path &filePath,
+                                                             const std::string &tmpExtension) {
         // We open two files, the original file and a tmp file
         std::fstream file(filePath);
         std::filesystem::path tmpFilePath = filePath;
@@ -153,4 +154,102 @@ namespace DosboxStagingReplacer {
         // We also remove the tmp file
         std::filesystem::remove(tmpFilePath);
     }
+    void ScriptEditService::disableOverwrittenMappingForDosboxConfig(std::filesystem::path &filePath,
+                                                                     const std::string &tmpExtension) {
+        // We open two files, the original file and a tmp file
+        std::fstream file(filePath);
+        std::filesystem::path tmpFilePath = filePath;
+        tmpFilePath += tmpExtension;
+
+        // Double check first if the tmp file exists, if so we do something like .tmp2, tmp3, etc
+        if (fileExists(tmpFilePath.string())) {
+            int counter = 2;
+            while (fileExists(tmpFilePath.string())) {
+                tmpFilePath = filePath;
+                tmpFilePath += tmpExtension + std::to_string(counter);
+                counter++;
+            }
+        }
+        std::fstream tmpFile(tmpFilePath, std::ios::out);
+
+        // We slowly stream the file line by line and replace each line with any modifications
+        if (file.is_open() && tmpFile.is_open()) {
+            std::string line;
+            while (std::getline(file, line)) {
+                // Check if the line contains a path
+                auto lowerLine = line;
+                std::ranges::transform(lowerLine, lowerLine.begin(), tolower);
+                if (lowerLine.find("mapperfile=") == std::string::npos) {
+                    tmpFile << line << std::endl;
+                }
+            }
+        }
+
+        // Close the files
+        file.close();
+        tmpFile.close();
+        // Remove the original file
+        std::filesystem::remove(filePath);
+        // Rename the tmp file to the original file
+        std::filesystem::rename(tmpFilePath, filePath);
+        // We also remove the tmp file
+        std::filesystem::remove(tmpFilePath);
+    }
+    void ScriptEditService::replaceDisplayToDefaultForDosboxConfig(std::filesystem::path &filePath,
+                                                                   const std::string &tmpExtension) {
+        // We open two files, the original file and a tmp file
+        std::fstream file(filePath);
+        std::filesystem::path tmpFilePath = filePath;
+        tmpFilePath += tmpExtension;
+
+        // Double check first if the tmp file exists, if so we do something like .tmp2, tmp3, etc
+        if (fileExists(tmpFilePath.string())) {
+            int counter = 2;
+            while (fileExists(tmpFilePath.string())) {
+                tmpFilePath = filePath;
+                tmpFilePath += tmpExtension + std::to_string(counter);
+                counter++;
+            }
+        }
+        std::fstream tmpFile(tmpFilePath, std::ios::out);
+
+        // We slowly stream the file line by line and replace each line with any modifications
+        if (file.is_open() && tmpFile.is_open()) {
+            std::string line;
+            while (std::getline(file, line)) {
+                // Check if the line contains a path
+                auto lowerLine = line;
+                std::ranges::transform(lowerLine, lowerLine.begin(), tolower);
+                if (lowerLine.find("fullresolution=") != std::string::npos) {
+                    // Find the value of fullresolution and if the value is not desktop we replace it
+                    // what is the default
+                    if (auto fullResolutionValue = line.substr(line.find('=') + 1); fullResolutionValue != "desktop") {
+                        replaceAll(line, fullResolutionValue, "desktop");
+                    }
+                }
+                else if (lowerLine.find("windowresolution=") != std::string::npos) {
+                    // Find the value of windowresolution and if the value is not desktop we replace it
+                    // what is the default
+                    if (auto windowResolutionValue = line.substr(line.find('=') + 1);
+                        windowResolutionValue != "original") {
+                        replaceAll(line, windowResolutionValue, "original");
+                    }
+                }
+                // Write the modified line to the tmp file
+                tmpFile << line << std::endl;
+            }
+        }
+
+        // Close the files
+        file.close();
+        tmpFile.close();
+        // Remove the original file
+        std::filesystem::remove(filePath);
+        // Rename the tmp file to the original file
+        std::filesystem::rename(tmpFilePath, filePath);
+        // We also remove the tmp file
+        std::filesystem::remove(tmpFilePath);
+    }
+
+
 } // DosboxStagingReplacer
