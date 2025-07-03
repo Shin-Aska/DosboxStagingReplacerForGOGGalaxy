@@ -112,6 +112,15 @@ namespace DosboxStagingReplacer {
         std::vector<PlayTaskLaunchParameter> getPlayTaskLaunchParametersFromPlayTaskId(int playTaskId);
 
         /**
+         * @brief Adds a new play task type to the database.
+         *
+         * This method allows adding a new task type to the PlayTaskTypes table.
+         *
+         * @param typeName The name of the task type to be added.
+         */
+        void addTaskType(const std::string &typeName);
+
+        /**
          * @brief Inserts a new play task and its associated launch parameters to the database.
          * This method ignores the ids provided in playTask and launchParameters parameters
          * @param userId ID of the user to assign the task to.
@@ -132,7 +141,7 @@ namespace DosboxStagingReplacer {
          * @param enabled A boolean indicating whether custom launch parameters should be enabled (true) or disabled
          * (false).
          */
-        void setCustomLaunchParametersForProduct(const std::string &gameReleaseKey, const bool enabled);
+        void setCustomLaunchParametersForProduct(const std::string &gameReleaseKey, bool enabled);
     };
 
     /**

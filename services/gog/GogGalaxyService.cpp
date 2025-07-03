@@ -261,6 +261,25 @@ namespace DosboxStagingReplacer {
         throw GogGalaxyServiceException("Database connection is not open");
     }
 
+    void GogGalaxyService::addTaskType(const std::string &typeName) {
+        if (this->validDatabase) {
+            // Check if the type already exists
+            if (auto existingTypes = this->getPlayTaskTypes();
+                std::ranges::any_of(existingTypes, [&](const auto &type) { return type.type == typeName; })) {
+                std::cerr << "Task type '" << typeName << "' already exists. Skipping insertion." << std::endl;
+                return;
+            }
+
+            // Insert the new task type
+            this->sqlService.executeQuery(R"SQL(
+                INSERT INTO PlayTaskTypes (type)
+                VALUES (:type);
+            )SQL", {{"type", typeName} } );
+            return;
+        }
+        throw GogGalaxyServiceException("Database connection is not open");
+    }
+    
     void GogGalaxyService::addPlayTask(const int64_t userId, const std::string &gameReleaseKey,
                                        const PlayTaskInformation &playTask,
                                        const PlayTaskLaunchParameter &launchParameter) {
