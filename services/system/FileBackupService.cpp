@@ -10,6 +10,10 @@
 
 namespace DosboxStagingReplacer {
 
+    constexpr auto PATH_SEPARATOR = "\\/";
+    constexpr auto INITIAL_BACKUP_COUNTER = 2;
+    constexpr auto INVALID_BACKUP_NUMBER = -1;
+
     void FileBackupService::setBackupFileExtension(const std::string &extension) {
         backupFileExtension = extension;
     }
@@ -22,13 +26,13 @@ namespace DosboxStagingReplacer {
         FileEntity result;
         // Check if filesInPath is empty
         if (filesInDirectory.empty()) {
-            const std::string directoryPath = filePath.substr(0, filePath.find_last_of("\\/"));
+            const std::string directoryPath = filePath.substr(0, filePath.find_last_of(PATH_SEPARATOR));
             filesInDirectory = DirectoryScanner::scanDirectory(directoryPath);
         }
 
         for (const auto &file: filesInDirectory) {
             if (file.path == filePath) {
-                int backupCounter = 2;
+                int backupCounter = INITIAL_BACKUP_COUNTER;
                 std::string backupFilePath = file.path + backupFileExtension;
                 // Check if the backup file already exists, if so we increment the counter
                 // The file will be named file.bak, file.bak.2, file.bak.3, etc.
@@ -59,7 +63,7 @@ namespace DosboxStagingReplacer {
         FileEntity result;
         // Check if filesInPath is empty
         if (filesInDirectory.empty()) {
-            const std::string directoryPath = filePath.substr(0, filePath.find_last_of("\\/"));
+            const std::string directoryPath = filePath.substr(0, filePath.find_last_of(PATH_SEPARATOR));
             filesInDirectory = DirectoryScanner::scanDirectory(directoryPath);
         }
 
@@ -78,9 +82,9 @@ namespace DosboxStagingReplacer {
             mostRecentBackupFile.size = 0;
             mostRecentBackupFile.type = FileType::NONE;
 
-            int highestBackupNumber = -1;
+            int highestBackupNumber = INVALID_BACKUP_NUMBER;
             for (const auto& file : backupFiles) {
-                std::string fileName = file.path.substr(file.path.find_last_of("\\/") + 1);
+                std::string fileName = file.path.substr(file.path.find_last_of(PATH_SEPARATOR) + 1);
                 std::string backupNumberString = fileName.substr(fileName.find_last_of(this->backupFileExtension) + 1);
                 if (const int backupNumber = std::stoi(backupNumberString); backupNumber > highestBackupNumber) {
                     highestBackupNumber = backupNumber;
@@ -88,7 +92,7 @@ namespace DosboxStagingReplacer {
                 }
             }
 
-            if (highestBackupNumber != -1) {
+            if (highestBackupNumber != INVALID_BACKUP_NUMBER) {
                 result = mostRecentBackupFile;
             }
         }
@@ -99,7 +103,7 @@ namespace DosboxStagingReplacer {
         auto filesInDirectory = filesInPath;
         // Check if filesInPath is empty
         if (filesInDirectory.empty()) {
-            const std::string directoryPath = filePath.substr(0, filePath.find_last_of("\\/"));
+            const std::string directoryPath = filePath.substr(0, filePath.find_last_of(PATH_SEPARATOR));
             filesInDirectory = DirectoryScanner::scanDirectory(directoryPath);
         }
 
