@@ -50,6 +50,21 @@ namespace DosboxStagingReplacer {
          * @param tmpExtension The extension to use for the temporary file
          */
         static void disableFullScreenForDosboxConfig(std::filesystem::path &filePath, const std::string &tmpExtension = ".tmp");
+
+        /**
+         * @brief Disables the mapping config for the DOSBox configuration file some games have.
+         * @param filePath
+         * @param tmpExtension
+         */
+        static void disableOverwrittenMappingForDosboxConfig(std::filesystem::path &filePath, const std::string &tmpExtension = ".tmp");
+
+        /**
+         * @brief Replaces the fullscreenresolution and windowresolution to the default's values
+         * which is desktop and original respectively
+         * @param filePath
+         * @param tmpExtension
+         */
+        static void replaceDisplayToDefaultForDosboxConfig(std::filesystem::path &filePath, const std::string &tmpExtension = ".tmp");
     };
 
 } // DosboxStagingReplacer
