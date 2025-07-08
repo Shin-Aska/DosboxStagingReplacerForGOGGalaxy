@@ -77,10 +77,6 @@ namespace DosboxStagingReplacer {
             // We assume that the backup file is named file.bak, file.bak.2, file.bak.3, etc.
             // This is done by getting the last number in the file name
             FileEntity mostRecentBackupFile;
-            mostRecentBackupFile.path = "";
-            mostRecentBackupFile.name = "";
-            mostRecentBackupFile.size = 0;
-            mostRecentBackupFile.type = FileType::NONE;
 
             int highestBackupNumber = INVALID_BACKUP_NUMBER;
             for (const auto& file : backupFiles) {
