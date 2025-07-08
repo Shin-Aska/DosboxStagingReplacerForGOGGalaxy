@@ -15,7 +15,7 @@ namespace DosboxStagingReplacer {
         std::string backupFileExtension = ".bak";
 
     public:
-        /// @brief Default constructor
+
         FileBackupService() = default;
 
         /**
