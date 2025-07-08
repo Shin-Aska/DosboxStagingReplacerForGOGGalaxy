@@ -1,7 +1,3 @@
-//
-// Created by Richard Orilla on 3/23/2025.
-//
-
 #include "StatementParser.h"
 
 namespace DosboxStagingReplacer {

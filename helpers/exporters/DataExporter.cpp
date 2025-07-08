@@ -1,7 +1,3 @@
-//
-// Created by Richard Orilla on 4/12/2025.
-//
-
 #include "DataExporter.h"
 #include <sstream>
 

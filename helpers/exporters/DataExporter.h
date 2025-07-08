@@ -1,7 +1,3 @@
-//
-// Created by Richard Orilla on 3/14/2025.
-//
-
 #ifndef DATAEXPORTER_H
 #define DATAEXPORTER_H
 
