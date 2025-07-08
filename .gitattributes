@@ -1,0 +1,2 @@
+# Exclude third-party libraries from language statistics
+libs/* linguist-vendored
