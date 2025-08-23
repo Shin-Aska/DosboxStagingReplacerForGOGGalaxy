@@ -65,6 +65,26 @@ namespace DosboxStagingReplacer {
          * @param tmpExtension
          */
         static void replaceDisplayToDefaultForDosboxConfig(std::filesystem::path &filePath, const std::string &tmpExtension = ".tmp");
+
+
+        /**
+         *
+         * @param arg The current argument from Gog Galaxy
+         * @param basePath The basePath string that we can use to replace relative path strings
+         * @return A transformed config argument that has its relative path's replace with absolute path strings
+         */
+        static std::string transformConfArg(const std::string& arg, const std::filesystem::path &basePath);
+
+        /**
+         * @brief Sanitizes the given DOSBox mount path.
+         *
+         * This function processes the provided path to ensure it meets the
+         * requirements or conventions expected for DOSBox mount paths.
+         *
+         * @param path The DOSBox mount path to be sanitized.
+         * @return A sanitized version of the given mount path.
+         */
+        static std::string sanitizeDosboxMountPath(const std::string &path);
     };
 
 } // DosboxStagingReplacer

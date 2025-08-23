@@ -7,7 +7,7 @@ A utility designed to seamlessly replace the default DOSBox bundled with GOG Gal
 
 ---
 
-## 📚 Full Documentation
+## Full Documentation
 
 Complete details about installation, usage, development, and internal architecture are available on the [**Wiki**](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/wiki).
 
@@ -22,7 +22,7 @@ Complete details about installation, usage, development, and internal architectu
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 Download the latest binary from [Releases](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/releases):
 
@@ -34,7 +34,7 @@ See [How to Use](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/
 
 ------
 
-## 🚩 Requirements
+## Requirements
 
 - Windows 10 or later (Recommended)
 - GOG Galaxy client installed
@@ -42,12 +42,12 @@ See [How to Use](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/
 
 ------
 
-## 🤝 Contributions
+## Contributions
 
 Contributions, improvements, and suggestions are welcome! Visit the [Contributing Guide](https://github.com/Shin-Aska/DosboxStagingReplacerForGOGGalaxy/wiki/Contributing-to-Development) for details.
 
 ------
 
-## 📜 License
+## License
 
 Licensed under the MIT License.
