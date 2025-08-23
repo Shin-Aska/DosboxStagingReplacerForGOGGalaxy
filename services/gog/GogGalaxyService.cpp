@@ -285,7 +285,7 @@ namespace DosboxStagingReplacer {
                                        const PlayTaskLaunchParameter &launchParameter) {
         if (this->validDatabase) {
             // Get all PlayTasks under the given gameReleaseKey
-            auto existingPlayTasks = this->getPlayTasksFromGameReleaseKey(gameReleaseKey);
+            const auto existingPlayTasks = this->getPlayTasksFromGameReleaseKey(gameReleaseKey);
             int maxOrder = -1;
 
             // Get all PlayTasks that have custom type
