@@ -2,6 +2,13 @@
 
 namespace DosboxStagingReplacer {
 
+    [[nodiscard]] auto sqlite_column_text_or_empty(sqlite3_stmt *stmt, const int index) -> std::string {
+        if (const auto *text = sqlite3_column_text(stmt, index)) {
+            return std::string{reinterpret_cast<const char *>(text)};
+        }
+        return {};
+    }
+
     std::unique_ptr<StatementParser> StatementParserFactory::createParser(const SqlEngine engine) {
         switch (engine) {
             case SqlEngine::SQLITE:
@@ -84,11 +91,11 @@ namespace DosboxStagingReplacer {
         auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
         for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
             if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "type") {
-                result.type = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.type = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "name") {
-                result.name = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.name = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "tbl_name") {
-                result.tbl_name = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.tbl_name = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "rootpage") {
                 result.rootpage = sqlite3_column_int(stmt, i);
             }
@@ -102,17 +109,17 @@ namespace DosboxStagingReplacer {
             if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "productId") {
                 result.productId = sqlite3_column_int(stmt, i);
             } else if (columnName == "title") {
-                result.title = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.title = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "slug") {
-                result.slug = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.slug = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "gogId") {
                 result.gogId = sqlite3_column_int(stmt, i);
             } else if (columnName == "releaseKey") {
-                result.releaseKey = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.releaseKey = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "installationPath") {
-                result.installationPath = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.installationPath = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "installationDate") {
-                result.installationDate = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.installationDate = sqlite_column_text_or_empty(stmt, i);
             }
         }
     }
@@ -133,7 +140,7 @@ namespace DosboxStagingReplacer {
             if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "id") {
                 result.id = sqlite3_column_int(stmt, i);
             } else if (columnName == "gameReleaseKey") {
-                result.gameReleaseKey = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.gameReleaseKey = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "userId") {
                 result.userId = sqlite3_column_int(stmt, i);
             } else if (columnName == "order") {
@@ -141,7 +148,7 @@ namespace DosboxStagingReplacer {
             } else if (columnName == "typeId") {
                 result.typeId = sqlite3_column_int(stmt, i);
             } else if (columnName == "type") {
-                result.type = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.type = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "isPrimary") {
                 result.isPrimary = sqlite3_column_int(stmt, i) != 0;
             }
@@ -155,11 +162,11 @@ namespace DosboxStagingReplacer {
             if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "playTaskId") {
                 result.playTaskId = sqlite3_column_int(stmt, i);
             } else if (columnName == "executablePath") {
-                result.executablePath = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.executablePath = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "commandLineArgs") {
-                result.commandLineArgs = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.commandLineArgs = sqlite_column_text_or_empty(stmt, i);
             } else if (columnName == "label") {
-                result.label = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.label = sqlite_column_text_or_empty(stmt, i);
             }
         }
     }
@@ -170,7 +177,7 @@ namespace DosboxStagingReplacer {
             if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "id") {
                 result.id = sqlite3_column_int(stmt, i);
             } else if (columnName == "type") {
-                result.type = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, i)));
+                result.type = sqlite_column_text_or_empty(stmt, i);
             }
         }
     }

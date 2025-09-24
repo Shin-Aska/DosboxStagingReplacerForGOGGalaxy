@@ -420,6 +420,18 @@ namespace DosboxStagingReplacer {
         const char *msg;
     };
 
+    /**
+     * @brief Retrieves text data from a specific column in an SQLite statement.
+     *
+     * Extracts the UTF-8 encoded text value from the specified column of the provided SQLite statement.
+     * If the column contains null data, an empty string is returned.
+     *
+     * @param stmt Pointer to the SQLite prepared statement object.
+     * @param index Zero-based index of the column within the SQLite statement.
+     * @return A string containing the text data from the specified column, or an empty string if the column is null.
+     */
+    std::string sqlite_column_text_or_empty(sqlite3_stmt*, int);
+
 } // namespace DosboxStagingReplacer
 
 #endif // STATEMENTPARSER_H
