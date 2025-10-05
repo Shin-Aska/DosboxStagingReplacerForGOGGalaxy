@@ -1,19 +1,19 @@
 //
-// Created by Orill on 4/16/2025.
-//
 
 #include "ScriptEditService.h"
-#include "InstallationVerifier.h"
-
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <ranges>
+#include <string>
+#include "DosPathResolver.h"
+#include "InstallationVerifier.h"
 
 namespace DosboxStagingReplacer {
 
-    void ScriptEditService::replaceAll(std::string& str, const std::string& from, const std::string& to) {
-        if (from.empty()) return; // avoid infinite loop
+
+    void ScriptEditService::replaceAll(std::string &str, const std::string &from, const std::string &to) {
+        if (from.empty())
+            return; // avoid infinite loop
 
         size_t start_pos = 0;
         while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
@@ -48,8 +48,7 @@ namespace DosboxStagingReplacer {
                 std::ranges::transform(lowerLine, lowerLine.begin(), tolower);
                 if (lowerLine.find("[sdl]") != std::string::npos) {
                     foundSDLFlag = true;
-                }
-                else if (lowerLine.find("[dosbox]") != std::string::npos) {
+                } else if (lowerLine.find("[dosbox]") != std::string::npos) {
                     foundDosboxFlag = true;
                 }
             }
@@ -64,8 +63,13 @@ namespace DosboxStagingReplacer {
 
         for (std::size_t i = 0; i < arg.size(); ++i) {
             const char c = arg[i];
-            if (c == '"') { continue; }
-            if (c == '.') { lastDot = i; continue; }
+            if (c == '"') {
+                continue;
+            }
+            if (c == '.') {
+                lastDot = i;
+                continue;
+            }
             break;
         }
 
@@ -81,16 +85,14 @@ namespace DosboxStagingReplacer {
             if (basePath.string().back() == '\\' && tail.front() == '\\') {
                 tail = tail.substr(1);
                 hasSeparator = true;
-            }
-            else if (basePath.string().back() == '\\' || tail.front() == '\\') {
+            } else if (basePath.string().back() == '\\' || tail.front() == '\\') {
                 hasSeparator = true;
             }
             out = basePath.string() + (hasSeparator ? "" : "\\") + tail;
         } else {
             if (basePath.string().back() == '\\' || out.front() == '\\') {
                 hasSeparator = true;
-            }
-            else if (basePath.string().back() == '\\' && out.front() == '\\') {
+            } else if (basePath.string().back() == '\\' && out.front() == '\\') {
                 out = out.substr(1);
                 hasSeparator = true;
             }
@@ -111,7 +113,8 @@ namespace DosboxStagingReplacer {
         bool first = true;
 
         while (in >> token) {
-            if (!first) out << ' ';
+            if (!first)
+                out << ' ';
             first = false;
 
             if (token == "-conf") {
@@ -154,11 +157,8 @@ namespace DosboxStagingReplacer {
                 std::ranges::transform(lowerLine, lowerLine.begin(), tolower);
                 // Check if the line contains the strings "imgmount" or "mount" (case-insensitive)
                 if (lowerLine.find("mount") != std::string::npos || lowerLine.find("imgmount") != std::string::npos) {
-                    line = sanitizeDosboxMountPath(line);
-                    // Replace all back relative path to absolute path
-                    replaceAll(line, "..", basePath.string());
-                    // Replace all current relative path to absolute path
-                    replaceAll(line, ".", basePath.string());
+                    line = DosPathResolver::sanitizeDosboxMountPath(line);
+                    line = DosPathResolver::resolveMountLinePaths(line, basePath);
                 }
                 // Write the modified line to the tmp file
                 tmpFile << line << std::endl;
@@ -291,8 +291,7 @@ namespace DosboxStagingReplacer {
                     if (auto fullResolutionValue = line.substr(line.find('=') + 1); fullResolutionValue != "desktop") {
                         replaceAll(line, fullResolutionValue, "desktop");
                     }
-                }
-                else if (lowerLine.find("windowresolution=") != std::string::npos) {
+                } else if (lowerLine.find("windowresolution=") != std::string::npos) {
                     // Find the value of windowresolution and if the value is not desktop we replace it
                     // what is the default
                     std::cerr << "windowresolution -> " << line << " " << filePath << std::endl;
@@ -317,57 +316,4 @@ namespace DosboxStagingReplacer {
         std::filesystem::remove(tmpFilePath);
     }
 
-std::string ScriptEditService::sanitizeDosboxMountPath(const std::string &params) {
-        // Replicates the Python logic provided, keeping behavior consistent.
-        std::string targetDrive;
-        std::string targetPath;
-
-        const auto pos = params.find("mount");
-        if (pos == std::string::npos) {
-            // If "mount" isn't found, return the input unchanged (conservative fallback).
-            return params;
-        }
-
-        const std::string mountParams = params.substr(pos + 5); // characters after "mount"
-
-        bool startParsing = false;
-        std::size_t lastIndex = std::string::npos;
-
-        // Parse targetDrive (the first non-space token after "mount")
-        for (std::size_t idx = 0; idx < mountParams.size(); ++idx) {
-            const char c = mountParams[idx];
-
-            if (c != ' ') startParsing = true;
-
-            if (startParsing) {
-                if (c == ' ') {
-                    lastIndex = idx;
-                    break;
-                } else {
-                    targetDrive.push_back(c);
-                }
-            }
-        }
-
-        // Parse targetPath (the rest after the first separating space)
-        if (lastIndex != std::string::npos) {
-            const std::string pathParams = (lastIndex + 1 < mountParams.size())
-                                           ? mountParams.substr(lastIndex + 1)
-                                           : std::string{};
-
-            startParsing = false;
-            for (const char c : pathParams) {
-                if (c != ' ') startParsing = true;
-                if (startParsing) targetPath.push_back(c);
-            }
-
-            if (!targetPath.empty() && targetPath.front() != '"') {
-                targetPath = "\"" + targetPath + "\"";
-            }
-        }
-
-        return "mount " + targetDrive + " " + targetPath;
-    }
-
-
-} // DosboxStagingReplacer
+} // namespace DosboxStagingReplacer
