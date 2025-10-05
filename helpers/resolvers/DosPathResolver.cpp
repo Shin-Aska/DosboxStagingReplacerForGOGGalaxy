@@ -33,8 +33,7 @@ namespace DosboxStagingReplacer {
                 inQuotes = true;
                 quoteChar = c;
                 current.push_back(c);
-            }
-            else if (std::isspace(static_cast<unsigned char>(c))) {
+            } else if (std::isspace(static_cast<unsigned char>(c))) {
                 if (!current.empty()) {
                     tokens.push_back(current);
                     current.clear();
