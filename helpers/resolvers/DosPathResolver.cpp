@@ -255,7 +255,7 @@ namespace DosboxStagingReplacer {
                     (lastIndex + 1 < mountParams.size()) ? mountParams.substr(lastIndex + 1) : std::string{};
 
             startParsing = false;
-            for (const char c: pathParams) {
+            for (const char c : pathParams) {
                 if (c != ' ')
                     startParsing = true;
                 if (startParsing)
