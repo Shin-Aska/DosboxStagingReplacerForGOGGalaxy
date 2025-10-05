@@ -38,8 +38,7 @@ namespace DosboxStagingReplacer {
                     tokens.push_back(current);
                     current.clear();
                 }
-            }
-            else {
+            } else {
                 current.push_back(c);
             }
         }
