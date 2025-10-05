@@ -11,6 +11,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-static")
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/libs/sqlite
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers
+        ${CMAKE_CURRENT_SOURCE_DIR}/helpers/resolvers
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/scanners
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/finders
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/verifiers
@@ -24,6 +25,8 @@ include_directories(
 
 set(TEST_COMMON_SOURCES
         helpers/CoreHelperModels.h
+        helpers/resolvers/DosPathResolver.cpp
+        helpers/resolvers/DosPathResolver.h
         helpers/scanners/DirectoryScanner.cpp
         helpers/scanners/DirectoryScanner.h
         helpers/finders/InstallationFinder.cpp
