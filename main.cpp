@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     // Initialize the file backup service
 
     // Parse command line arguments using argparse
-    argparse::ArgumentParser program("Dosbox Staging Replacer", "1.0.8");
+    argparse::ArgumentParser program("Dosbox Staging Replacer", "1.0.9");
     program.add_argument("-f", "--file")
             .help("The Galaxy database file")
             .default_value(std::string("galaxy-2.0.db"))
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
             .default_value(std::string(""))
             .nargs(1);
     std::unordered_map<std::string, std::string> dosBoxVersionParameters = {
-            {"dosbox-staging", "DOSBox Staging"}, {"dosbox-x", "DOSBox X"}, {"dosbox-ece", "DOSBox ECE"}};
+            {"dosbox-staging", "DOSBox Staging"}, {"dosbox-x", "DOSBox-X"}, {"dosbox-pure", "DOSBoxPure"}};
     program.add_argument("-dv", "--dosbox-version")
             .help("The version of DOSBox to use. This is a string, the format is the application name that is "
                   "printed by the --list-applications flag. When using this flag, the version of DOSBox you want to "
@@ -357,20 +357,21 @@ int main(int argc, char *argv[]) {
 
                 std::cout << "Searching for dosbox.exe in the application installation path" << std::endl;
 
-                // We search if there is dosbox.exe in the directory, we search in non-case sensitive search
+                // We search for any executable containing "dosbox" in a non-case sensitive manner
                 auto dosBoxExeSearch = std::ranges::find_if(dosBoxFiles, [&](const auto &file) {
                     std::string lowerCaseName = file.name;
                     std::ranges::transform(lowerCaseName, lowerCaseName.begin(), tolower);
-                    return lowerCaseName == "dosbox.exe";
+                    return lowerCaseName.find("dosbox") != std::string::npos &&
+                           lowerCaseName.ends_with(".exe");
                 });
-                // We search if there is dosbox.exe, if there is none, then we return an error
+                // If no matching executable is found, then we return an error
                 if (dosBoxExeSearch == dosBoxFiles.end()) {
-                    std::cerr << "Error: There is no dosbox.exe in the application installation path" << std::endl;
+                    std::cerr << "Error: There is no Dosbox application in the application installation path" << std::endl;
                     return -1;
                 }
                 // Assign dosBoxExeSearch to dosBoxExe
                 dosBoxExe = std::make_shared<DosboxStagingReplacer::FileEntity>(*dosBoxExeSearch);
-                std::cout << "Successfully found dosbox.exe in the application installation path" << std::endl;
+                std::cout << "Successfully found Dosbox application " << dosBoxExe->name << " in the application installation path" << std::endl;
             } else if (!dosboxManualPath.empty()) {
                 std::filesystem::path manualPath = dosboxManualPath;
                 DosboxStagingReplacer::FileEntity fileEntity;
