@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
                   "printed by the --list-applications flag. When using this flag, the version of DOSBox you want to "
                   "use must be installed in the system.")
             .default_value(std::string(""))
-            .choices("", "dosbox-staging", "dosbox-x", "dosbox-ece")
+            .choices("", "dosbox-staging", "dosbox-x", "dosbox-pure")
             .nargs(1);
 
     program.add_argument("-dvm", "--dosbox-version-manual")
