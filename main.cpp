@@ -366,12 +366,12 @@ int main(int argc, char *argv[]) {
                 });
                 // If no matching executable is found, then we return an error
                 if (dosBoxExeSearch == dosBoxFiles.end()) {
-                    std::cerr << "Error: There is no Dosbox application in the application installation path" << std::endl;
+                    std::cerr << "Error: There is no DOSBox application in the application installation path" << std::endl;
                     return -1;
                 }
                 // Assign dosBoxExeSearch to dosBoxExe
                 dosBoxExe = std::make_shared<DosboxStagingReplacer::FileEntity>(*dosBoxExeSearch);
-                std::cout << "Successfully found Dosbox application " << dosBoxExe->name << " in the application installation path" << std::endl;
+                std::cout << "Successfully found DOSBox application " << dosBoxExe->name << " in the application installation path" << std::endl;
             } else if (!dosboxManualPath.empty()) {
                 std::filesystem::path manualPath = dosboxManualPath;
                 DosboxStagingReplacer::FileEntity fileEntity;
