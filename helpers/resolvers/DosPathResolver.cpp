@@ -9,24 +9,25 @@
 
 namespace DosboxStagingReplacer {
 
-    // TODO: Put the constant strings here as #define variables
-    // example: #define DOS_DISK_SEPERATOR ':'
-    // So instead of `std::isalpha(first) != 0 && value[1] == ':' && (value[2] == '\\' || value[2] == '/')`
-    // we can use `std::isalpha(first) != 0 && value[1] == WINDOWS_DISK_PROTOCOL_SEPERATOR && (value[2] == '\\' || value[2] == '/')`
-
-
     namespace {
+        constexpr char kDosDriveSeparator = ':';
+        constexpr char kDosBackslash = '\\';
+        constexpr char kDosSlash = '/';
+
         bool isDosDriveAbsolutePath(const std::string &value) {
             if (value.size() < 3) {
                 return false;
             }
             const unsigned char first = static_cast<unsigned char>(value[0]);
-            return std::isalpha(first) != 0 && value[1] == ':' && (value[2] == '\\' || value[2] == '/');
+            return std::isalpha(first) != 0
+                   && value[1] == kDosDriveSeparator
+                   && (value[2] == kDosBackslash || value[2] == kDosSlash);
         }
 
         bool isDosUncAbsolutePath(const std::string &value) {
             return value.size() >= 2
-                   && ((value[0] == '\\' && value[1] == '\\') || (value[0] == '/' && value[1] == '/'));
+                   && ((value[0] == kDosBackslash && value[1] == kDosBackslash)
+                       || (value[0] == kDosSlash && value[1] == kDosSlash));
         }
 
         bool isDosAbsolutePath(const std::string &value) {
@@ -34,7 +35,7 @@ namespace DosboxStagingReplacer {
         }
 
         std::string normalizeDosSeparators(std::string value) {
-            std::ranges::replace(value, '/', '\\');
+            std::ranges::replace(value, kDosSlash, kDosBackslash);
             return value;
         }
 
@@ -56,16 +57,16 @@ namespace DosboxStagingReplacer {
             std::string normalizedBase = normalizeDosSeparators(base);
 
             std::string relativeGeneric = relative;
-            std::ranges::replace(relativeGeneric, '\\', '/');
+            std::ranges::replace(relativeGeneric, kDosBackslash, kDosSlash);
             const bool relativeHasTrailingSeparator = !relative.empty()
-                                                       && (relative.back() == '/' || relative.back() == '\\');
+                                                       && (relative.back() == kDosSlash || relative.back() == kDosBackslash);
 
             const std::filesystem::path relativePath(relativeGeneric);
             const std::filesystem::path normalizedRelativePath = relativePath.lexically_normal();
             const std::string normalizedRelativeGeneric = normalizedRelativePath.generic_string();
 
             std::vector<std::string> keptSegments;
-            for (const auto &segment : splitGenericPathSegments(normalizedRelativeGeneric, '/')) {
+            for (const auto &segment : splitGenericPathSegments(normalizedRelativeGeneric, kDosSlash)) {
                 if (segment == "." || segment.empty()) {
                     continue;
                 }
@@ -80,12 +81,12 @@ namespace DosboxStagingReplacer {
 
             std::string resolved = normalizedBase;
             if (!keptSegments.empty()) {
-                if (!resolved.empty() && resolved.back() != '\\') {
-                    resolved.push_back('\\');
+                if (!resolved.empty() && resolved.back() != kDosBackslash) {
+                    resolved.push_back(kDosBackslash);
                 }
                 for (std::size_t i = 0; i < keptSegments.size(); ++i) {
                     if (i != 0) {
-                        resolved.push_back('\\');
+                        resolved.push_back(kDosBackslash);
                     }
                     resolved += keptSegments[i];
                 }
@@ -94,8 +95,8 @@ namespace DosboxStagingReplacer {
             const bool needsTrailingSeparator = relativeHasTrailingSeparator
                                                  || normalizedRelativeGeneric == "."
                                                  || normalizedRelativeGeneric == "..";
-            if (needsTrailingSeparator && !resolved.empty() && resolved.back() != '\\') {
-                resolved.push_back('\\');
+            if (needsTrailingSeparator && !resolved.empty() && resolved.back() != kDosBackslash) {
+                resolved.push_back(kDosBackslash);
             }
 
             return resolved;
