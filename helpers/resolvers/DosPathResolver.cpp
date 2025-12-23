@@ -7,6 +7,87 @@
 
 namespace DosboxStagingReplacer {
 
+    namespace {
+        bool isDosDriveAbsolutePath(const std::string &value) {
+            if (value.size() < 3) {
+                return false;
+            }
+            const unsigned char first = static_cast<unsigned char>(value[0]);
+            return std::isalpha(first) != 0 && value[1] == ':' && (value[2] == '\\' || value[2] == '/');
+        }
+
+        bool isDosUncAbsolutePath(const std::string &value) {
+            return value.size() >= 2
+                   && ((value[0] == '\\' && value[1] == '\\') || (value[0] == '/' && value[1] == '/'));
+        }
+
+        bool isDosAbsolutePath(const std::string &value) {
+            return isDosDriveAbsolutePath(value) || isDosUncAbsolutePath(value);
+        }
+
+        std::string normalizeDosSeparators(std::string value) {
+            std::ranges::replace(value, '/', '\\');
+            return value;
+        }
+
+        std::vector<std::string> splitDosPathSegments(const std::string &value) {
+            std::vector<std::string> segments;
+            std::string current;
+            for (const char c : value) {
+                if (c == '/' || c == '\\') {
+                    if (!current.empty()) {
+                        segments.push_back(current);
+                        current.clear();
+                    }
+                } else {
+                    current.push_back(c);
+                }
+            }
+            if (!current.empty()) {
+                segments.push_back(current);
+            }
+            return segments;
+        }
+
+        std::string clampDosRelativeToBaseString(const std::string &base, const std::string &relative) {
+            std::string normalizedBase = normalizeDosSeparators(base);
+            const bool relativeHasTrailingSeparator = !relative.empty() && (relative.back() == '/' || relative.back() == '\\');
+
+            std::vector<std::string> keptSegments;
+            for (const auto &segment : splitDosPathSegments(relative)) {
+                if (segment.empty() || segment == ".") {
+                    continue;
+                }
+                if (segment == "..") {
+                    if (!keptSegments.empty()) {
+                        keptSegments.pop_back();
+                    }
+                    continue;
+                }
+                keptSegments.push_back(segment);
+            }
+
+            std::string resolved = normalizedBase;
+            if (!keptSegments.empty()) {
+                if (!resolved.empty() && resolved.back() != '\\') {
+                    resolved.push_back('\\');
+                }
+                for (std::size_t i = 0; i < keptSegments.size(); ++i) {
+                    if (i != 0) {
+                        resolved.push_back('\\');
+                    }
+                    resolved += keptSegments[i];
+                }
+            }
+
+            if (relativeHasTrailingSeparator && !resolved.empty() && resolved.back() != '\\') {
+                resolved.push_back('\\');
+            }
+
+            return resolved;
+        }
+    } // namespace
+
     std::string DosPathResolver::toLowerCopy(const std::string &value) {
         std::string lower = value;
         std::ranges::transform(lower, lower.begin(), [](unsigned char c) {
@@ -131,30 +212,6 @@ namespace DosboxStagingReplacer {
         return prefix + processed;
     }
 
-    std::filesystem::path DosPathResolver::clampRelativeToBase(const std::filesystem::path &base,
-                                                               const std::filesystem::path &relative) {
-        std::vector<std::filesystem::path> segments;
-        for (const auto &part : relative) {
-            const std::string segment = part.string();
-            if (segment == "." || segment.empty()) {
-                continue;
-            }
-            if (segment == "..") {
-                if (!segments.empty()) {
-                    segments.pop_back();
-                }
-                continue;
-            }
-            segments.push_back(part);
-        }
-
-        std::filesystem::path resolved = base;
-        for (const auto &segment : segments) {
-            resolved /= segment;
-        }
-        return resolved;
-    }
-
     std::string DosPathResolver::resolveMountLinePaths(const std::string &line,
                                                        const std::filesystem::path &basePath) {
         const std::size_t firstNonSpace = line.find_first_not_of(" \t");
@@ -185,10 +242,8 @@ namespace DosboxStagingReplacer {
                 continue;
             }
 
-            std::filesystem::path candidate(body);
-            if (!candidate.empty() && candidate.is_relative()) {
-                const std::filesystem::path resolved = clampRelativeToBase(basePath, candidate);
-                const std::string resolvedStr = resolved.string();
+            if (!isDosAbsolutePath(body) && body.front() != '\\' && body.front() != '/') {
+                const std::string resolvedStr = clampDosRelativeToBaseString(basePath.string(), body);
                 const bool needsQuotes = wasQuoted || resolvedStr.find(' ') != std::string::npos;
                 if (needsQuotes) {
                     const char wrapChar = wasQuoted ? quoteChar : '"';
