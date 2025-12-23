@@ -4,8 +4,16 @@
 #include <cctype>
 #include <ranges>
 #include <sstream>
+#include <string_view>
+#include <filesystem>
 
 namespace DosboxStagingReplacer {
+
+    // TODO: Put the constant strings here as #define variables
+    // example: #define DOS_DISK_SEPERATOR ':'
+    // So instead of `std::isalpha(first) != 0 && value[1] == ':' && (value[2] == '\\' || value[2] == '/')`
+    // we can use `std::isalpha(first) != 0 && value[1] == WINDOWS_DISK_PROTOCOL_SEPERATOR && (value[2] == '\\' || value[2] == '/')`
+
 
     namespace {
         bool isDosDriveAbsolutePath(const std::string &value) {
@@ -30,32 +38,35 @@ namespace DosboxStagingReplacer {
             return value;
         }
 
-        std::vector<std::string> splitDosPathSegments(const std::string &value) {
+        std::vector<std::string> splitGenericPathSegments(const std::string_view value, const char delimiter) {
             std::vector<std::string> segments;
-            std::string current;
-            for (const char c : value) {
-                if (c == '/' || c == '\\') {
-                    if (!current.empty()) {
-                        segments.push_back(current);
-                        current.clear();
-                    }
-                } else {
-                    current.push_back(c);
+            for (auto &&part : value | std::views::split(delimiter)) {
+                std::string segment;
+                for (const char c : part) {
+                    segment.push_back(c);
                 }
-            }
-            if (!current.empty()) {
-                segments.push_back(current);
+                if (!segment.empty()) {
+                    segments.push_back(std::move(segment));
+                }
             }
             return segments;
         }
 
         std::string clampDosRelativeToBaseString(const std::string &base, const std::string &relative) {
             std::string normalizedBase = normalizeDosSeparators(base);
-            const bool relativeHasTrailingSeparator = !relative.empty() && (relative.back() == '/' || relative.back() == '\\');
+
+            std::string relativeGeneric = relative;
+            std::ranges::replace(relativeGeneric, '\\', '/');
+            const bool relativeHasTrailingSeparator = !relative.empty()
+                                                       && (relative.back() == '/' || relative.back() == '\\');
+
+            const std::filesystem::path relativePath(relativeGeneric);
+            const std::filesystem::path normalizedRelativePath = relativePath.lexically_normal();
+            const std::string normalizedRelativeGeneric = normalizedRelativePath.generic_string();
 
             std::vector<std::string> keptSegments;
-            for (const auto &segment : splitDosPathSegments(relative)) {
-                if (segment.empty() || segment == ".") {
+            for (const auto &segment : splitGenericPathSegments(normalizedRelativeGeneric, '/')) {
+                if (segment == "." || segment.empty()) {
                     continue;
                 }
                 if (segment == "..") {
@@ -80,7 +91,10 @@ namespace DosboxStagingReplacer {
                 }
             }
 
-            if (relativeHasTrailingSeparator && !resolved.empty() && resolved.back() != '\\') {
+            const bool needsTrailingSeparator = relativeHasTrailingSeparator
+                                                 || normalizedRelativeGeneric == "."
+                                                 || normalizedRelativeGeneric == "..";
+            if (needsTrailingSeparator && !resolved.empty() && resolved.back() != '\\') {
                 resolved.push_back('\\');
             }
 
