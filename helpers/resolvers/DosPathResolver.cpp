@@ -251,7 +251,7 @@ namespace DosboxStagingReplacer {
                 continue;
             }
 
-            if (!isDosAbsolutePath(body) && body.front() != '\\' && body.front() != '/') {
+            if (!isDosAbsolutePath(body) && body.front() != kDosBackslash && body.front() != kDosSlash) {
                 const std::string resolvedStr = resolveDosRelativePathToBaseString(basePath.string(), body);
                 const bool needsQuotes = wasQuoted || resolvedStr.find(' ') != std::string::npos;
                 if (needsQuotes) {
