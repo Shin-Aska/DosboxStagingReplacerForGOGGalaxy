@@ -11,20 +11,19 @@ namespace DosboxStagingReplacer {
     // Originally I want to use libraries like libapt, libdpkg, librpm, libflatpak, and libsnapd
     // But I think it's better to use the command line tools instead as it prevents the need to install additional libraries
     // Furthermore it will be more portable as it will work on any Linux distribution
-    #define DELIMITER '\t'
+    constexpr char DELIMITER = '\t';
 
-    #define APT "apt"
-    #define FLATPAK "flatpak"
-    #define SNAP "snap"
-    #define DPKG "dpkg"
-    #define RPM "rpm"
+    constexpr const char *APT = "apt";
+    constexpr const char *FLATPAK = "flatpak";
+    constexpr const char *SNAP = "snap";
+    constexpr const char *DPKG = "dpkg";
+    constexpr const char *RPM = "rpm";
 
-    #define APT_COMMAND "apt list --installed 2>/dev/null | awk -F/ 'NR>1 {print $1}' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{}\t$p\tapt\"'"
-    #define FLATPAK_COMMAND "flatpak list --app --columns=application | tail -n +1 | xargs -I{} sh -c 'p=$(flatpak info --show-location {} 2>/dev/null); echo \"{}\t$p\tflatpak\"'"
-    #define SNAP_COMMAND "snap list | awk 'NR>1 {print $1}' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{},$p,snap\"'"
-    #define DPKG_COMMAND "dpkg -l | awk 'NR>5 {print $2}' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{}\t$p\tdpkg\"'"
-    #define RPM_COMMAND "rpm -qa --qf '%{NAME}\n' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{},$p,rpm\"'"
-
+    constexpr const char *APT_COMMAND = "apt list --installed 2>/dev/null | awk -F/ 'NR>1 {print $1}' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{}\t$p\tapt\"'";
+    constexpr const char *FLATPAK_COMMAND = "flatpak list --app --columns=application | tail -n +1 | xargs -I{} sh -c 'p=$(flatpak info --show-location {} 2>/dev/null); echo \"{}\t$p\tflatpak\"'";
+    constexpr const char *SNAP_COMMAND = "snap list | awk 'NR>1 {print $1}' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{},$p,snap\"'";
+    constexpr const char *DPKG_COMMAND = "dpkg -l | awk 'NR>5 {print $2}' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{}\t$p\tdpkg\"'";
+    constexpr const char *RPM_COMMAND = "rpm -qa --qf '%{NAME}\n' | xargs -I{} sh -c 'p=$(command -v {} 2>/dev/null); echo \"{},$p,rpm\"'";
 
     bool isAptAvailable() {
         return !executeCommand("command -v apt").empty();

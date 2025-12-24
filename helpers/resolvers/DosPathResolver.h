@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace DosboxStagingReplacer {
@@ -62,6 +63,84 @@ namespace DosboxStagingReplacer {
         static std::string sanitizeDosboxMountPath(const std::string &path);
 
     private:
+        /**
+         * @brief DOS drive separator character (e.g. 'C:').
+         */
+        static constexpr char kDosDriveSeparator = ':';
+        /**
+         * @brief DOS directory separator used for normalization.
+         */
+        static constexpr char kDosBackslash = '\\';
+        /**
+         * @brief Alternate DOS directory separator.
+         */
+        static constexpr char kDosSlash = '/';
+
+        /**
+         * @brief DOSBox command keyword for mounting images.
+         */
+        static constexpr std::string_view kDosboxCommandImgmount = "imgmount";
+        /**
+         * @brief DOSBox command keyword for mounting directories.
+         */
+        static constexpr std::string_view kDosboxCommandMount = "mount";
+        /**
+         * @brief Whitespace delimiter used when parsing DOSBox command lines.
+         */
+        static constexpr char kWhitespaceChar = ' ';
+        /**
+         * @brief Double-quote character used when wrapping mount paths.
+         */
+        static constexpr char kDoubleQuoteChar = '"';
+
+        /**
+         * @brief Determine whether a string is a DOS drive absolute path.
+         *
+         * @param value Path string to inspect.
+         * @return True if @p value matches a pattern like "C:\\..." or "C:/...".
+         */
+        static bool isDosDriveAbsolutePath(const std::string &value);
+        /**
+         * @brief Determine whether a string is a DOS UNC absolute path.
+         *
+         * @param value Path string to inspect.
+         * @return True if @p value starts with "\\\\" or "//".
+         */
+        static bool isDosUncAbsolutePath(const std::string &value);
+        /**
+         * @brief Determine whether a string is an absolute DOS path.
+         *
+         * @param value Path string to inspect.
+         * @return True if @p value is a drive or UNC absolute path.
+         */
+        static bool isDosAbsolutePath(const std::string &value);
+        /**
+         * @brief Normalize a path string to DOS separators.
+         *
+         * @param value Path string to normalize.
+         * @return A copy of @p value with forward slashes converted to backslashes.
+         */
+        static std::string normalizeDosSeparators(std::string value);
+        /**
+         * @brief Split a generic path string into segments.
+         *
+         * @param value Path string to split.
+         * @param delimiter The delimiter character to split on.
+         * @return Non-empty path segments in order.
+         */
+        static std::vector<std::string> splitGenericPathSegments(std::string_view value, char delimiter);
+        /**
+         * @brief Resolve a DOS-style relative path against a base directory.
+         *
+         * Cancels out parent-directory segments where possible so the resolved path
+         * never traverses above the supplied base.
+         *
+         * @param base Base directory anchor.
+         * @param relative Relative DOS path.
+         * @return A resolved DOS path string rooted at @p base.
+         */
+        static std::string resolveDosRelativePathToBaseString(const std::string &base, const std::string &relative);
+
         /**
          * @brief Create a lowercase copy of the provided string.
          *
