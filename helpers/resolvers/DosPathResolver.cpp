@@ -301,15 +301,15 @@ namespace DosboxStagingReplacer {
         // Replicates the Python logic provided, keeping behavior consistent.
         std::string targetDrive;
         std::string targetPath;
-        std::string command = "imgmount";
+        std::string command{kDosboxCommandImgmount};
 
         // Try to find imgmount first
-        auto pos = path.find("imgmount");
+        auto pos = path.find(kDosboxCommandImgmount);
 
         // If there is no match, we find mount
         if (pos == std::string::npos) {
-            pos = path.find("mount");
-            command = "mount";
+            pos = path.find(kDosboxCommandMount);
+            command = std::string{kDosboxCommandMount};
             if (pos == std::string::npos) {
                 return path;
             }
@@ -324,11 +324,11 @@ namespace DosboxStagingReplacer {
         for (std::size_t idx = 0; idx < mountParams.size(); ++idx) {
             const char c = mountParams[idx];
 
-            if (c != ' ')
+            if (c != kWhitespaceChar)
                 startParsing = true;
 
             if (startParsing) {
-                if (c == ' ') {
+                if (c == kWhitespaceChar) {
                     lastIndex = idx;
                     break;
                 } else {
@@ -344,17 +344,17 @@ namespace DosboxStagingReplacer {
 
             startParsing = false;
             for (const char c : pathParams) {
-                if (c != ' ')
+                if (c != kWhitespaceChar)
                     startParsing = true;
                 if (startParsing)
                     targetPath.push_back(c);
             }
 
-            if (!targetPath.empty() && targetPath.front() != '"') {
-                targetPath = "\"" + targetPath + "\"";
+            if (!targetPath.empty() && targetPath.front() != kDoubleQuoteChar) {
+                targetPath = std::string(1, kDoubleQuoteChar) + targetPath + kDoubleQuoteChar;
             }
         }
 
-        return command + " " + targetDrive + " " + targetPath;
+        return command + kWhitespaceChar + targetDrive + kWhitespaceChar + targetPath;
     }
 } // namespace DosboxStagingReplacer

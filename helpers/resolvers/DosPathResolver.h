@@ -77,6 +77,23 @@ namespace DosboxStagingReplacer {
         static constexpr char kDosSlash = '/';
 
         /**
+         * @brief DOSBox command keyword for mounting images.
+         */
+        static constexpr std::string_view kDosboxCommandImgmount = "imgmount";
+        /**
+         * @brief DOSBox command keyword for mounting directories.
+         */
+        static constexpr std::string_view kDosboxCommandMount = "mount";
+        /**
+         * @brief Whitespace delimiter used when parsing DOSBox command lines.
+         */
+        static constexpr char kWhitespaceChar = ' ';
+        /**
+         * @brief Double-quote character used when wrapping mount paths.
+         */
+        static constexpr char kDoubleQuoteChar = '"';
+
+        /**
          * @brief Determine whether a string is a DOS drive absolute path.
          *
          * @param value Path string to inspect.
