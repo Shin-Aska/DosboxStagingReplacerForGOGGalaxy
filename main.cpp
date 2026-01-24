@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     // Initialize the file backup service
 
     // Parse command line arguments using argparse
-    argparse::ArgumentParser program("Dosbox Staging Replacer", "1.0.9");
+    argparse::ArgumentParser program("Dosbox Staging Replacer", "1.1.1");
     program.add_argument("-f", "--file")
             .help("The Galaxy database file")
             .default_value(std::string("galaxy-2.0.db"))

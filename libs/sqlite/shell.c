@@ -7782,6 +7782,7 @@ static int fileStat(
   b1[sz] = 0;
   rc = _wstat(b1, pStatBuf);
   if( rc==0 ) statTimesToUtc(zPath, pStatBuf);
+  sqlite3_free(b1);
   return rc;
 #else
   return stat(zPath, pStatBuf);
@@ -10653,7 +10654,7 @@ static int zipfileGetEntry(
         );
       }else{
         aRead = (u8*)&aBlob[iOff + ZIPFILE_CDS_FIXED_SZ];
-        if( (iOff + ZIPFILE_LFH_FIXED_SZ + nFile + nExtra)>nBlob ){
+        if( (iOff + ZIPFILE_CDS_FIXED_SZ + nFile + nExtra)>nBlob ){
           rc = zipfileCorrupt(pzErr);
         }
       }
@@ -14944,6 +14945,7 @@ static char *intckMprintf(sqlite3_intck *p, const char *zFmt, ...){
     sqlite3_free(zRet);
     zRet = 0;
   }
+  va_end(ap);
   return zRet;
 }
 
@@ -29053,6 +29055,7 @@ static int do_meta_command(char *zLine, ShellState *p){
     }
     p->showHeader = savedShowHeader;
     p->shellFlgs = savedShellFlags;
+    rc = p->nErr>0;
   }else
 
   if( c=='e' && cli_strncmp(azArg[0], "echo", n)==0 ){
@@ -33598,7 +33601,8 @@ int SQLITE_CDECL wmain(int argc, wchar_t **wargv){
       if( nCmd>0 ){
         sqlite3_fprintf(stderr,"Error: cannot mix regular SQL or dot-commands"
               " with \"%s\"\n", z);
-        return 1;
+        rc = 1;
+        goto shell_main_exit;
       }
       open_db(&data, OPEN_DB_ZIPFILE);
       if( z[2] ){
