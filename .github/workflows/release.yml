@@ -1,0 +1,37 @@
+name: Build and Release C++ App
+
+# Strategy: Only run on version tags to save private repo minutes
+on:
+  push:
+    tags:
+      - '*.*.*'
+  # Allows you to trigger the build manually from the GitHub Actions tab
+  workflow_dispatch:
+
+# Grant the GITHUB_TOKEN permission to create releases and upload assets
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Code
+        run: cmake --build build --config Release --target DosboxStagingReplacer
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            build/Release/DosboxStagingReplacer.exe
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

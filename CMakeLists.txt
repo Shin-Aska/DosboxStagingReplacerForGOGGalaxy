@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(DosboxStagingReplacer)
+project(DosboxStagingReplacer VERSION 1.1.1)
 
 include(CTest)
 enable_testing()
