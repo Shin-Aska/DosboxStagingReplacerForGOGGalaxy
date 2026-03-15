@@ -88,42 +88,34 @@ namespace DosboxStagingReplacer {
     }
 
 #elif _WIN32
-
-    std::vector<InstallationInfo> getRegisteredApplicationsFromWindows() {
-        auto result = std::vector<InstallationInfo>();
+    void collectFromRegistry(HKEY rootKey, const char *subKey, REGSAM samDesired, std::vector<InstallationInfo> &result) {
         HKEY hKey;
+        if (RegOpenKeyEx(rootKey, subKey, 0, samDesired, &hKey) != ERROR_SUCCESS) {
+            return;
+        }
+
         DWORD index = 0;
         TCHAR subKeyName[256];
         DWORD subKeySize = std::size(subKeyName);
 
-        // Open the uninstall registry key
-        if (const auto uninstallKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
-            RegOpenKeyEx(HKEY_LOCAL_MACHINE, uninstallKey, 0, KEY_READ, &hKey) != ERROR_SUCCESS) {
-            std::cerr << "Failed to open registry key." << std::endl;
-        }
-
-        // Enumerate subkeys (each subkey represents an installed program)
         while (RegEnumKeyEx(hKey, index, subKeyName, &subKeySize, nullptr, nullptr, nullptr, nullptr) == ERROR_SUCCESS) {
             HKEY hSubKey;
-            TCHAR displayName[256];
-            TCHAR installLocation[512];
-            DWORD displaySize = sizeof(displayName);
-            DWORD installSize = sizeof(installLocation);
-            DWORD type;
+            if (RegOpenKeyEx(hKey, subKeyName, 0, samDesired, &hSubKey) == ERROR_SUCCESS) {
+                TCHAR displayName[256];
+                DWORD displaySize = sizeof(displayName);
+                DWORD type;
 
-            // Open each subkey
-            if (RegOpenKeyEx(hKey, subKeyName, 0, KEY_READ, &hSubKey) == ERROR_SUCCESS) {
-                // Query the "DisplayName" value
-                if (RegQueryValueEx(hSubKey, "DisplayName", nullptr, &type, reinterpret_cast<LPBYTE>(displayName), &displaySize) ==
-                    ERROR_SUCCESS && type == REG_SZ) {
-                    // Query the "InstallLocation" value
-                    if (RegQueryValueEx(hSubKey, "InstallLocation", nullptr, &type, reinterpret_cast<LPBYTE>(installLocation), &installSize)
-                        != ERROR_SUCCESS || type != REG_SZ) {
-                        // If InstallLocation is missing, try "UninstallString" (which often contains the install path)
+                if (RegQueryValueEx(hSubKey, "DisplayName", nullptr, &type, reinterpret_cast<LPBYTE>(displayName),
+                                    &displaySize) == ERROR_SUCCESS && type == REG_SZ) {
+                    TCHAR installLocation[512];
+                    DWORD installSize = sizeof(installLocation);
+                    if (RegQueryValueEx(hSubKey, "InstallLocation", nullptr, &type,
+                                        reinterpret_cast<LPBYTE>(installLocation), &installSize) != ERROR_SUCCESS ||
+                        type != REG_SZ) {
                         installSize = sizeof(installLocation);
-                        if (RegQueryValueEx(hSubKey, "UninstallString", nullptr, &type, reinterpret_cast<LPBYTE>(installLocation),
-                                            &installSize) != ERROR_SUCCESS || type != REG_SZ) {
-                            // If both values are missing, set a default message
+                        if (RegQueryValueEx(hSubKey, "UninstallString", nullptr, &type,
+                                            reinterpret_cast<LPBYTE>(installLocation), &installSize) != ERROR_SUCCESS ||
+                            type != REG_SZ) {
                             lstrcpy(installLocation, "Unknown");
                         }
                     }
@@ -132,19 +124,43 @@ namespace DosboxStagingReplacer {
                     info.applicationName = displayName;
                     info.installationPath = installLocation;
                     info.source = "Registry";
-                    result.push_back(info);
+
+                    // Basic deduplication to avoid adding the same application multiple times from different registry views
+                    bool exists = false;
+                    for (const auto &existing : result) {
+                        if (existing.applicationName == info.applicationName &&
+                            existing.installationPath == info.installationPath) {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (!exists) {
+                        result.push_back(info);
+                    }
                 }
                 RegCloseKey(hSubKey);
             }
 
-            // Reset subkey size and increment index
             subKeySize = std::size(subKeyName);
             index++;
         }
         RegCloseKey(hKey);
-        return result;
     }
 
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindows() {
+        auto result = std::vector<InstallationInfo>();
+        const auto uninstallKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+
+        // 64-bit applications (HKLM)
+        collectFromRegistry(HKEY_LOCAL_MACHINE, uninstallKey, KEY_READ | KEY_WOW64_64KEY, result);
+        // 32-bit applications (HKLM)
+        collectFromRegistry(HKEY_LOCAL_MACHINE, uninstallKey, KEY_READ | KEY_WOW64_32KEY, result);
+        // Per-user applications (HKCU)
+        collectFromRegistry(HKEY_CURRENT_USER, uninstallKey, KEY_READ, result);
+
+        return result;
+    }
 #endif
 
     std::vector<InstallationInfo> getInstalledApplications() {
