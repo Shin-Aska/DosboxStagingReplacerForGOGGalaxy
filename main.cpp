@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <iostream>
 #include <string>
+#include <clocale>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -17,6 +18,8 @@
 
 #include "libs/argparse/argparse.hpp"
 
+#define APP_VERSION "1.1.2"
+
 
 int main(int argc, char *argv[]) {
 #ifdef _WIN32
@@ -30,7 +33,7 @@ int main(int argc, char *argv[]) {
     // Initialize the file backup service
 
     // Parse command line arguments using argparse
-    argparse::ArgumentParser program("Dosbox Staging Replacer", "1.1.1");
+    argparse::ArgumentParser program("Dosbox Staging Replacer", APP_VERSION);
     program.add_argument("-f", "--file")
             .help("The Galaxy database file")
             .default_value(std::string("galaxy-2.0.db"))

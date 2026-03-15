@@ -15,16 +15,18 @@ Use this skill whenever you need to publish a new build and the version tag must
    - `git describe --tags --abbrev=0`
 3. Parse the tag into `MAJOR.MINOR.PATCH` numbers.
 4. Update the `VERSION` in the `project()` command in `CMakeLists.txt` to match the new `MAJOR.MINOR.PATCH` value.
-5. If `CMakeLists.txt` was modified, commit and push the changes:
-   - `git add CMakeLists.txt`
+5. Update the `APP_VERSION` define in `main.cpp` to match the new `MAJOR.MINOR.PATCH` value.
+6. If `CMakeLists.txt` or `main.cpp` was modified, commit and push the changes:
+   - `git add CMakeLists.txt main.cpp`
    - `git commit -m "chore: bump version to <newVersion>"`
    - `git push origin`
-6. Depending on `bumpType`, update the numbers:
+7. Depending on `bumpType`, update the numbers:
    - `patch` (or unspecified): increment PATCH only, e.g. `1.0.10 -> 1.0.11`.
    - `minor`: increment MINOR, reset PATCH to `0`, e.g. `1.2.5 -> 1.3.0`.
    - `major`: increment MAJOR, reset MINOR and PATCH to `0`, e.g. `1.2.5 -> 2.0.0`.
-7. Create the new tag locally (format as `MAJOR.MINOR.PATCH`):
+8. Create the new tag locally (format as `MAJOR.MINOR.PATCH`):
    - `git tag <newVersion>`
-8. Push the tag:
+9. Push the tag:
    - `git push origin <newVersion>`
-9. Announce the new version or run any follow-up publish steps that depend on the bumped tag.
+10. The GitHub Release will be created as a **draft**. Once the CI finishes, you'll need to manually review and publish it from the GitHub Releases page.
+11. Announce the new version or run any follow-up publish steps that depend on the bumped tag.
