@@ -3,6 +3,7 @@
 //
 
 #include "InstallationFinder.h"
+#include <unordered_set>
 
 namespace DosboxStagingReplacer {
 
@@ -89,59 +90,97 @@ namespace DosboxStagingReplacer {
 
 #elif _WIN32
 
-    std::vector<InstallationInfo> getRegisteredApplicationsFromWindows() {
-        auto result = std::vector<InstallationInfo>();
-        HKEY hKey;
+    std::string readRegistryStringValue(HKEY key, const char *valueName) {
+        TCHAR buffer[1024];
+        DWORD type = 0;
+        DWORD size = sizeof(buffer);
+        if (RegQueryValueEx(key, valueName, nullptr, &type, reinterpret_cast<LPBYTE>(buffer), &size) ==
+                ERROR_SUCCESS &&
+            type == REG_SZ) {
+            return buffer;
+        }
+        return {};
+    }
+
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsRegistryView(const HKEY hive,
+                                                                                    REGSAM samFlags) {
+        std::vector<InstallationInfo> result;
+        constexpr auto uninstallKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+        HKEY hKey = nullptr;
+        if (RegOpenKeyEx(hive, uninstallKey, 0, KEY_READ | samFlags, &hKey) != ERROR_SUCCESS) {
+            return result;
+        }
+
         DWORD index = 0;
         TCHAR subKeyName[256];
         DWORD subKeySize = std::size(subKeyName);
 
-        // Open the uninstall registry key
-        if (const auto uninstallKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
-            RegOpenKeyEx(HKEY_LOCAL_MACHINE, uninstallKey, 0, KEY_READ, &hKey) != ERROR_SUCCESS) {
-            std::cerr << "Failed to open registry key." << std::endl;
-        }
+        while (RegEnumKeyEx(hKey, index, subKeyName, &subKeySize, nullptr, nullptr, nullptr, nullptr) ==
+               ERROR_SUCCESS) {
+            HKEY hSubKey = nullptr;
 
-        // Enumerate subkeys (each subkey represents an installed program)
-        while (RegEnumKeyEx(hKey, index, subKeyName, &subKeySize, nullptr, nullptr, nullptr, nullptr) == ERROR_SUCCESS) {
-            HKEY hSubKey;
-            TCHAR displayName[256];
-            TCHAR installLocation[512];
-            DWORD displaySize = sizeof(displayName);
-            DWORD installSize = sizeof(installLocation);
-            DWORD type;
-
-            // Open each subkey
-            if (RegOpenKeyEx(hKey, subKeyName, 0, KEY_READ, &hSubKey) == ERROR_SUCCESS) {
-                // Query the "DisplayName" value
-                if (RegQueryValueEx(hSubKey, "DisplayName", nullptr, &type, reinterpret_cast<LPBYTE>(displayName), &displaySize) ==
-                    ERROR_SUCCESS && type == REG_SZ) {
-                    // Query the "InstallLocation" value
-                    if (RegQueryValueEx(hSubKey, "InstallLocation", nullptr, &type, reinterpret_cast<LPBYTE>(installLocation), &installSize)
-                        != ERROR_SUCCESS || type != REG_SZ) {
-                        // If InstallLocation is missing, try "UninstallString" (which often contains the install path)
-                        installSize = sizeof(installLocation);
-                        if (RegQueryValueEx(hSubKey, "UninstallString", nullptr, &type, reinterpret_cast<LPBYTE>(installLocation),
-                                            &installSize) != ERROR_SUCCESS || type != REG_SZ) {
-                            // If both values are missing, set a default message
-                            lstrcpy(installLocation, "Unknown");
-                        }
+            if (RegOpenKeyEx(hKey, subKeyName, 0, KEY_READ | samFlags, &hSubKey) == ERROR_SUCCESS) {
+                const std::string displayName = readRegistryStringValue(hSubKey, "DisplayName");
+                if (!displayName.empty()) {
+                    auto installationPath = readRegistryStringValue(hSubKey, "InstallLocation");
+                    if (installationPath.empty()) {
+                        installationPath = readRegistryStringValue(hSubKey, "UninstallString");
+                    }
+                    if (installationPath.empty()) {
+                        installationPath = "Unknown";
                     }
 
                     InstallationInfo info;
                     info.applicationName = displayName;
-                    info.installationPath = installLocation;
+                    info.installationPath = installationPath;
                     info.source = "Registry";
                     result.push_back(info);
                 }
                 RegCloseKey(hSubKey);
             }
 
-            // Reset subkey size and increment index
             subKeySize = std::size(subKeyName);
             index++;
         }
         RegCloseKey(hKey);
+        return result;
+    }
+
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsMachine64() {
+        return getRegisteredApplicationsFromWindowsRegistryView(HKEY_LOCAL_MACHINE, KEY_WOW64_64KEY);
+    }
+
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsMachine32() {
+        return getRegisteredApplicationsFromWindowsRegistryView(HKEY_LOCAL_MACHINE, KEY_WOW64_32KEY);
+    }
+
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsUser64() {
+        return getRegisteredApplicationsFromWindowsRegistryView(HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+    }
+
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsUser32() {
+        return getRegisteredApplicationsFromWindowsRegistryView(HKEY_CURRENT_USER, KEY_WOW64_32KEY);
+    }
+
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindows() {
+        std::vector<InstallationInfo> result;
+        std::unordered_set<std::string> seenEntries;
+        const std::array registryViews = {
+                getRegisteredApplicationsFromWindowsMachine64(),
+                getRegisteredApplicationsFromWindowsMachine32(),
+                getRegisteredApplicationsFromWindowsUser64(),
+                getRegisteredApplicationsFromWindowsUser32(),
+        };
+
+        for (const auto &entries : registryViews) {
+            for (const auto &entry : entries) {
+                const auto dedupeKey = entry.applicationName + '\n' + entry.installationPath;
+                if (seenEntries.insert(dedupeKey).second) {
+                    result.push_back(entry);
+                }
+            }
+        }
+
         return result;
     }
 
