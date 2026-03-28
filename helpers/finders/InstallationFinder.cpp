@@ -90,58 +90,109 @@ namespace DosboxStagingReplacer {
 
 #elif _WIN32
 
-    std::string readRegistryStringValue(HKEY key, const char *valueName) {
-        TCHAR buffer[1024];
-        DWORD type = 0;
-        DWORD size = sizeof(buffer);
-        if (RegQueryValueEx(key, valueName, nullptr, &type, reinterpret_cast<LPBYTE>(buffer), &size) ==
-                ERROR_SUCCESS &&
-            type == REG_SZ) {
-            return buffer;
-        }
-        return {};
+    std::string toUtf8(const std::wstring& wstr) {
+        if (wstr.empty()) return {};
+
+        const int size = WideCharToMultiByte(
+            CP_UTF8, WC_ERR_INVALID_CHARS,
+            wstr.data(), static_cast<int>(wstr.size()),
+            nullptr, 0, nullptr, nullptr);
+
+        if (size <= 0) return {};
+
+        std::string result(size, '\0');
+
+        const int written = WideCharToMultiByte(
+            CP_UTF8, WC_ERR_INVALID_CHARS,
+            wstr.data(), static_cast<int>(wstr.size()),
+            result.data(), size, nullptr, nullptr);
+
+        if (written != size) return {};
+
+        return result;
     }
 
-    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsRegistryView(const HKEY hive,
-                                                                                    REGSAM samFlags) {
+    std::wstring readRegistryStringValueW(HKEY key, const wchar_t* valueName) {
+        DWORD type = 0;
+        DWORD size = 0;
+        constexpr DWORD flags =
+            RRF_RT_REG_SZ | RRF_RT_REG_EXPAND_SZ | RRF_ZEROONFAILURE;
+
+        if (RegGetValueW(key, nullptr, valueName, flags, &type, nullptr, &size) != ERROR_SUCCESS ||
+            size == 0) {
+            return {};
+        }
+
+        std::wstring value(size / sizeof(wchar_t), L'\0');
+
+        if (RegGetValueW(key, nullptr, valueName, flags, &type, value.data(), &size) != ERROR_SUCCESS) {
+            return {};
+        }
+
+        while (!value.empty() && value.back() == L'\0') {
+            value.pop_back();
+        }
+
+        return value;
+    }
+
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsRegistryView(HKEY hive, REGSAM samFlags) {
         std::vector<InstallationInfo> result;
-        constexpr auto uninstallKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+
         HKEY hKey = nullptr;
-        if (RegOpenKeyEx(hive, uninstallKey, 0, KEY_READ | samFlags, &hKey) != ERROR_SUCCESS) {
+        if (RegOpenKeyExW(hive,
+                          L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+                          0,
+                          KEY_READ | samFlags,
+                          &hKey) != ERROR_SUCCESS) {
             return result;
         }
 
-        DWORD index = 0;
-        TCHAR subKeyName[256];
-        DWORD subKeySize = std::size(subKeyName);
+        DWORD subKeyCount = 0;
+        DWORD maxSubKeyLen = 0;
+        if (RegQueryInfoKeyW(hKey, nullptr, nullptr, nullptr,
+                             &subKeyCount, &maxSubKeyLen,
+                             nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) != ERROR_SUCCESS) {
+            RegCloseKey(hKey);
+            return result;
+        }
 
-        while (RegEnumKeyEx(hKey, index, subKeyName, &subKeySize, nullptr, nullptr, nullptr, nullptr) ==
-               ERROR_SUCCESS) {
-            HKEY hSubKey = nullptr;
+        std::wstring subKeyName(maxSubKeyLen + 1, L'\0');
 
-            if (RegOpenKeyEx(hKey, subKeyName, 0, KEY_READ | samFlags, &hSubKey) == ERROR_SUCCESS) {
-                const std::string displayName = readRegistryStringValue(hSubKey, "DisplayName");
-                if (!displayName.empty()) {
-                    auto installationPath = readRegistryStringValue(hSubKey, "InstallLocation");
-                    if (installationPath.empty()) {
-                        installationPath = readRegistryStringValue(hSubKey, "UninstallString");
-                    }
-                    if (installationPath.empty()) {
-                        installationPath = "Unknown";
-                    }
-
-                    InstallationInfo info;
-                    info.applicationName = displayName;
-                    info.installationPath = installationPath;
-                    info.source = "Registry";
-                    result.push_back(info);
-                }
-                RegCloseKey(hSubKey);
+        for (DWORD index = 0; index < subKeyCount; ++index) {
+            auto subKeySize = static_cast<DWORD>(subKeyName.size());
+            const LSTATUS status = RegEnumKeyExW(hKey, index, subKeyName.data(), &subKeySize,
+                                           nullptr, nullptr, nullptr, nullptr);
+            if (status != ERROR_SUCCESS) {
+                continue;
             }
 
-            subKeySize = std::size(subKeyName);
-            index++;
+            HKEY hSubKey = nullptr;
+
+            if (std::wstring_view nameView(subKeyName.data(), subKeySize);
+                RegOpenKeyExW(hKey,
+                              std::wstring(nameView).c_str(),
+                              0,
+                              KEY_READ | samFlags,
+                              &hSubKey) == ERROR_SUCCESS) {
+                auto displayNameW = readRegistryStringValueW(hSubKey, L"DisplayName");
+                if (!displayNameW.empty()) {
+                    auto installLocationW = readRegistryStringValueW(hSubKey, L"InstallLocation");
+                    auto uninstallStringW = readRegistryStringValueW(hSubKey, L"UninstallString");
+
+                    InstallationInfo info;
+                    info.applicationName = toUtf8(displayNameW);
+                    info.installationPath = !installLocationW.empty()
+                        ? toUtf8(installLocationW)
+                        : (!uninstallStringW.empty() ? toUtf8(uninstallStringW) : "Unknown");
+                    info.source = "Registry";
+                    result.push_back(std::move(info));
+                }
+
+                RegCloseKey(hSubKey);
+            }
         }
+
         RegCloseKey(hKey);
         return result;
     }
@@ -154,12 +205,8 @@ namespace DosboxStagingReplacer {
         return getRegisteredApplicationsFromWindowsRegistryView(HKEY_LOCAL_MACHINE, KEY_WOW64_32KEY);
     }
 
-    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsUser64() {
-        return getRegisteredApplicationsFromWindowsRegistryView(HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-    }
-
-    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsUser32() {
-        return getRegisteredApplicationsFromWindowsRegistryView(HKEY_CURRENT_USER, KEY_WOW64_32KEY);
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsUser() {
+        return getRegisteredApplicationsFromWindowsRegistryView(HKEY_CURRENT_USER, 0);
     }
 
     std::vector<InstallationInfo> getRegisteredApplicationsFromWindows() {
@@ -168,8 +215,7 @@ namespace DosboxStagingReplacer {
         const std::array registryViews = {
                 getRegisteredApplicationsFromWindowsMachine64(),
                 getRegisteredApplicationsFromWindowsMachine32(),
-                getRegisteredApplicationsFromWindowsUser64(),
-                getRegisteredApplicationsFromWindowsUser32(),
+                getRegisteredApplicationsFromWindowsUser(),
         };
 
         for (const auto &entries : registryViews) {
