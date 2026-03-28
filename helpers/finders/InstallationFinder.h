@@ -108,7 +108,7 @@ namespace DosboxStagingReplacer {
      * @brief Utility function specific to Windows to obtain the list of installed applications.
      * @return A vector of InstallationInfo objects containing the information about the installed applications.
      */
-    std::vector<InstallationInfo> getRegisteredApplicationsFromWinApi();
+    std::vector<InstallationInfo> getRegisteredApplicationsFromWindows();
 #endif
 
     /**
