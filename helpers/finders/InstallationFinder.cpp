@@ -181,6 +181,7 @@ namespace DosboxStagingReplacer {
         }
 
         RegCloseKey(hKey);
+        return result;
     }
 
     std::vector<InstallationInfo> getRegisteredApplicationsFromWindowsMachine64() {
