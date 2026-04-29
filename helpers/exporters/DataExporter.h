@@ -14,7 +14,6 @@ namespace DosboxStagingReplacer {
      * Although all the methods are virtual, they do have working implementations.
      */
     class DataExporter {
-        std::string separator = ",";
     public:
         /// @brief Constructor
         DataExporter() = default;
@@ -61,6 +60,8 @@ namespace DosboxStagingReplacer {
          * @return The string representation of the InstallationInfo object.
          */
         virtual std::string stringify(const FileEntity &data);
+    private:
+        std::string separator = ",";
     };
 
     /**
@@ -68,14 +69,7 @@ namespace DosboxStagingReplacer {
      * Inherits from DataExporter and implements the serialization methods for JSON.
      */
     class JSONDataExporter final : public DataExporter {
-
-        /**
-         * @brief Adds escape characters to a string to make it JSON-safe.
-         * @param str The string to escape.
-         * @return The escaped string.
-         */
-        static std::string addEscapeCharacters(const std::string &str);
-
+    public:
         /**
          * @brief Serializes the SqlDataResult dataset into JSON format.
          * @param dataset The dataset to serialize.
@@ -115,10 +109,17 @@ namespace DosboxStagingReplacer {
          * @return The string representation of the InstallationInfo object in JSON.
          */
         std::string stringify(const FileEntity &data) override;
+
+    private:
+        /**
+         * @brief Adds escape characters to a string to make it JSON-safe.
+         * @param str The string to escape.
+         * @return The escaped string.
+         */
+        static std::string addEscapeCharacters(const std::string &str);
     };
 
     class CSVDataExporter final : public DataExporter {
-        std::string separator = ",";
     public:
         /**
          * @brief Serializes the SqlDataResult dataset into JSON format.
@@ -159,6 +160,8 @@ namespace DosboxStagingReplacer {
          * @return The string representation of the InstallationInfo object in JSON.
          */
         std::string stringify(const FileEntity &data) override;
+    private:
+        std::string separator = ",";
     };
 
     /**
