@@ -6,6 +6,7 @@
 #define STATEMENTPARSER_H
 
 #include <any>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
