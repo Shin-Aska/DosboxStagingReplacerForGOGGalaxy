@@ -12,7 +12,6 @@ namespace DosboxStagingReplacer {
     * @brief A service for editing Scripts
     */
     class ScriptEditService {
-        static void replaceAll(std::string& str, const std::string& from, const std::string& to);
     public:
         /**
          * @brief Check if the given path is a DOSBox autoexec configuration file.
@@ -74,6 +73,15 @@ namespace DosboxStagingReplacer {
          * @return A transformed config argument that has its relative path's replace with absolute path strings
          */
         static std::string transformConfArg(const std::string& arg, const std::filesystem::path &basePath);
+    private:
+        /**
+         * @brief Replaces all occurrences of 'from' substring with 'to' substring in the given string.
+         *
+         * @param str The string in which replacements are to be made.
+         * @param from The substring to be replaced.
+         * @param to The substring to replace with.
+         */
+        static void replaceAll(std::string& str, const std::string& from, const std::string& to);
     };
 
 } // DosboxStagingReplacer

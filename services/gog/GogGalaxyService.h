@@ -19,13 +19,6 @@ namespace DosboxStagingReplacer {
      * using the SQLite backend of the GOG Galaxy client.
      */
     class GogGalaxyService {
-        SqlLiteService sqlService;
-        bool validDatabase = false;
-
-        void disableAllPlayTaskFor(const std::string& gameReleaseKey);
-        PlayTaskInformation insertPlayTask(int64_t userId, int new_order, const PlayTaskInformation &playTask);
-        void insertPlayTaskLaunchParameter(const PlayTaskInformation &playTask, const PlayTaskLaunchParameter &launchParameter);
-
     public:
         /**
          * @brief Constructs the service with an optional database connection string.
@@ -142,6 +135,38 @@ namespace DosboxStagingReplacer {
          * (false).
          */
         void setCustomLaunchParametersForProduct(const std::string &gameReleaseKey, bool enabled);
+    private:
+        SqlLiteService sqlService;
+        bool validDatabase = false;
+
+        /**
+         * @brief Disables all play tasks for a specific game release key. This is an internal method mainly
+         * used addPlayTask() to remove the default play task before inserting the new task and making it
+         * as the default task.
+         *
+         * @param gameReleaseKey The release key of the game for which play tasks are to be disabled.
+         */
+        void disableAllPlayTaskFor(const std::string& gameReleaseKey);
+
+        /**
+         * @brief Inserts a new play task for a specific user. This is an internal method mainly
+         * used by addPlayTask() to add a new play task for a user.
+         *
+         * @param userId The ID of the user for whom the play task is being inserted.
+         * @param new_order The new order position for the play task.
+         * @param playTask The play task information to be inserted.
+         * @return The inserted play task information.
+         */
+        PlayTaskInformation insertPlayTask(int64_t userId, int new_order, const PlayTaskInformation &playTask);
+
+        /**
+         * @brief Inserts launch parameters for a play task. This is an internal method mainly
+         * used by addPlayTask() to associate launch parameters with a play task.
+         *
+         * @param playTask The play task information to which launch parameters are being added.
+         * @param launchParameter The launch parameter information to be inserted.
+         */
+        void insertPlayTaskLaunchParameter(const PlayTaskInformation &playTask, const PlayTaskLaunchParameter &launchParameter);
     };
 
     /**

@@ -12,8 +12,6 @@ namespace DosboxStagingReplacer {
      * @brief Service responsible for creating, restoring, and managing file backups.
      */
     class FileBackupService {
-        std::string backupFileExtension = ".bak";
-
     public:
 
         FileBackupService() = default;
@@ -56,6 +54,8 @@ namespace DosboxStagingReplacer {
          * @return true if a backup exists, false otherwise.
          */
         bool backupExists(const std::string& filePath, const std::vector<FileEntity> &filesInPath = {});
+    private:
+        std::string backupFileExtension = ".bak";
     };
 
 }
