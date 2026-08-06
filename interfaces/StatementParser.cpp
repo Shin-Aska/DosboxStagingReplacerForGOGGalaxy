@@ -1,4 +1,5 @@
 #include "StatementParser.h"
+#include <meta>
 
 namespace DosboxStagingReplacer {
 
@@ -9,175 +10,57 @@ namespace DosboxStagingReplacer {
         return {};
     }
 
-    std::unique_ptr<StatementParser> StatementParserFactory::createParser(const SqlEngine engine) {
-        switch (engine) {
-            case SqlEngine::SQLITE:
-                return std::make_unique<SqliteStatementParser>();
-            default:
-                throw StatementEngineParserFactoryException("Unsupported engine");
-        }
-    }
+    template<typename T>
+    std::vector<std::tuple<std::string, std::string, DataResultDataType>> reflectAttributes(T &object) {
+        std::vector<std::tuple<std::string, std::string, DataResultDataType>> result;
+        template for (constexpr auto member: std::meta::nonstatic_data_members_of(^^T,
+                                                                                  std::meta::access_context::unchecked())) {
+            constexpr auto name = std::meta::identifier_of(member);
+            const auto &value = object.[:member:];
+            using FieldType = std::remove_cvref_t<decltype(value)>;
 
-    std::any SqlDataResult::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters, const SqlEngine engine) {
-        throw SqlDataResultException("Method not implemented");
-    }
+            std::string valueStr;
+            DataResultDataType typeTag;
 
-    std::any SqliteLastRowId::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters, const SqlEngine engine) {
-        const auto parser = StatementParserFactory::createParser(engine);
-        parser->parseInto(*this, parameters, stmt);
-        return *this;
-    }
-
-    std::any SqliteSchema::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters, const SqlEngine engine) {
-        const auto parser = StatementParserFactory::createParser(engine);
-        parser->parseInto(*this, parameters, stmt);
-        return *this;
-    }
-
-    std::any ProductDetails::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters, const SqlEngine engine) {
-        const auto parser = StatementParserFactory::createParser(engine);
-        parser->parseInto(*this, parameters, stmt);
-        return *this;
-    }
-
-    std::any GogUser::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters, const SqlEngine engine) {
-        const auto parser = StatementParserFactory::createParser(engine);
-        parser->parseInto(*this, parameters, stmt);
-        return *this;
-    }
-
-    std::any PlayTaskInformation::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters,
-                                                    const SqlEngine engine) {
-        const auto parser = StatementParserFactory::createParser(engine);
-        parser->parseInto(*this, parameters, stmt);
-        return *this;
-    }
-
-    std::any PlayTaskLaunchParameter::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters,
-                                                         const SqlEngine engine) {
-        const auto parser = StatementParserFactory::createParser(engine);
-        parser->parseInto(*this, parameters, stmt);
-        return *this;
-    }
-
-    std::any PlayTaskType::fillFromStatement(const std::any stmt, const std::vector<std::string> parameters, const SqlEngine engine) {
-        const auto parser = StatementParserFactory::createParser(engine);
-        parser->parseInto(*this, parameters, stmt);
-        return *this;
-    }
-
-    StatementParser::StatementParser() = default;
-    StatementParser::~StatementParser() = default;
-
-    SqliteStatementParser::SqliteStatementParser() = default;
-    SqliteStatementParser::~SqliteStatementParser() = default;
-
-    void SqliteStatementParser::parseInto(SqlDataResult &result, std::vector<std::string> parameters,
-                                          const std::any stmtAny) {
-        throw SqlDataResultException("Method not implemented");
-    }
-
-    void SqliteStatementParser::parseInto(SqliteLastRowId &result, std::vector<std::string> parameters, const std::any stmtAny) {
-        auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
-        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
-            if (std::string columnName = sqlite3_column_name(stmt, i);
-                columnName == "id" || columnName == "last_insert_rowid()" || columnName == "\"last_insert_rowid()\"" ) {
-                result.id = sqlite3_column_int(stmt, i);
+            if constexpr (std::is_same_v<FieldType, std::string>) {
+                valueStr = value;
+                typeTag = DataResultDataType::String;
+            } else if constexpr (std::is_same_v<FieldType, bool>) {
+                valueStr = value ? "true" : "false";
+                typeTag = DataResultDataType::Boolean;
+            } else {
+                valueStr = std::to_string(value);
+                typeTag = DataResultDataType::Number;
             }
+
+            result.emplace_back(std::string(name), std::move(valueStr), typeTag);
         }
+        return result;
     }
 
-    void SqliteStatementParser::parseInto(SqliteSchema &result, std::vector<std::string> parameters, const std::any stmtAny) {
+    template<typename T>
+    void parseSqliteStatementInto(T &result, const std::any &stmtAny) {
         auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
-        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
-            if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "type") {
-                result.type = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "name") {
-                result.name = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "tbl_name") {
-                result.tbl_name = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "rootpage") {
-                result.rootpage = sqlite3_column_int(stmt, i);
-            }
-        }
-    }
+        const int columnCount = sqlite3_column_count(stmt);
 
-    void SqliteStatementParser::parseInto(ProductDetails &result, std::vector<std::string> parameters,
-                                          const std::any stmtAny) {
-        auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
-        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
-            if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "productId") {
-                result.productId = sqlite3_column_int(stmt, i);
-            } else if (columnName == "title") {
-                result.title = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "slug") {
-                result.slug = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "gogId") {
-                result.gogId = sqlite3_column_int(stmt, i);
-            } else if (columnName == "releaseKey") {
-                result.releaseKey = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "installationPath") {
-                result.installationPath = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "installationDate") {
-                result.installationDate = sqlite_column_text_or_empty(stmt, i);
-            }
-        }
-    }
-
-    void SqliteStatementParser::parseInto(GogUser &result, std::vector<std::string> parameters, const std::any stmtAny) {
-        auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
-        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
-            if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "id") {
-                result.id = sqlite3_column_int64(stmt, i);
-            }
-        }
-    }
-
-    void SqliteStatementParser::parseInto(PlayTaskInformation &result, std::vector<std::string> parameters,
-                                          const std::any stmtAny) {
-        auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
-        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
-            if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "id") {
-                result.id = sqlite3_column_int(stmt, i);
-            } else if (columnName == "gameReleaseKey") {
-                result.gameReleaseKey = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "userId") {
-                result.userId = sqlite3_column_int(stmt, i);
-            } else if (columnName == "order") {
-                result.order = sqlite3_column_int(stmt, i);
-            } else if (columnName == "typeId") {
-                result.typeId = sqlite3_column_int(stmt, i);
-            } else if (columnName == "type") {
-                result.type = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "isPrimary") {
-                result.isPrimary = sqlite3_column_int(stmt, i) != 0;
-            }
-        }
-    }
-
-    void SqliteStatementParser::parseInto(PlayTaskLaunchParameter &result, std::vector<std::string> parameters,
-                                          const std::any stmtAny) {
-        auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
-        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
-            if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "playTaskId") {
-                result.playTaskId = sqlite3_column_int(stmt, i);
-            } else if (columnName == "executablePath") {
-                result.executablePath = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "commandLineArgs") {
-                result.commandLineArgs = sqlite_column_text_or_empty(stmt, i);
-            } else if (columnName == "label") {
-                result.label = sqlite_column_text_or_empty(stmt, i);
-            }
-        }
-    }
-
-    void SqliteStatementParser::parseInto(PlayTaskType &result, std::vector<std::string> parameters, const std::any stmtAny) {
-        auto *stmt = std::any_cast<sqlite3_stmt *>(stmtAny);
-        for (int i = 0; i < sqlite3_column_count(stmt); ++i) {
-            if (std::string columnName = sqlite3_column_name(stmt, i); columnName == "id") {
-                result.id = sqlite3_column_int(stmt, i);
-            } else if (columnName == "type") {
-                result.type = sqlite_column_text_or_empty(stmt, i);
+        for (int i = 0; i < columnCount; i++) {
+            const std::string columnName = sqlite3_column_name(stmt, i);
+            template for (const auto& member: std::meta::nonstatic_data_members_of(^^T,
+                                                                                   std::meta::access_context::unchecked())) {
+                if (constexpr auto memberName = std::meta::identifier_of(member);
+                    columnName == std::string(memberName)) {
+                    using FieldType = std::remove_cvref_t<typename [:std::meta::type_of(member):]>;
+                    if constexpr (std::is_same_v<FieldType, std::string>) {
+                        result.[:member:] = sqlite_column_text_or_empty(stmt, i);
+                    } else if constexpr (std::is_same_v<FieldType, int64_t>) {
+                        result.[:member:] = sqlite3_column_int64(stmt, i);
+                    } else if constexpr (std::is_same_v<FieldType, int>) {
+                        result.[:member:] = sqlite3_column_int(stmt, i);
+                    } else if constexpr (std::is_same_v<FieldType, bool>) {
+                        result.[:member:] = sqlite3_column_int(stmt, i) != 0;
+                    }
+                    break;
+                }
             }
         }
     }
