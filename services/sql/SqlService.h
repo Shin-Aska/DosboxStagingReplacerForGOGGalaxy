@@ -203,8 +203,8 @@ namespace DosboxStagingReplacer {
             }
 
             while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
-                auto datapoint_reference = T().fillFromStatement(stmt, columns, SqlEngine::SQLITE);
-                auto datapoint = std::any_cast<T&>(datapoint_reference);
+                T datapoint;
+                parseSqliteStatementInto<T>(datapoint, stmt);
                 result.push_back(datapoint);
             }
 
