@@ -4,8 +4,9 @@ project(DosboxStagingReplacer VERSION 1.1.5)
 include(CTest)
 enable_testing()
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_EXE_LINKER_FLAGS "-static")
+add_compile_options(-freflection)
 
 # Add include directories for headers
 include_directories(
