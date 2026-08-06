@@ -9,6 +9,18 @@
 
 namespace DosboxStagingReplacer {
 
+    // Let us group all of these shit together!
+    using DataSetVariant = std::variant<
+        SqliteSchema,
+        ProductDetails,
+        GogUser,
+        PlayTaskInformation,
+        PlayTaskLaunchParameter,
+        PlayTaskType,
+        InstallationInfo,
+        FileEntity
+    >;
+
     /**
      * @brief Base class for exporting data from a dataset into a string format.
      * Although all the methods are virtual, they do have working implementations.
@@ -22,44 +34,18 @@ namespace DosboxStagingReplacer {
         virtual ~DataExporter() = default;
 
         /**
-         * @brief Serializes the SqlDataResult dataset into a string format.
+         * @brief Serializes the DataSetVariant dataset into a string format.
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a string.
          */
-        virtual std::string serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset);
+        virtual std::string serialize(std::vector<DataSetVariant> &dataset);
 
         /**
-         * @brief Serializes the InstallInfo dataset into a string format.
-         * @param dataset The dataset to serialize.
-         * @return The serialized dataset as a string.
+         * @brief Converts the DataSetVariant object into a string format.
+         * @param data The DataSetVariant (and its derivatives) object to convert.
+         * @return The string representation of the DataSetVariant object.
          */
-        virtual std::string serialize(const std::vector<InstallationInfo> &dataset);
-        /**
-         * @brief Serializes the FileEntity dataset into a string format
-         * @param dataset The FileEntity dataset to serialize
-         * @return The serialized dataset as a string.
-         */
-        virtual std::string serialize(const std::vector<FileEntity> &dataset);
-
-        /**
-         * @brief Converts the SqlDataResult object into a string format.
-         * @param data The SqlDataResult (and its derivatives) object to convert.
-         * @return The string representation of the SqlDataResult object.
-         */
-        virtual std::string stringify(const SqlDataResult &data);
-
-        /**
-         * @brief Converts the InstallationInfo object into a string format.
-         * @param data The InstallationInfo object to convert.
-         * @return The string representation of the InstallationInfo object.
-         */
-        virtual std::string stringify(const InstallationInfo &data);
-        /**
-         * @brief Converts the InstallationInfo object into a string format.
-         * @param data The FileEntity object to convert.
-         * @return The string representation of the InstallationInfo object.
-         */
-        virtual std::string stringify(const FileEntity &data);
+        virtual std::string stringify(DataSetVariant &data);
     private:
         std::string separator = ",";
     };
@@ -71,44 +57,18 @@ namespace DosboxStagingReplacer {
     class JSONDataExporter final : public DataExporter {
     public:
         /**
-         * @brief Serializes the SqlDataResult dataset into JSON format.
+         * @brief Serializes the DataSetVariant dataset into JSON format.
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a JSON string.
          */
-        std::string serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) override;
+        std::string serialize(std::vector<DataSetVariant> &dataset) override;
 
         /**
-         * @brief Serializes the InstallationInfo dataset into JSON format.
-         * @param dataset The dataset to serialize.
-         * @return The serialized dataset as a JSON string.
+         * @brief Converts the DataSetVariant object into a JSON string.
+         * @param data The DataSetVariant (and its derivatives) object to convert.
+         * @return The string representation of the DataSetVariant object in JSON.
          */
-        std::string serialize(const std::vector<InstallationInfo> &dataset) override;
-        /**
-         * @brief Serializes the InstallationInfo dataset into JSON format.
-         * @param dataset The FileEntity dataset to serialize.
-         * @return The serialized dataset as a JSON string.
-         */
-        std::string serialize(const std::vector<FileEntity> &dataset) override;
-
-        /**
-         * @brief Converts the SqlDataResult object into a JSON string.
-         * @param data The SqlDataResult (and its derivatives) object to convert.
-         * @return The string representation of the SqlDataResult object in JSON.
-         */
-        std::string stringify(const SqlDataResult &data) override;
-
-        /**
-         * @brief Converts the InstallationInfo object into a JSON string.
-         * @param data The InstallationInfo object to convert.
-         * @return The string representation of the InstallationInfo object in JSON.
-         */
-        std::string stringify(const InstallationInfo &data) override;
-        /**
-         * @brief Converts a FileEntity object into a JSON string representation.
-         * @param data The FileEntity object to convert.
-         * @return The string representation of the InstallationInfo object in JSON.
-         */
-        std::string stringify(const FileEntity &data) override;
+        std::string stringify(DataSetVariant &data) override;
 
     private:
         /**
@@ -119,47 +79,24 @@ namespace DosboxStagingReplacer {
         static std::string addEscapeCharacters(const std::string &str);
     };
 
+    /**
+     * @brief Derived class for exporting data in CSV format.
+     * Inherits from DataExporter and implements the serialization methods for CSV.
+     */
     class CSVDataExporter final : public DataExporter {
     public:
         /**
-         * @brief Serializes the SqlDataResult dataset into JSON format.
+         * @brief Serializes the DataSetVariant dataset into CSV format.
          * @param dataset The dataset to serialize.
-         * @return The serialized dataset as a JSON string.
+         * @return The serialized dataset as a CSV string.
          */
-        std::string serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) override;
-
+        std::string serialize(std::vector<DataSetVariant> &dataset) override;
         /**
-         * @brief Serializes the InstallationInfo dataset into JSON format.
-         * @param dataset The InstallationInfo dataset to serialize.
-         * @return The serialized dataset as a JSON string.
+         * @brief Converts the DataSetVariant object into a CSV string.
+         * @param data The DataSetVariant object to convert.
+         * @return The string representation of the DataSetVariant object in CSV.
          */
-        std::string serialize(const std::vector<InstallationInfo> &dataset) override;
-        /**
-         * @brief Serializes the FileEntity dataset into JSON format.
-         * @param dataset The FileEntity dataset to serialize.
-         * @return The serialized dataset as a JSON string.
-         */
-        std::string serialize(const std::vector<FileEntity> &dataset) override;
-
-        /**
-         * @brief Converts the SqlDataResult object into a JSON string.
-         * @param data The SqlDataResult (and its derivatives) object to convert.
-         * @return The string representation of the SqlDataResult object in JSON.
-         */
-        std::string stringify(const SqlDataResult &data) override;
-
-        /**
-         * @brief Converts the InstallationInfo object into a JSON string.
-         * @param data The InstallationInfo object to convert.
-         * @return The string representation of the InstallationInfo object in JSON.
-         */
-        std::string stringify(const InstallationInfo &data) override;
-        /**
-         * @brief Converts the InstallationInfo object into a JSON string.
-         * @param data The FileEntity object to convert.
-         * @return The string representation of the InstallationInfo object in JSON.
-         */
-        std::string stringify(const FileEntity &data) override;
+        std::string stringify(DataSetVariant &data) override;
     private:
         std::string separator = ",";
     };
