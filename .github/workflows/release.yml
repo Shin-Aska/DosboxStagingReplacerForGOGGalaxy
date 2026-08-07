@@ -27,9 +27,15 @@ jobs:
           update: true
           install: >-
             mingw-w64-x86_64-gcc-libs
-            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-gcc>=16.0
             mingw-w64-x86_64-cmake
             mingw-w64-x86_64-ninja
+
+      - name: Verify Compiler Version
+        shell: msys2 {0}
+        run: |
+          gcc --version
+          g++ --version
 
       - name: Configure CMake
         shell: msys2 {0}

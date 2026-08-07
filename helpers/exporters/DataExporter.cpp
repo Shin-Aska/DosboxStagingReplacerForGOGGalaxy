@@ -2,56 +2,6 @@
 #include <sstream>
 
 namespace DosboxStagingReplacer {
-    std::string DataExporter::serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) {
-        std::ostringstream oss;
-        for (const auto &data: dataset) {
-            oss << this->stringify(*data) << std::endl;
-        }
-        return oss.str();
-    }
-
-    std::string DataExporter::serialize(const std::vector<InstallationInfo> &dataset) {
-        std::ostringstream oss;
-        for (const auto &data: dataset) {
-            oss << this->stringify(data) << std::endl;
-        }
-        return oss.str();
-    }
-    std::string DataExporter::serialize(const std::vector<FileEntity> &dataset) {
-        std::ostringstream oss;
-        for (const auto &data: dataset) {
-            oss << this->stringify(data) << std::endl;
-        }
-        return oss.str();
-    }
-
-    std::string DataExporter::stringify(const SqlDataResult &data) {
-        std::ostringstream oss;
-        for (std::vector<std::tuple<std::string, std::string, DataResultDataType>> attributes = data.getAttributes();
-             const auto &attribute: attributes) {
-            std::string name, value;
-            DataResultDataType type;
-            std::tie(name, value, type) = attribute;
-            oss << name << "=" << value << this->separator;
-        }
-        return oss.str();
-    }
-
-    std::string DataExporter::stringify(const InstallationInfo &data) {
-        std::ostringstream oss;
-        oss << "applicationName=" << data.applicationName << this->separator
-            << "installationPath=" << data.installationPath << this->separator << "source=" << data.source;
-        return oss.str();
-    }
-
-    std::string DataExporter::stringify(const FileEntity &data) {
-        std::ostringstream oss;
-        oss << "name=" << data.name << this->separator
-            << "path=" << data.path << this->separator
-            << "type=" << data.getTypeName() << this->separator
-            << "size=" << data.size;
-        return oss.str();
-    }
 
     std::string JSONDataExporter::addEscapeCharacters(const std::string &str) {
         std::string escapedStr = str;
@@ -70,63 +20,22 @@ namespace DosboxStagingReplacer {
         return escapedStr;
     }
 
-    std::string JSONDataExporter::serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) {
-        std::ostringstream oss;
-        oss << "[";
-        for (size_t i = 0; i < dataset.size(); ++i) {
-            oss << this->stringify(*dataset[i]);
-            if (i != dataset.size() - 1) {
-                oss << ",";
-            }
-        }
-        oss << "]";
-        return oss.str();
-    }
-
-    std::string JSONDataExporter::serialize(const std::vector<InstallationInfo> &dataset) {
-        std::ostringstream oss;
-        oss << "[";
-        for (size_t i = 0; i < dataset.size(); ++i) {
-            oss << this->stringify(dataset[i]);
-            if (i != dataset.size() - 1) {
-                oss << ",";
-            }
-        }
-        oss << "]";
-        return oss.str();
-    }
-    std::string JSONDataExporter::serialize(const std::vector<FileEntity> &dataset) {
-        std::ostringstream oss;
-        oss << "[";
-        for (size_t i = 0; i < dataset.size(); ++i) {
-            oss << this->stringify(dataset[i]);
-            if (i != dataset.size() - 1) {
-                oss << ",";
-            }
-        }
-        oss << "]";
-        return oss.str();
-    }
-
-    std::string JSONDataExporter::stringify(const SqlDataResult &data) {
+    std::string JSONDataExporter::stringify(
+            const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) {
         std::ostringstream oss;
         oss << "{";
-        const std::vector<std::tuple<std::string, std::string, DataResultDataType>> attributes = data.getAttributes();
         for (size_t i = 0; i < attributes.size(); ++i) {
-            std::string name, value;
-            DataResultDataType type;
-            std::tie(name, value, type) = attributes[i];
+            const auto &[name, value, type] = attributes[i];
 
             // Currently we need to wrap strings in quotes
+            std::string serializedValue = value;
             if (type == DataResultDataType::String) {
-                // First we replace all the quotes with escaped quotes
-                value = addEscapeCharacters(value);
-                // Then we add the quotes
-                value.insert(0, "\"");
-                value.append("\"");
+                serializedValue = addEscapeCharacters(serializedValue);
+                serializedValue.insert(0, "\"");
+                serializedValue.append("\"");
             }
 
-            oss << "\"" << name << "\": " << value;
+            oss << "\"" << name << "\": " << serializedValue;
             if (i != attributes.size() - 1) {
                 oss << ",";
             }
@@ -135,65 +44,30 @@ namespace DosboxStagingReplacer {
         return oss.str();
     }
 
-    std::string JSONDataExporter::stringify(const InstallationInfo &data) {
+    std::string JSONDataExporter::formatLines(const std::vector<std::string> &lines) const {
         std::ostringstream oss;
-        oss << R"({"applicationName": ")" << addEscapeCharacters(data.applicationName) << R"(", "installationPath": ")"
-            << addEscapeCharacters(data.installationPath) << R"(", "source": ")" << addEscapeCharacters(data.source)
-            << R"("})";
-
-        return oss.str();
-    }
-    std::string JSONDataExporter::stringify(const FileEntity &data) {
-        std::ostringstream oss;
-        oss << R"({"name": ")" << addEscapeCharacters(data.name) << R"(", "path": ")" << addEscapeCharacters(data.path)
-            << R"(", "type": ")" << addEscapeCharacters(data.getTypeName()) << R"(", "size": )" << data.size << R"(})";
+        oss << "[";
+        for (size_t i = 0; i < lines.size(); ++i) {
+            oss << lines[i];
+            if (i != lines.size() - 1) {
+                oss << ",";
+            }
+        }
+        oss << "]";
         return oss.str();
     }
 
-    std::string CSVDataExporter::serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) {
+    std::string CSVDataExporter::stringify(
+            const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) {
         std::ostringstream oss;
-        for (const auto &data: dataset) {
-            oss << this->stringify(*data) << std::endl;
+        for (size_t i = 0; i < attributes.size(); ++i) {
+            const auto &[name, value, type] = attributes[i];
+            oss << value;
+            if (i != attributes.size() - 1) {
+                oss << ",";
+            }
         }
         return oss.str();
     }
 
-    std::string CSVDataExporter::serialize(const std::vector<InstallationInfo> &dataset) {
-        std::ostringstream oss;
-        for (const auto &data: dataset) {
-            oss << this->stringify(data) << std::endl;
-        }
-        return oss.str();
-    }
-    std::string CSVDataExporter::serialize(const std::vector<FileEntity> &dataset) {
-        std::ostringstream oss;
-        for (const auto &data: dataset) {
-            oss << this->stringify(data) << std::endl;
-        }
-        return oss.str();
-    }
-
-    std::string CSVDataExporter::stringify(const SqlDataResult &data) {
-        std::ostringstream oss;
-        for (std::vector<std::tuple<std::string, std::string, DataResultDataType>> attributes = data.getAttributes();
-             const auto &attribute: attributes) {
-            std::string name, value;
-            DataResultDataType type;
-            std::tie(name, value, type) = attribute;
-            oss << value << this->separator;
-        }
-        return oss.str();
-    }
-
-    std::string CSVDataExporter::stringify(const InstallationInfo &data) {
-        std::ostringstream oss;
-        oss << data.applicationName << this->separator << data.installationPath << this->separator << data.source;
-        return oss.str();
-    }
-
-    std::string CSVDataExporter::stringify(const FileEntity &data) {
-        std::ostringstream oss;
-        oss << data.name << this->separator << data.path << this->separator << data.getTypeName() << this->separator << data.size;
-        return oss.str();
-    }
 } // namespace DosboxStagingReplacer
