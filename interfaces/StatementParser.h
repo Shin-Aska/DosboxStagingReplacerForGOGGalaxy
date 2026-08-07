@@ -5,14 +5,13 @@
 #ifndef STATEMENTPARSER_H
 #define STATEMENTPARSER_H
 
-#include <any>
 #include <cstdint>
+#include <meta>
 #include <memory>
+#include <span>
 #include <string>
 #include <utility>
-#include <variant>
 #include <vector>
-#include "SqlService.h"
 
 namespace DosboxStagingReplacer {
 
@@ -30,116 +29,55 @@ namespace DosboxStagingReplacer {
         const char *msg;
     };
 
-    /**
-     * @brief SqliteLastRowId class. Contains the information about the last row id.
-     */
-    class SqliteLastRowId {
-    public:
-        int id;
-    };
-
-    /**
-     * @brief SqliteSchema class. Contains the information about a SQLite schema.
-     */
-    class SqliteSchema final {
-    public:
-        std::string type;
-        std::string name;
-        std::string tbl_name;
-        int rootpage;
-    };
-
-    /**
-     * @brief ProductDetails class. Contains the information about a GOG product.
-     */
-    class ProductDetails {
-    public:
-        int productId;
-        std::string title;
-        std::string slug;
-        int gogId;
-        std::string releaseKey;
-        std::string installationPath;
-        std::string installationDate;
-    };
-
-    /**
-     * @brief GogUser class. Contains the information about a GOG user.
-     */
-    class GogUser {
-    public:
-        int64_t id;
-    };
-
-    /**
-     * @brief PlayTaskInformation class. Contains the information about a play task.
-     */
-    class PlayTaskInformation {
-    public:
-        int id;
-        std::string gameReleaseKey;
-        int userId;
-        int order;
-        int typeId;
-        std::string type;
-        bool isPrimary;
-    };
-
-    /**
-     * @brief PlayTaskLaunchParameters class. Contains the information about a play task launch parameters.
-     */
-    class PlayTaskLaunchParameter {
-    public:
-        int playTaskId;
-        std::string executablePath;
-        std::string commandLineArgs;
-        std::string label;
-
-        bool operator==(const PlayTaskLaunchParameter &other) const {
-            return executablePath == other.executablePath &&
-                   commandLineArgs == other.commandLineArgs;
+    namespace detail {
+        /**
+         * @brief Reflects the non-static data members of a type into a static array.
+         * @tparam T - The type to reflect.
+         * @return A static array containing the non-static data members of the type.
+         */
+        template <typename T>
+        consteval auto reflected_member_span() {
+            return std::define_static_array(
+                    std::meta::nonstatic_data_members_of(^^T, std::meta::access_context::unchecked()));
         }
-    };
-
-    /**
-     * @brief PlayTaskType class. Contains the information about a play task type.
-     */
-    class PlayTaskType {
-    public:
-        int id;
-        std::string type;
-    };
+    }
 
     /**
      * @brief Reflects attributes of an object into a vector of tuples.
      * @tparam T - The type of the object to reflect.
-     * @param object / The object to reflect.
+     * @param object - The object to reflect.
      * @return A vector of tuples containing attribute names, values, and data types.
      */
     template <typename T>
-    std::vector<std::tuple<std::string, std::string, DataResultDataType>> reflectAttributes(T &object);
+    std::vector<std::tuple<std::string, std::string, DataResultDataType>> reflectAttributes(const T &object) {
+        std::vector<std::tuple<std::string, std::string, DataResultDataType>> result;
+        static constexpr auto members = detail::reflected_member_span<T>();
+        template for (constexpr auto member: members) {
+            constexpr auto name = std::meta::identifier_of(member);
+            const auto &value = object.[:member:];
+            using FieldType = std::remove_cvref_t<decltype(value)>;
 
-    /**
-     * @brief Parses an SQLite statement into a given object.
-     * @tparam T - The type of the object to parse into.
-     * @param result / The object to parse the statement into.
-     * @param stmtAny / The SQLite statement to parse.
-     */
-    template <typename T>
-    static void parseSqliteStatementInto(T &result, const std::any &stmtAny);
+            std::string valueStr;
+            DataResultDataType typeTag;
 
+            if constexpr (std::is_same_v<FieldType, std::string>) {
+                valueStr = value;
+                typeTag = DataResultDataType::String;
+            } else if constexpr (std::is_same_v<FieldType, bool>) {
+                valueStr = value ? "true" : "false";
+                typeTag = DataResultDataType::Boolean;
+            } else if constexpr (std::is_enum_v<FieldType>) {
+                valueStr = std::to_string(static_cast<std::underlying_type_t<FieldType>>(value));
+                typeTag = DataResultDataType::Number;
+            } else {
+                valueStr = std::to_string(value);
+                typeTag = DataResultDataType::Number;
+            }
 
-    /**
-     * @brief Retrieves text data from a specific column in an SQLite statement.
-     *
-     * Extracts the UTF-8 encoded text value from the specified column of the provided SQLite statement.
-     * If the column contains null data, an empty string is returned.
-     *
-     * @param stmt Pointer to the SQLite prepared statement object.
-     * @param index Zero-based index of the column within the SQLite statement.
-     * @return A string containing the text data from the specified column, or an empty string if the column is null.
-     */
-    std::string sqlite_column_text_or_empty(sqlite3_stmt*, int);
+            result.emplace_back(std::string(name), std::move(valueStr), typeTag);
+        }
+        return result;
+    }
 
 } // namespace DosboxStagingReplacer
 
