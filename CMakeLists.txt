@@ -17,7 +17,6 @@ include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/finders
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/verifiers
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/exporters
-        ${CMAKE_CURRENT_SOURCE_DIR}/helpers
         ${CMAKE_CURRENT_SOURCE_DIR}/services/system
         ${CMAKE_CURRENT_SOURCE_DIR}/services/sql
         ${CMAKE_CURRENT_SOURCE_DIR}/services/gog
