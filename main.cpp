@@ -17,7 +17,7 @@
 
 #include "libs/argparse/argparse.hpp"
 
-#define APP_VERSION "1.1.6"
+#define APP_VERSION "1.2.0"
 
 
 int main(int argc, char *argv[]) {
