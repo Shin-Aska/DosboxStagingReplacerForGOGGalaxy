@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.30)
-project(DosboxStagingReplacer VERSION 1.1.5)
+project(DosboxStagingReplacer VERSION 1.2.0)
 
 include(CTest)
 enable_testing()
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_EXE_LINKER_FLAGS "-static")
+add_compile_options(-freflection)
 
 # Add include directories for headers
 include_directories(
@@ -16,7 +17,6 @@ include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/finders
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/verifiers
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/exporters
-        ${CMAKE_CURRENT_SOURCE_DIR}/interfaces
         ${CMAKE_CURRENT_SOURCE_DIR}/services/system
         ${CMAKE_CURRENT_SOURCE_DIR}/services/sql
         ${CMAKE_CURRENT_SOURCE_DIR}/services/gog
@@ -35,8 +35,6 @@ set(TEST_COMMON_SOURCES
         helpers/verifiers/InstallationVerifier.h
         services/sql/SqlService.cpp
         services/sql/SqlService.h
-        interfaces/StatementParser.cpp
-        interfaces/StatementParser.h
         helpers/exporters/DataExporter.cpp
         helpers/exporters/DataExporter.h
         services/gog/GogGalaxyService.cpp

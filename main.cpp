@@ -11,14 +11,13 @@
 #include "FileBackupService.h"
 #include "GogGalaxyService.h"
 #include "ScriptEditService.h"
-#include "StatementParser.h"
 #include "helpers/finders/InstallationFinder.h"
 #include "helpers/scanners/DirectoryScanner.h"
 #include "helpers/verifiers/InstallationVerifier.h"
 
 #include "libs/argparse/argparse.hpp"
 
-#define APP_VERSION "1.1.6"
+#define APP_VERSION "1.2.0"
 
 
 int main(int argc, char *argv[]) {
@@ -29,8 +28,6 @@ int main(int argc, char *argv[]) {
 #endif
     // Set the locale to UTF-8
     setlocale(LC_ALL, "en_US.utf8");
-
-    // Initialize the file backup service
 
     // Parse command line arguments using argparse
     argparse::ArgumentParser program("Dosbox Staging Replacer", APP_VERSION);
@@ -118,10 +115,6 @@ int main(int argc, char *argv[]) {
             .default_value(std::string(".json"))
             .choices(".json", ".csv", ".txt")
             .nargs(1);
-    program.add_argument("-o", "--output")
-            .help("The name of the output file. If \"\", the output will be printed to the console.")
-            .default_value(std::string(""))
-            .nargs(1);
     program.add_argument("-cfsdf", "--change-fullscreen-default")
             .help("Replaces the predefined value of the fullscreen value in the Dosbox config file to the Dosbox's defaults")
             .default_value(std::string("yes"))
@@ -171,7 +164,7 @@ int main(int argc, char *argv[]) {
     // If more than one flag is set to true, we print an error message and exit
     if (operationsCount > 1) {
         std::cerr << "Error: You can only use one of the following flags at a time: --backup, --restore, "
-                     "--list-applications, --list-games, --list-backups, --replace-dosbox, --show-playtasks"
+                      "--list-applications, --list-games, --list-backups, --replace-dosbox, --show-playtasks"
                   << std::endl;
         return -1;
     }
@@ -184,9 +177,6 @@ int main(int argc, char *argv[]) {
     std::vector replaceDosboxFlags = {!program.get<std::string>("--dosbox-version").empty(),
                                       !program.get<std::string>("--dosbox-version-manual").empty()};
 
-    // If the show playtask flag is set to true, we check if the --release-key flag has a value provided, otherwise
-    // we print an error message and exit
-
     const auto releaseKey = program.get<std::string>("--release-key");
     if (program["--show-playtasks"] == true) {
         if (releaseKey.empty()) {
@@ -198,12 +188,12 @@ int main(int argc, char *argv[]) {
     if (program["--replace-dosbox"] == true) {
         if (const auto count = std::ranges::count(replaceDosboxFlags, true); count > 1) {
             std::cerr << "Error: You can only use one of the following flags at a time: --dosbox-version, "
-                         "--dosbox-version-manual when using --replace-dosbox"
+                          "--dosbox-version-manual when using --replace-dosbox"
                       << std::endl;
             return -1;
         } else if (count == 0) {
             std::cerr << "Error: You must supply a value for either --dosbox-version or --dosbox-version-manual when "
-                         "using --replace-dosbox"
+                          "using --replace-dosbox"
                       << std::endl;
             return -1;
         } else if (releaseKey.empty()) {
@@ -235,19 +225,12 @@ int main(int argc, char *argv[]) {
     // If there are no operation flags set, we do not do anything but print help
     if (operationsCount == 1) {
         DosboxStagingReplacer::FileBackupService fileBackupService;
-        // Search string for the --search flag
         const auto searchString = program.get<std::string>("--search");
-        // We set the values from --file and --directory to variables
         const std::filesystem::path chosenFile = program.get<std::string>("--file");
         const std::filesystem::path chosenPath = program.get<std::string>("--directory");
-        // Initialize a data exporter base on the format chosen by the user
         const auto dataExporter =
                 DosboxStagingReplacer::DataExporterFactory::createDataExporter(program.get<std::string>("--format"));
-        // We initialize a vector of FileEntity objects to store the files and use it later with DirectoryScanner
-        // Then keep it so we can pass it to the file backup service, this skips the FileBackupService from re-scanning
-        // the directory
         std::vector<DosboxStagingReplacer::FileEntity> files;
-        // The service class for the GoG Galaxy database
         DosboxStagingReplacer::GogGalaxyService service;
 
         try {
@@ -277,7 +260,6 @@ int main(int argc, char *argv[]) {
             auto restoredFile = fileBackupService.restoreFromBackup((chosenPath / chosenFile).string(), files);
         } else if (program["--list-backups"] == true) {
             std::vector<DosboxStagingReplacer::FileEntity> filteredFiles;
-            // We iterate to the files variable we already made and filter out non GogGalaxy database files
             std::ranges::copy_if(files, std::back_inserter(filteredFiles), [&](const auto &file) {
                 return file.path.find(chosenFile.string() + fileBackupService.getBackupFileExtension()) !=
                        std::string::npos;
@@ -289,7 +271,6 @@ int main(int argc, char *argv[]) {
                 applications = DosboxStagingReplacer::InstallationFinder::findApplication("DOSBox");
             else
                 applications = DosboxStagingReplacer::getInstalledApplications();
-            // Filter the applications based on the search string if it is not empty
             if (!searchString.empty()) {
                 std::vector<DosboxStagingReplacer::InstallationInfo> filteredApplications;
                 std::ranges::copy_if(applications, std::back_inserter(filteredApplications), [&](const auto &app) {
@@ -303,40 +284,29 @@ int main(int argc, char *argv[]) {
             }
             std::cout << dataExporter->serialize(applications) << std::endl;
         } else if (program["--list-games"] == true) {
-            // Need to convert the result of getProducts to a vector of shared pointers so we can
-            // take advantage of polymorphism
-            std::vector<std::shared_ptr<DosboxStagingReplacer::SqlDataResult>> games;
+            std::vector<DosboxStagingReplacer::ProductDetails> games;
             service.openConnection((chosenPath / chosenFile).string());
             for (auto &product: service.getProducts({}, program.get<bool>("--dos-only"))) {
-                games.push_back(std::make_shared<DosboxStagingReplacer::ProductDetails>(product));
+                games.push_back(product);
             }
-            // Filter the applications based on the search string if it is not empty
             if (!searchString.empty()) {
-                std::vector<std::shared_ptr<DosboxStagingReplacer::SqlDataResult>> filteredGames;
-                std::ranges::copy_if(games, std::back_inserter(filteredGames),
-                                     [&](const std::shared_ptr<DosboxStagingReplacer::SqlDataResult> &game) {
-                                         // We need to cast the SqlDataResult to ProductDetails to access the title
-                                         if (game) {
-                                             const auto *gameDetails =
-                                                 dynamic_cast<DosboxStagingReplacer::ProductDetails *>(game.get());
-                                             std::string lowerCaseTitle = gameDetails->title;
-                                             std::ranges::transform(lowerCaseTitle, lowerCaseTitle.begin(), tolower);
-                                             std::string lowerCaseSearchString = searchString;
-                                             std::ranges::transform(lowerCaseSearchString, lowerCaseSearchString.begin(),
-                                                                    tolower);
-                                             return lowerCaseTitle.find(lowerCaseSearchString) != std::string::npos;
-                                         }
-                                         return false;
-                                     });
+                std::vector<DosboxStagingReplacer::ProductDetails> filteredGames;
+                std::ranges::copy_if(games, std::back_inserter(filteredGames), [&](const auto &game) {
+                    std::string lowerCaseTitle = game.title;
+                    std::ranges::transform(lowerCaseTitle, lowerCaseTitle.begin(), tolower);
+                    std::string lowerCaseSearchString = searchString;
+                    std::ranges::transform(lowerCaseSearchString, lowerCaseSearchString.begin(), tolower);
+                    return lowerCaseTitle.find(lowerCaseSearchString) != std::string::npos;
+                });
                 games = filteredGames;
             }
             std::cout << dataExporter->serialize(games) << std::endl;
             service.closeConnection();
         } else if (program["--show-playtasks"] == true) {
-            std::vector<std::shared_ptr<DosboxStagingReplacer::SqlDataResult>> playTasks;
+            std::vector<DosboxStagingReplacer::PlayTaskInformation> playTasks;
             service.openConnection((chosenPath / chosenFile).string());
             for (auto &playTask: service.getPlayTasksFromGameReleaseKey(releaseKey)) {
-                playTasks.push_back(std::make_shared<DosboxStagingReplacer::PlayTaskInformation>(playTask));
+                playTasks.push_back(playTask);
             }
             std::cout << dataExporter->serialize(playTasks) << std::endl;
             service.closeConnection();
@@ -348,31 +318,25 @@ int main(int argc, char *argv[]) {
             if (!dosboxArgument.empty()) {
                 auto application = DosboxStagingReplacer::InstallationFinder::findApplication(
                         dosBoxVersionParameters[dosboxArgument]);
-                // No need to do checking here and should not be done because we already did that at the earlier parts
-                // of the code Scan the files in the application installation path
                 std::cout << "Scanning chosen dosbox directory" << std::endl;
                 auto dosBoxFiles =
                         DosboxStagingReplacer::DirectoryScanner::scanDirectory(application.front().installationPath);
-                // If somehow there are no files under that folder, we return an error
                 if (dosBoxFiles.empty()) {
                     std::cerr << "Error: There are no files in the application installation path" << std::endl;
                 }
 
                 std::cout << "Searching for dosbox.exe in the application installation path" << std::endl;
 
-                // We search for any executable containing "dosbox" in a non-case sensitive manner
                 auto dosBoxExeSearch = std::ranges::find_if(dosBoxFiles, [&](const auto &file) {
                     std::string lowerCaseName = file.name;
                     std::ranges::transform(lowerCaseName, lowerCaseName.begin(), tolower);
                     return lowerCaseName.find("dosbox") != std::string::npos &&
                            lowerCaseName.ends_with(".exe");
                 });
-                // If no matching executable is found, then we return an error
                 if (dosBoxExeSearch == dosBoxFiles.end()) {
                     std::cerr << "Error: There is no DOSBox application in the application installation path" << std::endl;
                     return -1;
                 }
-                // Assign dosBoxExeSearch to dosBoxExe
                 dosBoxExe = std::make_shared<DosboxStagingReplacer::FileEntity>(*dosBoxExeSearch);
                 std::cout << "Successfully found DOSBox application " << dosBoxExe->name << " in the application installation path" << std::endl;
             } else if (!dosboxManualPath.empty()) {
@@ -399,7 +363,6 @@ int main(int argc, char *argv[]) {
             std::filesystem::path productPath = product.installationPath;
             auto taskTypes = service.getPlayTaskTypes();
 
-            // Find the Custom Task Type by finding the task type that has the type Custom
             auto customTaskType =
                     std::ranges::find_if(taskTypes, [&](const auto &taskType) { return taskType.type == "Custom"; });
             if (customTaskType == taskTypes.end()) {
@@ -414,7 +377,6 @@ int main(int argc, char *argv[]) {
             }
 
             auto playTasks = service.getPlayTasksFromGameReleaseKey(releaseKey);
-            // Get the primary playTask for that game by finding the one which has the type value BuiltInPrimary
             auto primaryPlayTask = std::ranges::find_if(
                     playTasks, [&](const auto &playTask) { return playTask.type == "BuiltInPrimary"; });
             if (primaryPlayTask == playTasks.end()) {
@@ -422,7 +384,6 @@ int main(int argc, char *argv[]) {
                 return -1;
             }
 
-            // Create a clone of primary playTask for modification
             auto playTaskForInsertion = *primaryPlayTask;
             playTaskForInsertion.typeId = customTaskType->id;
             playTaskForInsertion.type = customTaskType->type;
@@ -432,7 +393,6 @@ int main(int argc, char *argv[]) {
                 std::cerr << "Error: There are no users in the database" << std::endl;
             }
 
-            // Get Launch Parameters from the Primary Play Task
             auto launchParameters = service.getPlayTaskLaunchParametersFromPlayTaskId(primaryPlayTask->id);
             if (launchParameters.empty()) {
                 std::cerr << "Error: There are no launch parameters for the primary play task" << std::endl;
@@ -446,10 +406,6 @@ int main(int argc, char *argv[]) {
             std::cout << "Product information successfully retrieved" << std::endl;
             std::cout << "Adding changes to the Gog database" << std::endl;
 
-            // If --all-users is set, we iterate all users, otherwise we jump to the last part of
-            // the vector
-
-            // Now we do the real work, add play task here on Gog database
             if (program.get<bool>("--all-users") == true) {
                 for (const auto& user: users) {
                     service.addPlayTask(user.id, releaseKey, playTaskForInsertion, launchParametersForInsertion);
@@ -461,19 +417,14 @@ int main(int argc, char *argv[]) {
                 std::cout << "Successfully added play task for most recent user" << std::endl;
             }
 
-            // Afterward we set the custom launch parameters to enable for this
             service.setCustomLaunchParametersForProduct(releaseKey, true);
 
             std::cout << "Modifications completed" << std::endl;
-
-            // We are now done with adjusting anything on Gog!
             service.closeConnection();
 
             std::cout << "Modifying Dosbox configuration files for product" << std::endl;
 
-            // We finally adjust the files using ScriptEditService
             auto productFiles = DosboxStagingReplacer::DirectoryScanner::scanDirectory(product.installationPath);
-            // Find the config files, all of these files contain [autoexec] in their file
 
             std::vector<DosboxStagingReplacer::FileEntity> configAutoExecFiles;
             std::ranges::copy_if(productFiles, std::back_inserter(configAutoExecFiles), [&](const auto &file) {

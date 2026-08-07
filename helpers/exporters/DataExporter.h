@@ -1,17 +1,17 @@
 #ifndef DATAEXPORTER_H
 #define DATAEXPORTER_H
 
+#include <memory>
+#include <sstream>
+#include <string>
 #include <vector>
 
-#include "CoreHelperModels.h"
-#include "InstallationFinder.h"
-#include "StatementParser.h"
+#include "ReflectionUtils.h"
 
 namespace DosboxStagingReplacer {
 
     /**
      * @brief Base class for exporting data from a dataset into a string format.
-     * Although all the methods are virtual, they do have working implementations.
      */
     class DataExporter {
     public:
@@ -22,157 +22,83 @@ namespace DosboxStagingReplacer {
         virtual ~DataExporter() = default;
 
         /**
-         * @brief Serializes the SqlDataResult dataset into a string format.
+         * @brief Serializes a homogeneous dataset into a string format.
+         * @tparam R The range type of the dataset.
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a string.
          */
-        virtual std::string serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset);
+        template <typename R>
+        std::string serialize(R &dataset) {
+            std::vector<std::string> lines;
+            for (auto &data: dataset) {
+                lines.push_back(stringify(reflectAttributes(data)));
+            }
+            return formatLines(lines);
+        }
+
+    protected:
+        /**
+         * @brief Converts a reflected attribute list into a string format.
+         * @param attributes The reflected attributes (name, value, type) to convert.
+         * @return The string representation of one record.
+         */
+        virtual std::string stringify(
+                const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) {
+            std::ostringstream oss;
+            for (const auto &[name, value, type]: attributes) {
+                oss << name << "=" << value << ",";
+            }
+            return oss.str();
+        }
 
         /**
-         * @brief Serializes the InstallInfo dataset into a string format.
-         * @param dataset The dataset to serialize.
-         * @return The serialized dataset as a string.
+         * @brief Combines serialized record lines into the final output.
+         * @param lines The serialized records.
+         * @return The combined output string.
          */
-        virtual std::string serialize(const std::vector<InstallationInfo> &dataset);
-        /**
-         * @brief Serializes the FileEntity dataset into a string format
-         * @param dataset The FileEntity dataset to serialize
-         * @return The serialized dataset as a string.
-         */
-        virtual std::string serialize(const std::vector<FileEntity> &dataset);
-
-        /**
-         * @brief Converts the SqlDataResult object into a string format.
-         * @param data The SqlDataResult (and its derivatives) object to convert.
-         * @return The string representation of the SqlDataResult object.
-         */
-        virtual std::string stringify(const SqlDataResult &data);
-
-        /**
-         * @brief Converts the InstallationInfo object into a string format.
-         * @param data The InstallationInfo object to convert.
-         * @return The string representation of the InstallationInfo object.
-         */
-        virtual std::string stringify(const InstallationInfo &data);
-        /**
-         * @brief Converts the InstallationInfo object into a string format.
-         * @param data The FileEntity object to convert.
-         * @return The string representation of the InstallationInfo object.
-         */
-        virtual std::string stringify(const FileEntity &data);
-    private:
-        std::string separator = ",";
+        [[nodiscard]] virtual std::string formatLines(const std::vector<std::string> &lines) const {
+            std::ostringstream oss;
+            for (size_t i = 0; i < lines.size(); ++i) {
+                if (i != 0) {
+                    oss << std::endl;
+                }
+                oss << lines[i];
+            }
+            return oss.str();
+        }
     };
 
     /**
      * @brief Derived class for exporting data in JSON format.
-     * Inherits from DataExporter and implements the serialization methods for JSON.
      */
     class JSONDataExporter final : public DataExporter {
-    public:
-        /**
-         * @brief Serializes the SqlDataResult dataset into JSON format.
-         * @param dataset The dataset to serialize.
-         * @return The serialized dataset as a JSON string.
-         */
-        std::string serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) override;
+    protected:
+        std::string stringify(
+                const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) override;
 
-        /**
-         * @brief Serializes the InstallationInfo dataset into JSON format.
-         * @param dataset The dataset to serialize.
-         * @return The serialized dataset as a JSON string.
-         */
-        std::string serialize(const std::vector<InstallationInfo> &dataset) override;
-        /**
-         * @brief Serializes the InstallationInfo dataset into JSON format.
-         * @param dataset The FileEntity dataset to serialize.
-         * @return The serialized dataset as a JSON string.
-         */
-        std::string serialize(const std::vector<FileEntity> &dataset) override;
-
-        /**
-         * @brief Converts the SqlDataResult object into a JSON string.
-         * @param data The SqlDataResult (and its derivatives) object to convert.
-         * @return The string representation of the SqlDataResult object in JSON.
-         */
-        std::string stringify(const SqlDataResult &data) override;
-
-        /**
-         * @brief Converts the InstallationInfo object into a JSON string.
-         * @param data The InstallationInfo object to convert.
-         * @return The string representation of the InstallationInfo object in JSON.
-         */
-        std::string stringify(const InstallationInfo &data) override;
-        /**
-         * @brief Converts a FileEntity object into a JSON string representation.
-         * @param data The FileEntity object to convert.
-         * @return The string representation of the InstallationInfo object in JSON.
-         */
-        std::string stringify(const FileEntity &data) override;
+        [[nodiscard]] std::string formatLines(const std::vector<std::string> &lines) const override;
 
     private:
-        /**
-         * @brief Adds escape characters to a string to make it JSON-safe.
-         * @param str The string to escape.
-         * @return The escaped string.
-         */
         static std::string addEscapeCharacters(const std::string &str);
     };
 
+    /**
+     * @brief Derived class for exporting data in CSV format.
+     */
     class CSVDataExporter final : public DataExporter {
-    public:
-        /**
-         * @brief Serializes the SqlDataResult dataset into JSON format.
-         * @param dataset The dataset to serialize.
-         * @return The serialized dataset as a JSON string.
-         */
-        std::string serialize(const std::vector<std::shared_ptr<SqlDataResult>> &dataset) override;
-
-        /**
-         * @brief Serializes the InstallationInfo dataset into JSON format.
-         * @param dataset The InstallationInfo dataset to serialize.
-         * @return The serialized dataset as a JSON string.
-         */
-        std::string serialize(const std::vector<InstallationInfo> &dataset) override;
-        /**
-         * @brief Serializes the FileEntity dataset into JSON format.
-         * @param dataset The FileEntity dataset to serialize.
-         * @return The serialized dataset as a JSON string.
-         */
-        std::string serialize(const std::vector<FileEntity> &dataset) override;
-
-        /**
-         * @brief Converts the SqlDataResult object into a JSON string.
-         * @param data The SqlDataResult (and its derivatives) object to convert.
-         * @return The string representation of the SqlDataResult object in JSON.
-         */
-        std::string stringify(const SqlDataResult &data) override;
-
-        /**
-         * @brief Converts the InstallationInfo object into a JSON string.
-         * @param data The InstallationInfo object to convert.
-         * @return The string representation of the InstallationInfo object in JSON.
-         */
-        std::string stringify(const InstallationInfo &data) override;
-        /**
-         * @brief Converts the InstallationInfo object into a JSON string.
-         * @param data The FileEntity object to convert.
-         * @return The string representation of the InstallationInfo object in JSON.
-         */
-        std::string stringify(const FileEntity &data) override;
-    private:
-        std::string separator = ",";
+    protected:
+        std::string stringify(
+                const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) override;
     };
 
     /**
      * @brief Factory class for creating DataExporter objects.
-     * This class is empty and serves as a placeholder for future implementations.
      */
     class DataExporterFactory {
     public:
         /**
          * @brief Creates a DataExporter object based on the specified type.
-         * @param type The type of DataExporter to create (e.g., "json", "csv").
+         * @param type The type of DataExporter to create (e.g., ".json", ".csv").
          * @return A unique pointer to the created DataExporter object.
          */
         static std::unique_ptr<DataExporter> createDataExporter(const std::string &type) {
