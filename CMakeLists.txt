@@ -17,7 +17,7 @@ include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/finders
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/verifiers
         ${CMAKE_CURRENT_SOURCE_DIR}/helpers/exporters
-        ${CMAKE_CURRENT_SOURCE_DIR}/interfaces
+        ${CMAKE_CURRENT_SOURCE_DIR}/helpers
         ${CMAKE_CURRENT_SOURCE_DIR}/services/system
         ${CMAKE_CURRENT_SOURCE_DIR}/services/sql
         ${CMAKE_CURRENT_SOURCE_DIR}/services/gog
@@ -36,8 +36,6 @@ set(TEST_COMMON_SOURCES
         helpers/verifiers/InstallationVerifier.h
         services/sql/SqlService.cpp
         services/sql/SqlService.h
-        interfaces/StatementParser.cpp
-        interfaces/StatementParser.h
         helpers/exporters/DataExporter.cpp
         helpers/exporters/DataExporter.h
         services/gog/GogGalaxyService.cpp

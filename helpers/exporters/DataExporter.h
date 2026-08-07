@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "StatementParser.h"
+#include "ReflectionUtils.h"
 
 namespace DosboxStagingReplacer {
 

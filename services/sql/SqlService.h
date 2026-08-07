@@ -10,11 +10,10 @@
 #include <any>
 #include <iostream>
 #include <limits>
-#include <meta>
-#include <span>
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "ReflectionUtils.h"
 #include "sqlite3.h"
 
 namespace DosboxStagingReplacer {
@@ -45,14 +44,6 @@ namespace DosboxStagingReplacer {
         return {};
     }
 
-    namespace detail {
-        template <typename T>
-        consteval auto sqlite_reflected_member_span() {
-            return std::define_static_array(
-                    std::meta::nonstatic_data_members_of(^^T, std::meta::access_context::unchecked()));
-        }
-    }
-
     /**
      * @brief Parses an SQLite statement into a given object.
      * @tparam T - The type of the object to parse into.
@@ -65,7 +56,7 @@ namespace DosboxStagingReplacer {
 
         for (int i = 0; i < columnCount; i++) {
             const std::string columnName = sqlite3_column_name(stmt, i);
-            static constexpr auto members = detail::sqlite_reflected_member_span<T>();
+            static constexpr auto members = reflection::member_span<T>();
             template for (constexpr auto member: members) {
                 if (constexpr auto memberName = std::meta::identifier_of(member);
                     columnName == std::string(memberName)) {

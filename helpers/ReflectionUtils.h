@@ -1,57 +1,46 @@
-//
-// Created by Richard Orilla on 3/23/2025.
-//
+#ifndef REFLECTIONUTILS_H
+#define REFLECTIONUTILS_H
 
-#ifndef STATEMENTPARSER_H
-#define STATEMENTPARSER_H
-
-#include <cstdint>
 #include <meta>
-#include <memory>
 #include <span>
 #include <string>
+#include <tuple>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
 namespace DosboxStagingReplacer {
 
+    /**
+     * @brief Classification tag for reflected member values.
+     */
     enum class DataResultDataType { Number, String, Boolean };
 
-    class SqlDataResultException final : public std::exception {
-    public:
-        explicit SqlDataResultException(const char *message) : msg(message) {}
-        SqlDataResultException(SqlDataResultException const &) noexcept = default;
-        SqlDataResultException &operator=(SqlDataResultException const &) noexcept = default;
-        ~SqlDataResultException() override = default;
-        [[nodiscard]] const char *what() const noexcept override { return msg; }
+    namespace reflection {
 
-    private:
-        const char *msg;
-    };
-
-    namespace detail {
         /**
-         * @brief Reflects the non-static data members of a type into a static array.
-         * @tparam T - The type to reflect.
-         * @return A static array containing the non-static data members of the type.
+         * @brief Returns a static span of the non-static data members of T.
+         * @tparam T The type to reflect.
+         * @return A std::span<const std::meta::info, N> usable in template for loops.
          */
         template <typename T>
-        consteval auto reflected_member_span() {
+        consteval auto member_span() {
             return std::define_static_array(
                     std::meta::nonstatic_data_members_of(^^T, std::meta::access_context::unchecked()));
         }
-    }
+
+    } // namespace reflection
 
     /**
      * @brief Reflects attributes of an object into a vector of tuples.
-     * @tparam T - The type of the object to reflect.
-     * @param object - The object to reflect.
+     * @tparam T The type of the object to reflect.
+     * @param object The object to reflect.
      * @return A vector of tuples containing attribute names, values, and data types.
      */
     template <typename T>
     std::vector<std::tuple<std::string, std::string, DataResultDataType>> reflectAttributes(const T &object) {
         std::vector<std::tuple<std::string, std::string, DataResultDataType>> result;
-        static constexpr auto members = detail::reflected_member_span<T>();
+        static constexpr auto members = reflection::member_span<T>();
         template for (constexpr auto member: members) {
             constexpr auto name = std::meta::identifier_of(member);
             const auto &value = object.[:member:];
@@ -81,4 +70,4 @@ namespace DosboxStagingReplacer {
 
 } // namespace DosboxStagingReplacer
 
-#endif // STATEMENTPARSER_H
+#endif // REFLECTIONUTILS_H
