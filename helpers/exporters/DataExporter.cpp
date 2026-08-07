@@ -2,27 +2,6 @@
 #include <sstream>
 
 namespace DosboxStagingReplacer {
-    std::string DataExporter::serialize(std::vector<DataSetVariant> &dataset) {
-        std::ostringstream oss;
-        for (DataSetVariant &data: dataset) {
-            oss << this->stringify(data) << std::endl;
-        }
-        return oss.str();
-    }
-
-
-    std::string DataExporter::stringify(DataSetVariant &data) {
-        std::ostringstream oss;
-        for (std::vector<std::tuple<std::string, std::string, DataResultDataType>> attributes = reflectAttributes(data);
-             const auto &attribute: attributes) {
-            std::string name, value;
-            DataResultDataType type;
-            std::tie(name, value, type) = attribute;
-            oss << name << "=" << value << this->separator;
-        }
-        return oss.str();
-    }
-
 
     std::string JSONDataExporter::addEscapeCharacters(const std::string &str) {
         std::string escapedStr = str;
@@ -41,38 +20,22 @@ namespace DosboxStagingReplacer {
         return escapedStr;
     }
 
-    std::string JSONDataExporter::serialize(std::vector<DataSetVariant> &dataset) {
-        std::ostringstream oss;
-        oss << "[";
-        for (size_t i = 0; i < dataset.size(); ++i) {
-            oss << this->stringify(dataset[i]);
-            if (i != dataset.size() - 1) {
-                oss << ",";
-            }
-        }
-        oss << "]";
-        return oss.str();
-    }
-
-    std::string JSONDataExporter::stringify(DataSetVariant &data) {
+    std::string JSONDataExporter::stringify(
+            const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) {
         std::ostringstream oss;
         oss << "{";
-        const std::vector<std::tuple<std::string, std::string, DataResultDataType>> attributes = reflectAttributes(data);
         for (size_t i = 0; i < attributes.size(); ++i) {
-            std::string name, value;
-            DataResultDataType type;
-            std::tie(name, value, type) = attributes[i];
+            const auto &[name, value, type] = attributes[i];
 
             // Currently we need to wrap strings in quotes
+            std::string serializedValue = value;
             if (type == DataResultDataType::String) {
-                // First we replace all the quotes with escaped quotes
-                value = addEscapeCharacters(value);
-                // Then we add the quotes
-                value.insert(0, "\"");
-                value.append("\"");
+                serializedValue = addEscapeCharacters(serializedValue);
+                serializedValue.insert(0, "\"");
+                serializedValue.append("\"");
             }
 
-            oss << "\"" << name << "\": " << value;
+            oss << "\"" << name << "\": " << serializedValue;
             if (i != attributes.size() - 1) {
                 oss << ",";
             }
@@ -81,23 +44,28 @@ namespace DosboxStagingReplacer {
         return oss.str();
     }
 
-    std::string CSVDataExporter::serialize(std::vector<DataSetVariant> &dataset) {
+    std::string JSONDataExporter::formatLines(const std::vector<std::string> &lines) const {
         std::ostringstream oss;
-        for (DataSetVariant &data: dataset) {
-            oss << this->stringify(data) << std::endl;
+        oss << "[";
+        for (size_t i = 0; i < lines.size(); ++i) {
+            oss << lines[i];
+            if (i != lines.size() - 1) {
+                oss << ",";
+            }
         }
+        oss << "]";
         return oss.str();
     }
 
-
-    std::string CSVDataExporter::stringify(DataSetVariant &data) {
+    std::string CSVDataExporter::stringify(
+            const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) {
         std::ostringstream oss;
-        for (std::vector<std::tuple<std::string, std::string, DataResultDataType>> attributes = reflectAttributes(data);
-             const auto &attribute: attributes) {
-            std::string name, value;
-            DataResultDataType type;
-            std::tie(name, value, type) = attribute;
-            oss << value << this->separator;
+        for (size_t i = 0; i < attributes.size(); ++i) {
+            const auto &[name, value, type] = attributes[i];
+            oss << value;
+            if (i != attributes.size() - 1) {
+                oss << ",";
+            }
         }
         return oss.str();
     }

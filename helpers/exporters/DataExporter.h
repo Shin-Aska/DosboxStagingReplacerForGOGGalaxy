@@ -1,29 +1,17 @@
 #ifndef DATAEXPORTER_H
 #define DATAEXPORTER_H
 
+#include <memory>
+#include <sstream>
+#include <string>
 #include <vector>
 
-#include "CoreHelperModels.h"
-#include "InstallationFinder.h"
 #include "StatementParser.h"
 
 namespace DosboxStagingReplacer {
 
-    // Let us group all of these shit together!
-    using DataSetVariant = std::variant<
-        SqliteSchema,
-        ProductDetails,
-        GogUser,
-        PlayTaskInformation,
-        PlayTaskLaunchParameter,
-        PlayTaskType,
-        InstallationInfo,
-        FileEntity
-    >;
-
     /**
      * @brief Base class for exporting data from a dataset into a string format.
-     * Although all the methods are virtual, they do have working implementations.
      */
     class DataExporter {
     public:
@@ -34,82 +22,83 @@ namespace DosboxStagingReplacer {
         virtual ~DataExporter() = default;
 
         /**
-         * @brief Serializes the DataSetVariant dataset into a string format.
+         * @brief Serializes a homogeneous dataset into a string format.
+         * @tparam R The range type of the dataset.
          * @param dataset The dataset to serialize.
          * @return The serialized dataset as a string.
          */
-        virtual std::string serialize(std::vector<DataSetVariant> &dataset);
+        template <typename R>
+        std::string serialize(R &dataset) {
+            std::vector<std::string> lines;
+            for (auto &data: dataset) {
+                lines.push_back(stringify(reflectAttributes(data)));
+            }
+            return formatLines(lines);
+        }
+
+    protected:
+        /**
+         * @brief Converts a reflected attribute list into a string format.
+         * @param attributes The reflected attributes (name, value, type) to convert.
+         * @return The string representation of one record.
+         */
+        virtual std::string stringify(
+                const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) {
+            std::ostringstream oss;
+            for (const auto &[name, value, type]: attributes) {
+                oss << name << "=" << value << ",";
+            }
+            return oss.str();
+        }
 
         /**
-         * @brief Converts the DataSetVariant object into a string format.
-         * @param data The DataSetVariant (and its derivatives) object to convert.
-         * @return The string representation of the DataSetVariant object.
+         * @brief Combines serialized record lines into the final output.
+         * @param lines The serialized records.
+         * @return The combined output string.
          */
-        virtual std::string stringify(DataSetVariant &data);
-    private:
-        std::string separator = ",";
+        [[nodiscard]] virtual std::string formatLines(const std::vector<std::string> &lines) const {
+            std::ostringstream oss;
+            for (size_t i = 0; i < lines.size(); ++i) {
+                if (i != 0) {
+                    oss << std::endl;
+                }
+                oss << lines[i];
+            }
+            return oss.str();
+        }
     };
 
     /**
      * @brief Derived class for exporting data in JSON format.
-     * Inherits from DataExporter and implements the serialization methods for JSON.
      */
     class JSONDataExporter final : public DataExporter {
-    public:
-        /**
-         * @brief Serializes the DataSetVariant dataset into JSON format.
-         * @param dataset The dataset to serialize.
-         * @return The serialized dataset as a JSON string.
-         */
-        std::string serialize(std::vector<DataSetVariant> &dataset) override;
+    protected:
+        std::string stringify(
+                const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) override;
 
-        /**
-         * @brief Converts the DataSetVariant object into a JSON string.
-         * @param data The DataSetVariant (and its derivatives) object to convert.
-         * @return The string representation of the DataSetVariant object in JSON.
-         */
-        std::string stringify(DataSetVariant &data) override;
+        [[nodiscard]] std::string formatLines(const std::vector<std::string> &lines) const override;
 
     private:
-        /**
-         * @brief Adds escape characters to a string to make it JSON-safe.
-         * @param str The string to escape.
-         * @return The escaped string.
-         */
         static std::string addEscapeCharacters(const std::string &str);
     };
 
     /**
      * @brief Derived class for exporting data in CSV format.
-     * Inherits from DataExporter and implements the serialization methods for CSV.
      */
     class CSVDataExporter final : public DataExporter {
-    public:
-        /**
-         * @brief Serializes the DataSetVariant dataset into CSV format.
-         * @param dataset The dataset to serialize.
-         * @return The serialized dataset as a CSV string.
-         */
-        std::string serialize(std::vector<DataSetVariant> &dataset) override;
-        /**
-         * @brief Converts the DataSetVariant object into a CSV string.
-         * @param data The DataSetVariant object to convert.
-         * @return The string representation of the DataSetVariant object in CSV.
-         */
-        std::string stringify(DataSetVariant &data) override;
-    private:
-        std::string separator = ",";
+    protected:
+        std::string stringify(
+                const std::vector<std::tuple<std::string, std::string, DataResultDataType>> &attributes) override;
     };
 
     /**
      * @brief Factory class for creating DataExporter objects.
-     * This class is empty and serves as a placeholder for future implementations.
      */
     class DataExporterFactory {
     public:
         /**
          * @brief Creates a DataExporter object based on the specified type.
-         * @param type The type of DataExporter to create (e.g., "json", "csv").
+         * @param type The type of DataExporter to create (e.g., ".json", ".csv").
          * @return A unique pointer to the created DataExporter object.
          */
         static std::unique_ptr<DataExporter> createDataExporter(const std::string &type) {
