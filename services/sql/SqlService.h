@@ -10,12 +10,80 @@
 #include <any>
 #include <iostream>
 #include <limits>
+#include <meta>
+#include <span>
 #include <string>
 #include <unordered_map>
 #include <vector>
 #include "sqlite3.h"
 
 namespace DosboxStagingReplacer {
+
+    /**
+     * @brief SqliteLastRowId class. Contains the information about the last row id.
+     */
+    class SqliteLastRowId {
+    public:
+        int id;
+    };
+
+    /**
+     * @brief SqliteSchema class. Contains the information about a SQLite schema.
+     */
+    class SqliteSchema final {
+    public:
+        std::string type;
+        std::string name;
+        std::string tbl_name;
+        int rootpage;
+    };
+
+    [[nodiscard]] inline auto sqlite_column_text_or_empty(sqlite3_stmt *stmt, const int index) -> std::string {
+        if (const auto *text = sqlite3_column_text(stmt, index)) {
+            return std::string{reinterpret_cast<const char *>(text)};
+        }
+        return {};
+    }
+
+    namespace detail {
+        template <typename T>
+        consteval auto sqlite_reflected_member_span() {
+            return std::define_static_array(
+                    std::meta::nonstatic_data_members_of(^^T, std::meta::access_context::unchecked()));
+        }
+    }
+
+    /**
+     * @brief Parses an SQLite statement into a given object.
+     * @tparam T - The type of the object to parse into.
+     * @param result - The object to parse the statement into.
+     * @param stmt - The SQLite statement to parse.
+     */
+    template <typename T>
+    void parseSqliteStatementInto(T &result, sqlite3_stmt *stmt) {
+        const int columnCount = sqlite3_column_count(stmt);
+
+        for (int i = 0; i < columnCount; i++) {
+            const std::string columnName = sqlite3_column_name(stmt, i);
+            static constexpr auto members = detail::sqlite_reflected_member_span<T>();
+            template for (constexpr auto member: members) {
+                if (constexpr auto memberName = std::meta::identifier_of(member);
+                    columnName == std::string(memberName)) {
+                    using FieldType = std::remove_cvref_t<typename [:std::meta::type_of(member):]>;
+                    if constexpr (std::is_same_v<FieldType, std::string>) {
+                        result.[:member:] = sqlite_column_text_or_empty(stmt, i);
+                    } else if constexpr (std::is_same_v<FieldType, int64_t>) {
+                        result.[:member:] = sqlite3_column_int64(stmt, i);
+                    } else if constexpr (std::is_same_v<FieldType, int>) {
+                        result.[:member:] = sqlite3_column_int(stmt, i);
+                    } else if constexpr (std::is_same_v<FieldType, bool>) {
+                        result.[:member:] = sqlite3_column_int(stmt, i) != 0;
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
     class SqlServiceException final : public std::exception {
     public:
