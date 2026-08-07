@@ -8,9 +8,69 @@
 #include <optional>
 #include <string>
 #include "SqlService.h"
-#include "StatementParser.h"
 
 namespace DosboxStagingReplacer {
+
+    /**
+     * @brief ProductDetails class. Contains the information about a GOG product.
+     */
+    class ProductDetails {
+    public:
+        int productId;
+        std::string title;
+        std::string slug;
+        int gogId;
+        std::string releaseKey;
+        std::string installationPath;
+        std::string installationDate;
+    };
+
+    /**
+     * @brief GogUser class. Contains the information about a GOG user.
+     */
+    class GogUser {
+    public:
+        int64_t id;
+    };
+
+    /**
+     * @brief PlayTaskInformation class. Contains the information about a play task.
+     */
+    class PlayTaskInformation {
+    public:
+        int id;
+        std::string gameReleaseKey;
+        int userId;
+        int order;
+        int typeId;
+        std::string type;
+        bool isPrimary;
+    };
+
+    /**
+     * @brief PlayTaskLaunchParameters class. Contains the information about a play task launch parameters.
+     */
+    class PlayTaskLaunchParameter {
+    public:
+        int playTaskId;
+        std::string executablePath;
+        std::string commandLineArgs;
+        std::string label;
+
+        bool operator==(const PlayTaskLaunchParameter &other) const {
+            return executablePath == other.executablePath &&
+                   commandLineArgs == other.commandLineArgs;
+        }
+    };
+
+    /**
+     * @brief PlayTaskType class. Contains the information about a play task type.
+     */
+    class PlayTaskType {
+    public:
+        int id;
+        std::string type;
+    };
 
     /**
      * @brief Provides operations for interacting with the GOG Galaxy database.
